@@ -2,42 +2,45 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>استعلام عن النتيجة</title>
+  <title>نتائج الثانوي</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="card">
-    <div class="header">
-      <img src="logo-green.png" alt="شعار وزارة التربية" class="logo">
-      <h1>نتائج الامتحانات</h1>
-      <h2>لشهادتي التعليم الثانوي و الأساسي</h2>
-    </div>
+<body class="green-bg">
+  <div class="form-card">
+    <h1>نتائج الثانوي بفرعيها العلمي والأدبي</h1>
 
     <form id="searchForm">
-      <label for="year">السنة:</label>
-      <select id="year">
-        <option>2025</option>
-        <option>2024</option>
-      </select>
+      <div class="input-group">
+        <label>السنة</label>
+        <select id="year">
+          <option>2025</option>
+          <option>2024</option>
+        </select>
+      </div>
 
-      <label for="certificate">الشهادة:</label>
-      <select id="certificate">
-        <option value="scientific">الثانوية العامة - علمي</option>
-        <option value="literary">الثانوية العامة - أدبي</option>
-      </select>
+      <div class="input-group">
+        <label>الفرع</label>
+        <select id="certificate">
+          <option value="scientific">علمي</option>
+          <option value="literary">أدبي</option>
+        </select>
+      </div>
 
-      <label for="number">رقم الاكتتاب:</label>
-      <input type="text" id="number" placeholder="أدخل رقم الاكتتاب" required>
+      <div class="input-group">
+        <label>رقم الاكتتاب</label>
+        <input type="text" id="number" placeholder="أدخل رقم الاكتتاب" required>
+      </div>
 
-      <button type="submit">🔍 استعلام عن النتيجة</button>
+      <div class="search-icon" onclick="searchResult()">
+        🔍
+      </div>
     </form>
   </div>
 
   <script>
-    document.getElementById('searchForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    function searchResult() {
       const inputNumber = document.getElementById('number').value;
       const data = JSON.parse(localStorage.getItem('studentData'));
       if (data && data.number === inputNumber) {
@@ -45,7 +48,7 @@
       } else {
         alert("❌ لا توجد نتيجة لهذا الرقم.");
       }
-    });
+    }
   </script>
 </body>
 </html>
