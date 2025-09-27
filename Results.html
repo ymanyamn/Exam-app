@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>النتيجة الرسمية</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="result-card">
+    <img src="logo-green.png" alt="شعار وزارة التربية" class="logo">
+    <h1>وزارة التربية السورية</h1>
+    <h2>نتيجة امتحان الشهادة الثانوية العامة</h2>
+
+    <div class="student-info">
+      <p><strong>الاسم:</strong> <span id="studentName"></span></p>
+      <p><strong>رقم الاكتتاب:</strong> <span id="studentNumber"></span></p>
+      <p><strong>الفرع:</strong> <span id="studentBranch"></span></p>
+    </div>
+
+    <table id="marksTable">
+      <tr>
+        <th>المادة</th>
+        <th>الدرجة</th>
+        <th>العظمى</th>
+        <th>الدنيا</th>
+        <th>الحالة</th>
+      </tr>
+    </table>
+
+    <div class="final-status">
+      <p><strong>المجموع:</strong> <span id="totalScore"></span></p>
+      <p><strong>الحالة النهائية:</strong> <span id="finalStatus"></span></p>
+    </div>
+  </div>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem('studentData'));
+    const subjects = {
+      scientific: {
+        "الرياضيات": 120,
+        "الفيزياء": 100,
+        "الكيمياء": 100,
+        "العلوم": 80,
+        "اللغة العربية": 100,
+        "اللغة الإنجليزية": 100
+      },
+      literary: {
+        "الفلسفة": 100,
+        "التاريخ": 100,
+        "الجغرافيا": 100,
+        "اللغة العربية": 100,
+        "اللغة الفرنسية": 100,
+        "اللغة الإنجليزية": 100
+      }
+    };
+
+    const minPass = 40;
+    const branch = data.branch;
+    const marks = data.marks;
+    const maxMarks = subjects[branch];
+    let total = 0;
+    let passed = true;
+
+    document.getElementById('studentName').textContent = data.name;
+    document.getElementById('studentNumber').textContent = data.number;
+    document.getElementById('studentBranch').textContent = branch === 'scientific' ? 'علمي' : 'أدبي';
+
+    const table = document.getElementById('marksTable');
+
+    for (let subject in maxMarks) {
+      const score = marks[subject] || 0;
+      const max = maxMarks[subject];
+      const status = score >= minPass ? "✅" : "❌";
+      if (score < minPass) passed = false;
+      total += score;
+
+      const row = `<tr>
+        <td>${subject}</td>
+        <td>${score}</td>
+        <td>${max}</td>
+        <td>${minPass}</td>
+        <td>${status}</td>
+      </tr>`;
+      table.innerHTML += row;
+    }
+
+    document.getElementById('totalScore').textContent = total;
+    document.get

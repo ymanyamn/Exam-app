@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>مدخل بيانات الطالب</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <img src="logo-green.png" alt="شعار وزارة التربية" class="logo">
+    <h1>📥 إدخال بيانات الطالب</h1>
+
+    <form id="dataForm">
+      <label>الاسم الكامل:</label>
+      <input type="text" id="name" required>
+
+      <label>رقم الاكتتاب:</label>
+      <input type="text" id="number" required>
+
+      <label>الفرع:</label>
+      <select id="branch" required>
+        <option value="">اختر الفرع</option>
+        <option value="scientific">علمي</option>
+        <option value="literary">أدبي</option>
+      </select>
+
+      <div id="subjectsContainer"></div>
+
+      <button type="submit">💾 حفظ البيانات</button>
+    </form>
+
+    <p><a href="student.html">🔍 الانتقال لصفحة الطالب</a></p>
+  </div>
+
+  <script>
+    const subjects = {
+      scientific: {
+        "الرياضيات": 120,
+        "الفيزياء": 100,
+        "الكيمياء": 100,
+        "العلوم": 80,
+        "اللغة العربية": 100,
+        "اللغة الإنجليزية": 100
+      },
+      literary: {
+        "الفلسفة": 100,
+        "التاريخ": 100,
+        "الجغرافيا": 100,
+        "اللغة العربية": 100,
+        "اللغة الفرنسية": 100,
+        "اللغة الإنجليزية": 100
+      }
+    };
+
+    document.getElementById('branch').addEventListener('change', function () {
+      const selected = this.value;
+      const container = document.getElementById('subjectsContainer');
+      container.innerHTML = '';
+
+      for (let sub in subjects[selected]) {
+        const max = subjects[selected][sub];
+        container.innerHTML += `
+          <label>${sub} (العظمى: ${max}):</label>
+          <input type="number" id="${sub}" max="${max}" required>
+        `;
+      }
+    });
+
+    document.getElementById('dataForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const number = document.getElementById('number').value;
+      const branch = document.getElementById('branch').value;
+      const marks = {};
+
+      for (let sub in subjects[branch]) {
+        marks[sub] = parseInt(document.getElementById(sub).value) || 0;
+      }
+
+      const studentData = { name, number, branch, marks };
+      localStorage.setItem('studentData', JSON.stringify(studentData));
+      alert("✅ تم حفظ البيانات بنجاح");
+    });
+  </script>
+</body>
+</html>

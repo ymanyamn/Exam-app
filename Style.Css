@@ -1,0 +1,35 @@
+body {
+  font-family: 'Cairo', sans-serif;
+  background: #f0f4f8;
+  direction: rtl;
+  margin: 0;
+  padding: 0;
+}
+
+.container, .result-card {
+  max-width: 700px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  text-align: center;
+  border: 2px solid #4CAF50;
+}
+
+.logo {
+  width: 100px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  color: #4CAF50;
+  margin-bottom: 5px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+label {

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>استعلام الطالب</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <img src="logo-green.png" alt="شعار وزارة التربية" class="logo">
+    <h1>🔍 استعلام عن النتيجة</h1>
+
+    <label>السنة:</label>
+    <select>
+      <option>2025</option>
+      <option>2024</option>
+    </select>
+
+    <label>الشهادة:</label>
+    <select>
+      <option value="scientific">علمي</option>
+      <option value="literary">أدبي</option>
+    </select>
+
+    <label>رقم الاكتتاب:</label>
+    <input type="text" id="searchNumber" placeholder="أدخل رقم الاكتتاب">
+
+    <button onclick="searchResult()">🔍 بحث</button>
+  </div>
+
+  <script>
+    function searchResult() {
+      const inputNumber = document.getElementById('searchNumber').value;
+      const data = JSON.parse(localStorage.getItem('studentData'));
+      if (data && data.number === inputNumber) {
+        window.location.href = "result.html";
+      } else {
+        alert("❌ لا توجد نتيجة لهذا الرقم.");
+      }
+    }
+  </script>
+</body>
+</html>
