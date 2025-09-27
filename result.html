@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>استعلام النتيجة</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial;
+      background-color: #f0f4f8;
+      text-align: center;
+      padding: 40px;
+    }
+    input, select {
+      padding: 10px;
+      margin: 10px;
+      width: 250px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #1b5e20;
+      color: white;
+      border: none;
+      border-radius: 6px;
+    }
+    h2 {
+      color: #1b5e20;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔍 استعلام النتيجة</h2>
+
+  <input type="text" id="number" placeholder="رقم الاكتتاب">
+  <select id="branch">
+    <option value="">اختر الفرع</option>
+    <option value="أدبي">أدبي</option>
+    <option value="علمي">علمي</option>
+  </select>
+  <br>
+  <button onclick="search()">عرض النتيجة</button>
+
+  <script>
+    function search() {
+      const number = document.getElementById("number").value.trim();
+      const branch = document.getElementById("branch").value;
+
+      if (!number || !branch) {
+        alert("يرجى إدخال رقم الاكتتاب واختيار الفرع");
+        return;
+      }
+
+      const key = "student_" + number + "_" + branch + "_2025";
+      const data = JSON.parse(localStorage.getItem(key));
+
+      if (data) {
+        localStorage.setItem("activeStudent", JSON.stringify(data));
+        window.location.href = "result.html";
+      } else {
+        alert("❌ لا توجد نتيجة مطابقة");
+      }
+    }
+  </script>
+</body>
+</html>
