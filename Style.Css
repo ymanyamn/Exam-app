@@ -1,35 +1,71 @@
 body {
   font-family: 'Cairo', sans-serif;
   background: #f0f4f8;
-  direction: rtl;
   margin: 0;
   padding: 0;
+  direction: rtl;
 }
 
-.container, .result-card {
-  max-width: 700px;
-  margin: 40px auto;
+.card {
+  max-width: 500px;
+  margin: 30px auto;
   background: white;
-  padding: 30px;
+  padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+.header {
   text-align: center;
-  border: 2px solid #4CAF50;
+  margin-bottom: 20px;
 }
 
 .logo {
-  width: 100px;
+  width: 80px;
+  height: auto;
   margin-bottom: 10px;
 }
 
 h1 {
   color: #4CAF50;
-  margin-bottom: 5px;
+  margin: 0;
+  font-size: 22px;
 }
 
 h2 {
   color: #333;
-  margin-bottom: 20px;
+  font-size: 16px;
+  margin-top: 5px;
 }
 
-label {
+form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+form input, form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+form button {
+  margin-top: 20px;
+  padding: 12px;
+  width: 100%;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background: #388E3C;
+}
