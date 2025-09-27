@@ -1,71 +1,58 @@
-body {
-  font-family: 'Cairo', sans-serif;
-  background: #f0f4f8;
+body.green-bg {
+  background-color: #4CAF50;
   margin: 0;
   padding: 0;
+  font-family: 'Cairo', sans-serif;
   direction: rtl;
 }
 
-.card {
+.form-card {
   max-width: 500px;
-  margin: 30px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  box-sizing: border-box;
-}
-
-.header {
+  margin: 50px auto;
+  background-color: transparent;
+  padding: 20px;
   text-align: center;
-  margin-bottom: 20px;
-}
-
-.logo {
-  width: 80px;
-  height: auto;
-  margin-bottom: 10px;
 }
 
 h1 {
-  color: #4CAF50;
-  margin: 0;
-  font-size: 22px;
-}
-
-h2 {
-  color: #333;
-  font-size: 16px;
-  margin-top: 5px;
-}
-
-form label {
-  display: block;
-  margin-top: 15px;
+  color: white;
+  font-size: 24px;
+  margin-bottom: 30px;
   font-weight: bold;
 }
 
-form input, form select {
+.input-group {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.input-group label {
+  display: block;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-group input,
+.input-group select {
   width: 100%;
   padding: 10px;
-  margin-top: 5px;
+  border: 2px solid white;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  background-color: white;
+  color: #4CAF50;
+  font-weight: bold;
   box-sizing: border-box;
 }
 
-form button {
-  margin-top: 20px;
-  padding: 12px;
-  width: 100%;
-  background: #4CAF50;
+.search-icon {
+  font-size: 32px;
   color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  margin-top: 30px;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-form button:hover {
-  background: #388E3C;
+.search-icon:hover {
+  transform: scale(1.2);
 }
