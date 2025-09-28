@@ -2,86 +2,132 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>مدخل بيانات الطالب</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <title>إدخال بيانات الطالب</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial; background-color: #f0f4f8; padding: 20px; direction: rtl; }
+    h2 { color: #1b5e20; text-align: center; }
+    input, select, button {
+      padding: 10px; margin: 10px 0; width: 100%; font-size: 16px;
+      border-radius: 6px; border: 2px solid #1b5e20;
+    }
+    button {
+      background-color: #1b5e20; color: white; cursor: pointer;
+    }
+    .form-box {
+      max-width: 600px; margin: auto; background-color: white;
+      padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <img src="logo-green.png" alt="شعار وزارة التربية" class="logo">
-    <h1>📥 إدخال بيانات الطالب</h1>
+  <h2>📝 إدخال بيانات الطالب</h2>
 
-    <form id="dataForm">
-      <label>الاسم الكامل:</label>
-      <input type="text" id="name" required>
+  <div class="form-box">
+    <label>الاسم الثلاثي:</label>
+    <input type="text" id="name" placeholder="مثلاً: أحمد علي حسين">
 
-      <label>رقم الاكتتاب:</label>
-      <input type="text" id="number" required>
+    <label>رقم الاكتتاب:</label>
+    <input type="text" id="id" placeholder="مثلاً: 123456">
 
-      <label>الفرع:</label>
-      <select id="branch" required>
-        <option value="">اختر الفرع</option>
-        <option value="scientific">علمي</option>
-        <option value="literary">أدبي</option>
-      </select>
+    <label>الفرع:</label>
+    <select id="branch" onchange="renderSubjects()">
+      <option value="">اختر الفرع</option>
+      <option value="علمي">علمي</option>
+      <option value="أدبي">أدبي</option>
+    </select>
 
-      <div id="subjectsContainer"></div>
+    <label>العام:</label>
+    <input type="text" id="year" placeholder="مثلاً: 2025">
 
-      <button type="submit">💾 حفظ البيانات</button>
-    </form>
+    <div id="subjects-area"></div>
 
-    <p><a href="student.html">🔍 الانتقال لصفحة الطالب</a></p>
+    <button onclick="saveStudent()">💾 حفظ البيانات</button>
   </div>
 
   <script>
+    const SUPABASE_URL = "https://avkkjmppfmgeakifqhlv.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2a2tqbXBwZm1nZWFraWZxaGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkwNTA5MDUsImV4cCI6MjA3NDYyNjkwNX0.tX6uNk7JXcsLqu_0a-KG2RQL7C7hDE6JEi7rubsNBSg";
+
     const subjects = {
-      scientific: {
-        "الرياضيات": 120,
-        "الفيزياء": 100,
-        "الكيمياء": 100,
-        "العلوم": 80,
-        "اللغة العربية": 100,
-        "اللغة الإنجليزية": 100
-      },
-      literary: {
-        "الفلسفة": 100,
-        "التاريخ": 100,
-        "الجغرافيا": 100,
-        "اللغة العربية": 100,
-        "اللغة الفرنسية": 100,
-        "اللغة الإنجليزية": 100
-      }
+      "علمي": [
+        { name: "لغة عربية", max: 400, min: 160 },
+        { name: "اللغة الإنجليزية", max: 400, min: 160 },
+        { name: "الرياضيات", max: 600, min: 240 },
+        { name: "الفيزياء", max: 300, min: 120 },
+        { name: "الكيمياء", max: 300, min: 120 },
+        { name: "العلوم", max: 300, min: 120 },
+        { name: "التربية الإسلامية", max: 200, min: 80 }
+      ],
+      "أدبي": [
+        { name: "لغة عربية", max: 400, min: 160 },
+        { name: "اللغة الإنجليزية", max: 400, min: 160 },
+        { name: "التاريخ", max: 300, min: 120 },
+        { name: "الجغرافيا", max: 300, min: 120 },
+        { name: "الفلسفة والعلوم الإنسانية", max: 300, min: 120 },
+        { name: "التربية الإسلامية", max: 200, min: 80 }
+      ]
     };
 
-    document.getElementById('branch').addEventListener('change', function () {
-      const selected = this.value;
-      const container = document.getElementById('subjectsContainer');
-      container.innerHTML = '';
+    function renderSubjects() {
+      const branch = document.getElementById("branch").value;
+      const area = document.getElementById("subjects-area");
+      area.innerHTML = "";
 
-      for (let sub in subjects[selected]) {
-        const max = subjects[selected][sub];
-        container.innerHTML += `
-          <label>${sub} (العظمى: ${max}):</label>
-          <input type="number" id="${sub}" max="${max}" required>
-        `;
+      if (!branch || !subjects[branch]) return;
+
+      let html = `<table><tr><th>المادة</th><th>الدرجة</th><th>العظمى</th><th>الدنيا</th></tr>`;
+      subjects[branch].forEach((subj, i) => {
+        html += `<tr>
+          <td>${subj.name}</td>
+          <td><input type="number" id="mark_${i}" placeholder="الدرجة"></td>
+          <td>${subj.max}</td>
+          <td>${subj.min}</td>
+        </tr>`;
+      });
+      html += `</table>`;
+      area.innerHTML = html;
+    }
+
+    async function saveStudent() {
+      const name = document.getElementById("name").value.trim();
+      const id = document.getElementById("id").value.trim();
+      const branch = document.getElementById("branch").value.trim();
+      const year = document.getElementById("year").value.trim();
+
+      if (!name || !id || !branch || !year) {
+        alert("❗ يرجى تعبئة جميع الحقول");
+        return;
       }
-    });
 
-    document.getElementById('dataForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const number = document.getElementById('number').value;
-      const branch = document.getElementById('branch').value;
       const marks = {};
+      subjects[branch].forEach((subj, i) => {
+        const value = +document.getElementById("mark_" + i).value;
+        marks[subj.name] = { value, max: subj.max, min: subj.min };
+      });
 
-      for (let sub in subjects[branch]) {
-        marks[sub] = parseInt(document.getElementById(sub).value) || 0;
+      const student = { id, name, branch, year, marks };
+
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/students`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + SUPABASE_KEY
+        },
+        body: JSON.stringify(student)
+      });
+
+      if (res.ok) {
+        alert("✅ تم حفظ بيانات الطالب بنجاح");
+        document.querySelector(".form-box").reset();
+        document.getElementById("subjects-area").innerHTML = "";
+      } else {
+        alert("❌ فشل الحفظ، تحقق من الاتصال أو الصلاحيات");
       }
-
-      const studentData = { name, number, branch, marks };
-      localStorage.setItem('studentData', JSON.stringify(studentData));
-      alert("✅ تم حفظ البيانات بنجاح");
-    });
+    }
   </script>
 </body>
 </html>
