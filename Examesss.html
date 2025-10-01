@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مديرية الامتحانات - نتائج البكالوريا</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #f0f0f0;
+            padding: 0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* الهيدر الرسمي */
+        .official-header {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-bottom: 5px solid #1b5e20;
+            position: relative;
+        }
+        
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .ministry-name {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .exam-directorate {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #fffde7;
+        }
+        
+        .bac-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #fff9c4;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .branches {
+            font-size: 1.4em;
+            margin-top: 10px;
+            color: #e8f5e9;
+            font-weight: bold;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px solid #1b5e20;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+        }
+        
+        .tab.active {
+            background: #2e7d32;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .admin-form {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2e7d32;
+            font-size: 1.1em;
+        }
+        
+        input[type="text"], input[type="number"], input[type="password"], select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #c8e6c9;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus, select:focus {
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        
+        .btn-primary {
+            background: #2e7d32;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1b5e20;
+        }
+        
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #45a049;
+        }
+        
+        .btn-danger {
+            background: #d32f2f;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #b71c1c;
+        }
+        
+        .btn-secondary {
+            background: #757575;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #616161;
+        }
+        
+        .btn-secret {
+            background: transparent;
+            color: transparent;
+            border: none;
+            padding: 5px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            opacity: 0.01;
+        }
+        
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        
+        .grades-table th {
+            background: #2e7d32;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .grades-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .grades-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .grades-table tr:hover {
+            background: #e8f5e9;
+        }
+        
+        .grade-input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #c8e6c9;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .grade-input:focus {
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+        
+        .max-grade {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        
+        .min-grade {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        
+        .student-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .student-details {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .total-row {
+            background: #2e7d32 !important;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .total-row td {
+            border-bottom: none !important;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .status-pass {
+            background: #4caf50;
+        }
+        
+        .status-fail {
+            background: #d32f2f;
+        }
+
+        .branch-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: #ff9800;
+            color: white;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        .search-container {
+            position: relative;
+            margin-top: 10px;
+        }
+        
+        .search-input {
+            padding-right: 70px !important;
+        }
+        
+        .search-btn {
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 11px 18px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .search-btn:hover {
+            background: #b71c1c;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .results-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .student-info {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px solid #1b5e20;
+        }
+        
+        .student-info h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .student-details-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        .year-badge {
+            background: #1b5e20;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.1); }
+            100% { transform: translateY(-50%) scale(1); }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            display: none;
+        }
+
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .password-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .secret-area {
+            position: absolute;
+            top: 50px;
+            right: 20px;
+            width: 100px;
+            height: 50px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        /* إضافة أنماط نتيجة الاعتراض */
+        .protest-notification {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .protest-notification h4 {
+            color: #1976d2;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .protest-notification p {
+            color: #333;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر الرسمي -->
+    <div class="official-header">
+        <div class="header-content">
+            <!-- الزر السري المخفي -->
+            <button class="btn-secret" onclick="showPasswordModal()" title="الوصول للإدارة"></button>
+            
+            <div class="ministry-name">وزارة التربية والتعليم العالي</div>
+            <div class="exam-directorate">مديرية الامتحانات</div>
+            <div class="bac-title">نتائج امتحان البكالوريا</div>
+            <div class="branches">للسنة الدراسية 2025</div>
+            <div class="year-badge">وللفرعين العلمي والأدبي والمواد اللتي تم تقديم اعتراض عليها</div>
+        </div>
+    </div>
+
+    <!-- نافذة إدخال كلمة المرور -->
+    <div id="passwordModal" class="password-modal">
+        <div class="password-modal-content">
+            <h3 style="color: #2e7d32; margin-bottom: 20px;">🔐 الوصول إلى لوحة الإدارة</h3>
+            <div class="form-group">
+                <label for="adminPassword">كلمة المرور:</label>
+                <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور">
+            </div>
+            <button class="btn btn-success" onclick="checkPassword()" style="margin-right: 10px;">دخول</button>
+            <button class="btn btn-secondary" onclick="hidePasswordModal()">إلغاء</button>
+            <div style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                كلمة المرور الافتراضية: 0000
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>نظام إدارة نتائج البكالوريا</h1>
+            <div class="subtitle">للمعلمين والإدارة - حسب منهاج دمشق 2025</div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('student')">🎓 استعلام الطالب</div>
+            <div class="tab" id="teacherTab" onclick="switchTab('teacher')" style="display: none;">👨‍🏫 إدارة المعلم</div>
+        </div>
+
+        <!-- تبويب استعلام الطالب -->
+        <div id="student-tab" class="tab-content active">
+            <div class="form-title" style="text-align: center; color: #2e7d32; font-size: 1.8em; margin-bottom: 30px; font-weight: bold; padding-bottom: 15px; border-bottom: 2px solid #4caf50;">
+                نموذج الاستعلام عن النتائج
+            </div>
+            
+            <div class="official-form">
+                <div class="form-group">
+                    <label for="searchYear">السنة الدراسية:</label>
+                    <select id="searchYear">
+                        <option value="">-- اختر السنة الدراسية --</option>
+                        <option value="2025">2025 منهاج دمشق</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="searchBranch">الفرع:</label>
+                    <select id="searchBranch">
+                        <option value="">-- اختر الفرع --</option>
+                        <option value="علمي">علمي</option>
+                        <option value="أدبي">أدبي</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="searchEnrollment">رقم الاكتتاب:</label>
+                    <div class="search-container">
+                        <input type="text" id="searchEnrollment" class="search-input" placeholder="أدخل رقم الاكتتاب كما هو في استمارة الامتحان">
+                        <button class="search-btn pulse" onclick="searchStudent()" title="استعلام عن النتيجة">
+                            🔍
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="searchLoading" class="loading">
+                <div style="font-size: 24px; margin-bottom: 10px;">⏳</div>
+                <p>جاري البحث في قاعدة بيانات النتائج...</p>
+                <p style="font-size: 0.9em; color: #666; margin-top: 10px;">يرجى الانتظار</p>
+            </div>
+            
+            <div id="searchErrorMessage" class="error"></div>
+            
+            <div id="searchResultsSection" class="results-section">
+                <div class="student-info">
+                    <h3 id="searchStudentTitle">كشف نتائج الطالب</h3>
+                    <div id="searchStudentDetails" class="student-details-grid"></div>
+                </div>
+                
+                <div id="searchNormalResults">
+                    <table class="grades-table" id="searchGradesTable">
+                        <thead>
+                            <tr>
+                                <th>المادة</th>
+                                <th>الدرجة المحصلة</th>
+                                <th>الدرجة العظمى / الصغرى</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchGradesTableBody"></tbody>
+                    </table>
+                </div>
+                
+                <!-- زر نتيجة الاعتراض المضاف -->
+                <div id="protestResultSection" style="text-align: center; margin-top: 30px; display: none;">
+                    <button class="btn btn-primary" onclick="showProtestResult()" 
+                            style="padding: 15px 30px; font-size: 1.2em; background: #ff9800; border: 2px solid #f57c00;">
+                        📋 نتيجة الاعتراض
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- تبويب إدارة المعلم -->
+        <div id="teacher-tab" class="tab-content">
+            <div class="info-box">
+                <strong>💡 إدارة بيانات الطلاب:</strong> يمكنك إضافة طلاب جدد وإدخال درجاتهم حسب منهاج دمشق 2025.
+            </div>
+            
+            <div class="admin-form">
+                <h3>إضافة طالب جديد / تعديل بيانات</h3>
+                <div class="form-group">
+                    <label for="studentName">اسم الطالب الكامل:</label>
+                    <input type="text" id="studentName" placeholder="أدخل اسم الطالب الثلاثي">
+                </div>
+                
+                <div class="form-group">
+                    <label for="enrollmentNumber">رقم الاكتتاب:</label>
+                    <input type="text" id="enrollmentNumber" placeholder="أدخل رقم الاكتتاب">
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">السنة الدراسية:</label>
+                    <select id="year">
+                        <option value="2025">2025 منهاج دمشق</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="branch">الفرع:</label>
+                    <select id="branch" onchange="onBranchChange()">
+                        <option value="علمي">علمي</option>
+                        <option value="أدبي">أدبي</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-success" onclick="loadStudentForEditing()">تحميل بيانات الطالب</button>
+                <button class="btn btn-primary" onclick="createNewStudent()">إنشاء طالب جديد</button>
+            </div>
+            
+            <!-- جدول إدخال الدرجات -->
+            <div id="gradesEntrySection" class="hidden">
+                <div class="student-details">
+                    <h4>بيانات الطالب</h4>
+                    <div id="currentStudentInfo"></div>
+                </div>
+                
+                <h3>إدخال الدرجات 
+                    <span id="branchIndicator" class="branch-indicator"></span>
+                </h3>
+                
+                <!-- جدول المواد العلمية -->
+                <div id="scientificSubjectsTable">
+                    <table class="grades-table">
+                        <thead>
+                            <tr>
+                                <th>المادة</th>
+                                <th>الدرجة المحصلة</th>
+                                <th>الدرجة العظمى / الصغرى</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scientificGradesBody"></tbody>
+                    </table>
+                </div>
+                
+                <!-- جدول المواد الأدبية -->
+                <div id="literarySubjectsTable" class="hidden">
+                    <table class="grades-table">
+                        <thead>
+                            <tr>
+                                <th>المادة</th>
+                                <th>الدرجة المحصلة</th>
+                                <th>الدرجة العظمى / الصغرى</th>
+                                <th>الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="literaryGradesBody"></tbody>
+                    </table>
+                </div>
+                
+                <div class="actions">
+                    <button class="btn btn-success" onclick="saveAllGrades()">حفظ جميع الدرجات</button>
+                    <button class="btn btn-secondary" onclick="calculateResults()">حساب النتيجة النهائية</button>
+                </div>
+                
+                <div id="resultsSummary" class="hidden">
+                    <div class="student-details">
+                        <h4>النتيجة النهائية</h4>
+                        <div id="finalResults"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="student-list">
+                <h3>قائمة الطلاب المضافين</h3>
+                <div id="studentsList"></div>
+            </div>
+
+            <div class="admin-form">
+                <h3>الإعدادات والإجراءات</h3>
+                <div class="actions">
+                    <button class="btn btn-danger" onclick="clearAllData()">🗑️ مسح جميع البيانات</button>
+                    <button class="btn btn-secondary" onclick="exportData()">📥 تصدير البيانات</button>
+                    <button class="btn btn-secondary" onclick="importData()">📤 استيراد البيانات</button>
+                    <button class="btn btn-secondary" onclick="hideTeacherTab()">إخفاء لوحة الإدارة</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="adminMessage" class="alert hidden"></div>
+    </div>
+
+    <script>
+        // بيانات المواد حسب منهاج دمشق 2025
+        const scientificSubjects = [
+            { name: 'لغة فرنسية', max: 144, min: 72 },
+            { name: 'اللغة الإنكليزية', max: 107, min: 64 },
+            { name: 'الرياضيات', max: 200, min: 100 },
+            { name: 'الفيزياء', max: 180, min: 90 },
+            { name: 'الكيمياء', max: 160, min: 80 },
+            { name: 'العلوم الطبيعية', max: 170, min: 85 },
+            { name: 'اللغة العربية', max: 186, min: 93 },
+            { name: 'التربية الدينية', max: 140, min: 70 }
+        ];
+
+        const literarySubjects = [
+            { name: 'لغة فرنسية', max: 144, min: 72 },
+            { name: 'اللغة الإنكليزية', max: 107, min: 64 },
+            { name: 'التاريخ', max: 270, min: 135 },
+            { name: 'الجغرافيا', max: 170, min: 85 },
+            { name: 'الفلسفة', max: 230, min: 115 },
+            { name: 'اللغة العربية', max: 186, min: 93 },
+            { name: 'التربية الدينية', max: 140, min: 70 }
+        ];
+
+        // متغيرات النظام
+        let currentStudent = null;
+        const ADMIN_PASSWORD = '1992'; // كلمة المرور الافتراضية
+
+        // ========== دوال الأمان والوصول ========== //
+
+        // إظهار نافذة كلمة المرور
+        function showPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+        }
+
+        // إخفاء نافذة كلمة المرور
+        function hidePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        // التحقق من كلمة المرور
+        function checkPassword() {
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('teacherTab').style.display = 'block';
+                hidePasswordModal();
+                showAdminMessage('تم تفعيل لوحة الإدارة بنجاح', 'success');
+            } else {
+                showAdminMessage('كلمة المرور غير صحيحة', 'error');
+            }
+        }
+
+        // إخفاء تبويب المعلم
+        function hideTeacherTab() {
+            document.getElementById('teacherTab').style.display = 'none';
+            switchTab('student');
+            showAdminMessage('تم إخفاء لوحة الإدارة', 'success');
+        }
+
+        // ========== دوال استعلام الطالب ========== //
+
+        // البحث عن طالب
+        function searchStudent() {
+            const year = document.getElementById('searchYear').value;
+            const branch = document.getElementById('searchBranch').value;
+            const enrollmentNumber = document.getElementById('searchEnrollment').value.trim();
+            
+            // التحقق من الحقول المطلوبة
+            if (!year) {
+                showSearchError('يرجى اختيار السنة الدراسية');
+                return;
+            }
+            
+            if (!branch) {
+                showSearchError('يرجى اختيار الفرع');
+                return;
+            }
+            
+            if (!enrollmentNumber) {
+                showSearchError('يرجى إدخال رقم الاكتتاب');
+                return;
+            }
+            
+            showSearchLoading();
+            hideSearchError();
+            hideSearchResults();
+            
+            // البحث في البيانات المحفوظة
+            setTimeout(() => {
+                const studentData = getStudentData(enrollmentNumber);
+                
+                if (studentData && studentData.grades && studentData.grades.length > 0) {
+                    displaySearchStudentGrades(enrollmentNumber, studentData, year, branch);
+                } else {
+                    showSearchError('لم يتم العثور على نتائج لرقم الاكتتاب هذا');
+                }
+                
+                hideSearchLoading();
+            }, 1500);
+        }
+
+        // إظهار تحميل البحث
+        function showSearchLoading() {
+            document.getElementById('searchLoading').style.display = 'block';
+        }
+
+        // إخفاء تحميل البحث
+        function hideSearchLoading() {
+            document.getElementById('searchLoading').style.display = 'none';
+        }
+
+        // إظهار خطأ البحث
+        function showSearchError(message) {
+            const errorDiv = document.getElementById('searchErrorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        // إخفاء خطأ البحث
+        function hideSearchError() {
+            document.getElementById('searchErrorMessage').style.display = 'none';
+        }
+
+        // إخفاء نتائج البحث
+        function hideSearchResults() {
+            document.getElementById('searchResultsSection').style.display = 'none';
+            document.getElementById('protestResultSection').style.display = 'none';
+        }
+
+        // عرض نتائج الطالب
+        function displaySearchStudentGrades(enrollmentNumber, studentData, year, branch) {
+            const resultsSection = document.getElementById('searchResultsSection');
+            const studentTitle = document.getElementById('searchStudentTitle');
+            const studentDetails = document.getElementById('searchStudentDetails');
+            const tableBody = document.getElementById('searchGradesTableBody');
+            
+            // عرض بيانات الطالب
+            studentTitle.textContent = `كشف نتائج الطالب - ${studentData.name || 'غير معروف'}`;
+            studentDetails.innerHTML = `
+                <div><strong>رقم الاكتتاب:</strong> ${enrollmentNumber}</div>
+                <div><strong>الفرع:</strong> ${branch}</div>
+                <div><strong>السنة الدراسية:</strong> ${year}</div>
+            `;
+            
+            // عرض الدرجات
+            tableBody.innerHTML = '';
+            let totalObtained = 0;
+            let totalMax = 0;
+            
+            studentData.grades.forEach(subject => {
+                const status = subject.obtained >= subject.min ? 'ناجح' : 'راسب';
+                const statusClass = subject.obtained >= subject.min ? 'status-pass' : 'status-fail';
+                
+                totalObtained += subject.obtained;
+                totalMax += subject.max;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${subject.name}</td>
+                    <td><strong>${subject.obtained}</strong></td>
+                    <td>
+                        <span class="max-grade">${subject.max}</span> / 
+                        <span class="min-grade">${subject.min}</span>
+                    </td>
+                    <td><span class="status-badge ${statusClass}">${status}</span></td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // إضافة المجموع
+            const totalRow = document.createElement('tr');
+            totalRow.className = 'total-row';
+            totalRow.innerHTML = `
+                <td><strong>المجموع</strong></td>
+                <td><strong>${totalObtained}</strong></td>
+                <td><strong>${totalMax}</strong></td>
+                <td><span class="status-badge ${totalObtained >= totalMax * 0.5 ? 'status-pass' : 'status-fail'}">
+                    ${totalObtained >= totalMax * 0.5 ? 'ناجح' : 'راسب'}
+                </span></td>
+            `;
+            tableBody.appendChild(totalRow);
+            
+            // إظهار القسم وإظهار زر الاعتراض
+            resultsSection.style.display = 'block';
+            document.getElementById('protestResultSection').style.display = 'block';
+        }
+
+        // دالة عرض نتيجة الاعتراض
+        function showProtestResult() {
+            // إنشاء نافذة الإشعار
+            const notification = document.createElement('div');
+            notification.className = 'protest-notification';
+            notification.innerHTML = `
+                <h4>📊 نتيجة معالجة الاعتراض</h4>
+                <p><strong>تم معالجة طلبك الاعتراض</strong></p>
+                <p>لا يوجد تغلط في التصحيح</p>
+                <p>نتمنى لكم التوفيق والنجاح 💚</p>
+                <hr style="margin: 15px 0;">
+                <p style="color: #666; font-size: 0.9em;">شكراً لثقتكم بمديرية الامتحانات</p>
+            `;
+            
+            // إدراج الإشعار قبل زر الاعتراض
+            const protestSection = document.getElementById('protestResultSection');
+            protestSection.parentNode.insertBefore(notification, protestSection);
+            
+            // إخفاء الزر بعد الضغط عليه
+            protestSection.style.display = 'none';
+            
+            // إضافة رسالة في الكونسول للتتبع
+            console.log('تم عرض نتيجة الاعتراض للطالب');
+        }
+
+        // ========== دوال إدارة البيانات ========== //
+
+        // الحصول على بيانات الطالب
+        function getStudentData(enrollmentNumber) {
+            const studentInfo = JSON.parse(localStorage.getItem('studentInfo') || '{}');
+            const studentGrades = JSON.parse(localStorage.getItem('studentGrades') || '{}');
+            
+            if (studentInfo[enrollmentNumber] && studentGrades[enrollmentNumber]) {
+                return {
+                    name: studentInfo[enrollmentNumber].name,
+                    branch: studentInfo[enrollmentNumber].branch,
+                    year: studentInfo[enrollmentNumber].year,
+                    grades: studentGrades[enrollmentNumber]
+                };
+            }
+            return null;
+        }
+
+        // ========== دوال إدارة المعلم ========== //
+
+        // التبديل بين التبويبات
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+            
+            if (tabName === 'teacher') {
+                displayStudentsList();
+            }
+        }
+
+        // عرض رسالة الإدارة
+        function showAdminMessage(message, type) {
+            const messageDiv = document.getElementById('adminMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `alert alert-${type}`;
+            messageDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 3000);
+        }
+
+        // عرض قائمة الطلاب
+        function displayStudentsList() {
+            const studentsList = document.getElementById('studentsList');
+            const studentInfo = JSON.parse(localStorage.getItem('studentInfo') || '{}');
+            
+            if (Object.keys(studentInfo).length === 0) {
+                studentsList.innerHTML = '<p>لا توجد بيانات طلاب مسجلة بعد</p>';
+                return;
+            }
+            
+            let html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">';
+            
+            Object.keys(studentInfo).forEach(enrollmentNumber => {
+                const student = studentInfo[enrollmentNumber];
+                html += `
+                    <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                        <strong>${student.name}</strong><br>
+                        <small>رقم الاكتتاب: ${enrollmentNumber}</small><br>
+                        <small>الفرع: ${student.branch}</small><br>
+                        <small>السنة: ${student.year}</small>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            studentsList.innerHTML = html;
+        }
+
+        // ========== دوال التهيئة ========== //
+
+        // تهيئة البيانات
+        function initializeData() {
+            if (!localStorage.getItem('studentGrades')) {
+                localStorage.setItem('studentGrades', JSON.stringify({}));
+            }
+            if (!localStorage.getItem('studentInfo')) {
+                localStorage.setItem('studentInfo', JSON.stringify({}));
+            }
+            if (!localStorage.getItem('protestResults')) {
+                localStorage.setItem('protestResults', JSON.stringify({}));
+            }
+        }
+
+        // تحديث مؤشر الفرع
+        function updateBranchIndicator() {
+            const branch = document.getElementById('branch').value;
+            document.getElementById('branchIndicator').textContent = branch;
+        }
+
+        // تغيير الفرع
+        function onBranchChange() {
+            updateBranchIndicator();
+            // يمكن إضافة المزيد من الوظائف هنا عند تغيير الفرع
+        }
+
+        // التهيئة عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            initializeData();
+            displayStudentsList();
+            updateBranchIndicator();
+            
+            // تعيين القيم الافتراضية
+            document.getElementById('searchYear').value = '2025';
+            document.getElementById('year').value = '2025';
+            
+            // إخفاء تبويب المعلم افتراضياً
+            document.getElementById('teacherTab').style.display = 'none';
+        });
+
+        // === دوال إضافية للوحة الإدارة (للاكتمال) ===
+        function loadStudentForEditing() {
+            showAdminMessage('سيتم تنفيذ هذه الوظيفة قريباً', 'success');
+        }
+
+        function createNewStudent() {
+            showAdminMessage('سيتم تنفيذ هذه الوظيفة قريباً', 'success');
+        }
+
+        function saveAllGrades() {
+            showAdminMessage('سيتم تنفيذ هذه الوظيفة قريباً', 'success');
+        }
+
+        function calculateResults() {
+            showAdminMessage('سيتم تنفيذ هذه الوظيفة قريباً', 'success');
+        }
+
+        function clearAllData() {
+            if (confirm('هل أنت متأكد من مسح جميع البيانات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                localStorage.clear();
+                initializeData();
+                displayStudentsList();
+                showAdminMessage('تم مسح جميع البيانات بنجاح', 'success');
+            }
+        }
+
+        function exportData() {
+            showAdminMessage('سيتم تنفيذ هذه الوظيفة قريباً', 'success');
+        }
+
+        function importData() {
+            showAdminMessage('سيتم تنفيذ هذه الوظيفة قريباً', 'success');
+        }
+    </script>
+</body>
+</html>
