@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>مدرسة بدر الدين الغزال</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      direction: rtl; 
+      background: linear-gradient(135deg, #121212 0%, #1a1a2e 100%); 
+      color: #fff; 
+      text-align: center; 
+      padding: 20px; 
+      margin: 0;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 120px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      margin-bottom: 30px;
+    }
+    
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      margin: 20px auto;
+      flex-wrap: wrap;
+      padding: 15px;
+      background: rgba(30, 30, 30, 0.7);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .logo {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255, 152, 0, 0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 152, 0, 0.8);
+    }
+    
+    h1 { 
+      color: #ff9800; 
+      margin-bottom: 10px; 
+      font-size: 2.5rem;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    
+    .subtitle { 
+      color: #ccc; 
+      margin-bottom: 40px; 
+      font-size: 1.2rem;
+    }
+    
+    .buttons-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin: 30px 0;
+    }
+    
+    .btn { 
+      display: block; 
+      margin: 0; 
+      padding: 16px 28px; 
+      background: linear-gradient(to right, #ff9800, #f57c00); 
+      color: #212121; 
+      font-weight: bold; 
+      text-decoration: none; 
+      border-radius: 10px; 
+      width: 90%; 
+      max-width: 350px; 
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(to right, #ffa726, #f57c00);
+    }
+    
+    input, button { 
+      padding: 12px; 
+      margin: 8px; 
+      font-size: 16px; 
+      border-radius: 8px; 
+      border: none; 
+      background: #333; 
+      color: #fff; 
+      width: 90%;
+      max-width: 300px;
+      box-sizing: border-box;
+    }
+    
+    input:focus {
+      outline: 2px solid #ff9800;
+    }
+    
+    button { 
+      background: linear-gradient(to right, #ff9800, #f57c00); 
+      color: #212121; 
+      font-weight: bold; 
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 20px; 
+      background: #222; 
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    th, td { 
+      border: 1px solid #444; 
+      padding: 12px; 
+      color: #fff; 
+    }
+    
+    th {
+      background: #333;
+      color: #ff9800;
+    }
+    
+    tr:nth-child(even) {
+      background: #2a2a2a;
+    }
+    
+    .section { 
+      display: none; 
+      margin-top: 30px; 
+      padding: 25px; 
+      border: 1px solid #444; 
+      border-radius: 15px; 
+      background: rgba(30, 30, 30, 0.8); 
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    h2 {
+      color: #ff9800;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ff9800;
+      padding-bottom: 10px;
+    }
+    
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .footer {
+      margin-top: 40px;
+      color: #777;
+      font-size: 0.9rem;
+      padding: 15px;
+      border-top: 1px solid #333;
+    }
+    
+    /* تصميم معلومات المبرمج */
+    .developer-info {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, #0a3d0a 0%, #1a5c1a 50%, #0a3d0a 100%);
+      color: #FFD700;
+      padding: 15px 0;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-top: 3px solid #FFD700;
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      animation: glow 2s infinite alternate;
+    }
+    
+    .developer-info p {
+      margin: 5px 0;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+    }
+    
+    .developer-name {
+      font-size: 1.4rem;
+      color: #FFD700;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+    }
+    
+    .developer-phone {
+      direction: ltr;
+      display: inline-block;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 5px 15px;
+      border-radius: 20px;
+      margin-top: 5px;
+      border: 1px solid #FFD700;
+    }
+    
+    @keyframes glow {
+      from {
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+      }
+      to {
+        box-shadow: 0 -5px 20px rgba(255, 215, 0, 0.3);
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .logo-container {
+        gap: 20px;
+      }
+      
+      .logo {
+        width: 140px;
+        height: 140px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .btn {
+        padding: 14px 20px;
+        font-size: 1rem;
+      }
+      
+      .developer-info {
+        font-size: 1rem;
+        padding: 12px 0;
+      }
+      
+      .developer-name {
+        font-size: 1.2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .logo {
+        width: 120px;
+        height: 120px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .developer-info {
+        font-size: 0.9rem;
+        padding: 10px 0;
+      }
+      
+      .developer-name {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo-container">
+        <!-- الصورة الأولى -->
+        <img src="https://i.ibb.co/KpdJjYwq/logo.jpg" alt="شعار المدرسة الأساسي" class="logo">
+        
+        <!-- الصورة الثانية -->
+        <img src="https://i.ibb.co/r21PcRk9/logo2.jpg" alt="شعار المدرسة الإضافي" class="logo">
+      </div>
+      
+      <h1>مدرسة بدر الدين الغزال</h1>
+      <p class="subtitle">نظام المعلومات وإدارة المدرسة</p>
+    </div>
+
+    <div class="buttons-container">
+      <button class="btn" onclick="showSection('parent')">👨‍👩‍👧‍👦 دخول ولي الأمر</button>
+      <button class="btn" onclick="askPassword('teacher')">👨‍🏫 دخول معلم</button>
+      <button class="btn" onclick="askPassword('admin')">🧑‍💼 دخول مدير</button>
+    </div>
+
+    <!-- ولي الأمر -->
+    <div id="parent" class="section">
+      <h2>استعلام ولي الأمر</h2>
+      <div class="input-group">
+        <input id="searchName" placeholder="اسم الطالب">
+        <input id="searchClass" placeholder="الصف">
+      </div>
+      <button onclick="searchStudent()">🔍 بحث</button>
+      <div id="result"></div>
+    </div>
+
+    <!-- المعلم -->
+    <div id="teacher" class="section">
+      <h2>إدخال بيانات الطالب</h2>
+      <div class="input-group">
+        <input id="name" placeholder="اسم الطالب">
+        <input id="class" placeholder="الصف">
+        <input id="group" placeholder="الشعبة">
+        <input id="subject" placeholder="المادة">
+        <input id="absence" placeholder="غياب">
+        <input id="delay" placeholder="تأخر">
+        <input id="homework" placeholder="وظائف">
+        <input id="quiz" placeholder="مذاكرة">
+        <input id="exam" placeholder="امتحان">
+        <input id="date" placeholder="تاريخ">
+      </div>
+      <button onclick="saveData()">💾 حفظ البيانات</button>
+    </div>
+
+    <!-- المدير -->
+    <div id="admin" class="section">
+      <h2>لوحة المدير</h2>
+      <button onclick="loadData()">🔄 تحديث البيانات</button>
+      <div id="adminData"></div>
+    </div>
+    
+    <div class="footer">
+      <p>جميع الحقوق محفوظة © مدرسة بدر الدين الغزال 2023</p>
+    </div>
+  </div>
+
+  <!-- معلومات المبرمج -->
+  <div class="developer-info">
+    <p>تم التصميم والبرمجة بواسطة</p>
+    <p class="developer-name">محد الحسين</p>
+    <p class="developer-phone">0952725590</p>
+  </div>
+
+  <script>
+    const apiURL = "https://sheetdb.io/api/v1/6534bwnl5o7sl";
+    const passwords = { teacher: "1990", admin: "1992" };
+
+    function askPassword(role) {
+      const input = prompt("أدخل كلمة المرور:");
+      if (input === passwords[role]) {
+        showSection(role);
+        if (role === "admin") loadData();
+      } else {
+        alert("❌ كلمة المرور غير صحيحة");
+      }
+    }
+
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach(s => s.style.display = "none");
+      document.getElementById(id).style.display = "block";
+      window.scrollTo({ top: document.getElementById(id).offsetTop - 50, behavior: 'smooth' });
+    }
+
+    function saveData() {
+      const student = {
+        name: val("name"), 
+        class: val("class"), 
+        group: val("group"),
+        subject: val("subject"), 
+        absence: val("absence"), 
+        delay: val("delay"),
+        homework: val("homework"), 
+        quiz: val("quiz"), 
+        exam: val("exam"), 
+        date: val("date")
+      };
+      
+      // التحقق من الحقول المطلوبة
+      if (!student.name || !student.class || !student.subject) {
+        alert("⚠️ يرجى ملء الحقول المطلوبة (الاسم، الصف، المادة)");
+        return;
+      }
+      
+      fetch(apiURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: student })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("✅ تم حفظ البيانات بنجاح");
+          // مسح الحقول بعد الحفظ
+          document.querySelectorAll('#teacher input').forEach(input => input.value = '');
+        } else {
+          alert("❌ حدث خطأ أثناء حفظ البيانات");
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert("❌ حدث خطأ في الاتصال بالخادم");
+      });
+    }
+
+    function searchStudent() {
+      const name = val("searchName");
+      const className = val("searchClass");
+      
+      if (!name && !className) {
+        alert("⚠️ يرجى إدخال اسم الطالب أو الصف للبحث");
+        return;
+      }
+      
+      fetch(apiURL).then(res => res.json()).then(data => {
+        const filtered = data.filter(s => 
+          (!name || s.name === name) && 
+          (!className || s.class === className)
+        );
+        const resultDiv = document.getElementById("result");
+        if (filtered.length === 0) {
+          resultDiv.innerHTML = "<p style='color: #ff9800; padding: 20px;'>❌ لا توجد بيانات تطابق معايير البحث</p>";
+          return;
+        }
+        let html = `<table><tr><th>المادة</th><th>غياب</th><th>تأخر</th><th>وظائف</th><th>مذاكرة</th><th>امتحان</th><th>تاريخ</th></tr>`;
+        filtered.forEach(s => {
+          html += `<tr>
+            <td>${s.subject || '-'}</td>
+            <td>${s.absence || '-'}</td>
+            <td>${s.delay || '-'}</td>
+            <td>${s.homework || '-'}</td>
+            <td>${s.quiz || '-'}</td>
+            <td>${s.exam || '-'}</td>
+            <td>${s.date || '-'}</td>
+          </tr>`;
+        });
+        html += `</table>`;
+        resultDiv.innerHTML = html;
+      }).catch(error => {
+        console.error('Error:', error);
+        document.getElementById("result").innerHTML = "<p style='color: #ff9800;'>❌ حدث خطأ في جلب البيانات</p>";
+      });
+    }
+
+    function loadData() {
+      fetch(apiURL).then(res => res.json()).then(data => {
+        if (data.length === 0) {
+          document.getElementById("adminData").innerHTML = "<p style='color: #ff9800; padding: 20px;'>لا توجد بيانات في النظام</p>";
+          return;
+        }
+        
+        let html = `<table><tr><th>الاسم</th><th>الصف</th><th>الشعبة</th><th>المادة</th><th>غياب</th><th>تأخر</th><th>وظائف</th><th>مذاكرة</th><th>امتحان</th><th>تاريخ</th><th>حذف</th></tr>`;
+        data.forEach(s => {
+          html += `<tr>
+            <td>${s.name || '-'}</td>
+            <td>${s.class || '-'}</td>
+            <td>${s.group || '-'}</td>
+            <td>${s.subject || '-'}</td>
+            <td>${s.absence || '-'}</td>
+            <td>${s.delay || '-'}</td>
+            <td>${s.homework || '-'}</td>
+            <td>${s.quiz || '-'}</td>
+            <td>${s.exam || '-'}</td>
+            <td>${s.date || '-'}</td>
+            <td><button onclick="deleteRow('${s.id}')" style="padding: 5px 10px; font-size: 14px;">🗑️</button></td>
+          </tr>`;
+        });
+        html += `</table>`;
+        document.getElementById("adminData").innerHTML = html;
+      }).catch(error => {
+        console.error('Error:', error);
+        document.getElementById("adminData").innerHTML = "<p style='color: #ff9800;'>❌ حدث خطأ في جلب البيانات</p>";
+      });
+    }
+
+    function deleteRow(id) {
+      if (confirm("هل أنت متأكد من حذف هذا السجل؟")) {
+        fetch(`${apiURL}/id/${id}`, { method: "DELETE" })
+          .then(() => {
+            alert("✅ تم حذف السجل بنجاح");
+            loadData();
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert("❌ حدث خطأ أثناء حذف السجل");
+          });
+      }
+    }
+
+    function val(id) {
+      return document.getElementById(id).value.trim();
+    }
+  </script>
+</body>
+</html>
