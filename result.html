@@ -1,89 +1,2934 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>النتيجة الرسمية</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة المطعم - الطلبات والمخزون والحسابات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary: #1976D2;
+            --danger: #D32F2F;
+            --warning: #F57C00;
+            --success: #388E3C;
+            --info: #0288D1;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* الشريط العلوي */
+        .top-bar {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo-icon {
+            font-size: 28px;
+        }
+        
+        .date-time {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* التنقل الرئيسي */
+        .main-nav {
+            background-color: white;
+            border-bottom: 1px solid var(--light-gray);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            padding: 0 20px;
+        }
+        
+        .nav-tab {
+            padding: 18px 25px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-tab:hover {
+            color: var(--primary);
+            background-color: rgba(46, 125, 50, 0.05);
+        }
+        
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background-color: rgba(46, 125, 50, 0.1);
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
+            padding: 25px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* بطاقة الإحصائيات */
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .icon-income { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
+        .icon-expense { background: linear-gradient(135deg, #F44336, #D32F2F); }
+        .icon-profit { background: linear-gradient(135deg, #FF9800, #F57C00); }
+        .icon-tables { background: linear-gradient(135deg, #2196F3, #1976D2); }
+        .icon-inventory { background: linear-gradient(135deg, #9C27B0, #7B1FA2); }
+        .icon-menu { background: linear-gradient(135deg, #00BCD4, #0097A7); }
+        
+        .stat-info h3 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-change {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .change-positive { color: var(--success); }
+        .change-negative { color: var(--danger); }
+        
+        /* تخطيط الصفحة */
+        .page-title {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .page-title i {
+            color: var(--primary);
+        }
+        
+        /* قسم الطاولات */
+        .tables-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .table-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .table-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .table-header {
+            padding: 20px;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-empty { background-color: rgba(255, 255, 255, 0.2); }
+        .status-occupied { background-color: rgba(255, 193, 7, 0.9); color: #333; }
+        .status-reserved { background-color: rgba(33, 150, 243, 0.9); }
+        
+        .table-body {
+            padding: 20px;
+        }
+        
+        .table-info {
+            margin-bottom: 20px;
+        }
+        
+        .table-info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: var(--light-gray);
+            color: var(--dark);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d1d9e0;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #2c6b2f;
+        }
+        
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 13px;
+        }
+        
+        /* نافذة الطلب */
+        .order-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .order-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-header {
+            padding: 25px;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .modal-body {
+            padding: 25px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .order-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .order-items {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .order-items h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .item-quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .quantity {
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .item-total {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .remove-item {
+            color: var(--danger);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        
+        .order-total {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid var(--light-gray);
+        }
+        
+        .order-total h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .grand-total {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 2px solid var(--primary);
+        }
+        
+        .menu-categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            background-color: var(--light-gray);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .category-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .menu-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .menu-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .menu-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .menu-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .menu-item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .menu-item-price {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .modal-footer {
+            padding: 20px 25px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* قسم الحسابات */
+        .financial-summary {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .transactions-table {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .transactions-table h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .transaction-income {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .transaction-expense {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        .income-expense-chart {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .income-expense-chart h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+        
+        /* قسم المخزون */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .inventory-item {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .inventory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .inventory-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .inventory-quantity {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .inventory-progress {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 5px;
+        }
+        
+        .inventory-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        /* قسم القائمة */
+        .menu-category {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .category-title {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .category-items {
+            padding: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .menu-item-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .menu-item-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .item-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .item-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        /* زر الإضافة العائم */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .fab:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.6);
+        }
+        
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 1200px) {
+            .financial-summary {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs {
+                padding: 0 10px;
+            }
+            
+            .nav-tab {
+                padding: 15px 20px;
+                font-size: 15px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .stats-cards {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
+            
+            .modal-body {
+                padding: 15px;
+            }
+            
+            .menu-items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .tables-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-actions {
+                flex-direction: column;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .modal-footer .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="result-card">
-    <img src="logo-green.png" alt="شعار وزارة التربية" class="logo">
-    <h1>وزارة التربية السورية</h1>
-    <h2>نتيجة امتحان الشهادة الثانوية العامة</h2>
-
-    <div class="student-info">
-      <p><strong>الاسم:</strong> <span id="studentName"></span></p>
-      <p><strong>رقم الاكتتاب:</strong> <span id="studentNumber"></span></p>
-      <p><strong>الفرع:</strong> <span id="studentBranch"></span></p>
+    <!-- الشريط العلوي -->
+    <div class="top-bar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <h1>نظام إدارة المطعم المتكامل</h1>
+        </div>
+        <div class="date-time" id="currentDateTime"></div>
+        <div class="user-info">
+            <div>
+                <span id="currentUser">مدير النظام</span>
+                <div style="font-size: 14px; opacity: 0.9;">صلاحية كاملة</div>
+            </div>
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
     </div>
-
-    <table id="marksTable">
-      <tr>
-        <th>المادة</th>
-        <th>الدرجة</th>
-        <th>العظمى</th>
-        <th>الدنيا</th>
-        <th>الحالة</th>
-      </tr>
-    </table>
-
-    <div class="final-status">
-      <p><strong>المجموع:</strong> <span id="totalScore"></span></p>
-      <p><strong>الحالة النهائية:</strong> <span id="finalStatus"></span></p>
+    
+    <!-- التنقل الرئيسي -->
+    <nav class="main-nav">
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>لوحة التحكم</span>
+            </button>
+            <button class="nav-tab" data-tab="tables">
+                <i class="fas fa-chair"></i>
+                <span>إدارة الطاولات</span>
+            </button>
+            <button class="nav-tab" data-tab="orders">
+                <i class="fas fa-shopping-cart"></i>
+                <span>الطلبات النشطة</span>
+            </button>
+            <button class="nav-tab" data-tab="inventory">
+                <i class="fas fa-boxes"></i>
+                <span>المخزون</span>
+            </button>
+            <button class="nav-tab" data-tab="menu">
+                <i class="fas fa-utensils"></i>
+                <span>قائمة الطعام</span>
+            </button>
+            <button class="nav-tab" data-tab="accounts">
+                <i class="fas fa-chart-line"></i>
+                <span>الحسابات والأرباح</span>
+            </button>
+            <button class="nav-tab" data-tab="reports">
+                <i class="fas fa-file-alt"></i>
+                <span>التقارير</span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content">
+        <!-- لوحة التحكم -->
+        <section id="dashboard-section" class="content-section active">
+            <div class="page-title">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>لوحة التحكم الرئيسية</span>
+            </div>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon icon-income">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>إجمالي الإيرادات</h3>
+                        <div class="stat-value" id="totalIncome">0 ل. س</div>
+                        <div class="stat-change change-positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12% عن الشهر الماضي</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon icon-expense">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>إجمالي المصروفات</h3>
+                        <div class="stat-value" id="totalExpenses">0 ل. س</div>
+                        <div class="stat-change change-negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>8% عن الشهر الماضي</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon icon-profit">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>صافي الأرباح</h3>
+                        <div class="stat-value" id="netProfit">0 ل. س</div>
+                        <div class="stat-change change-positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>15% عن الشهر الماضي</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon icon-tables">
+                        <i class="fas fa-chair"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>الطاولات المشغولة</h3>
+                        <div class="stat-value" id="occupiedTables">0/12</div>
+                        <div class="stat-change change-positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>3 طاولات جديدة</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon icon-inventory">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>منتجات تحت الحد الأدنى</h3>
+                        <div class="stat-value" id="lowStock">0 منتج</div>
+                        <div class="stat-change change-negative">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>تحتاج إعادة تزويد</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon icon-menu">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>الطلبات اليوم</h3>
+                        <div class="stat-value" id="todayOrders">0 طلب</div>
+                        <div class="stat-change change-positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>5 طلبات جديدة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="financial-summary">
+                <div class="transactions-table">
+                    <h3>آخر المعاملات المالية</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>الوصف</th>
+                                <th>النوع</th>
+                                <th>المبلغ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentTransactions">
+                            <!-- سيتم ملؤها بالبيانات -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="income-expense-chart">
+                    <h3>الإيرادات vs المصروفات</h3>
+                    <div class="chart-container">
+                        <canvas id="financeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- إدارة الطاولات -->
+        <section id="tables-section" class="content-section">
+            <div class="page-title">
+                <i class="fas fa-chair"></i>
+                <span>إدارة الطاولات</span>
+                <button class="btn btn-primary" id="addTableBtn" style="margin-right: auto;">
+                    <i class="fas fa-plus"></i>
+                    <span>إضافة طاولة</span>
+                </button>
+            </div>
+            
+            <div class="tables-container" id="tablesList">
+                <!-- سيتم ملؤها بالبيانات -->
+            </div>
+        </section>
+        
+        <!-- الطلبات النشطة -->
+        <section id="orders-section" class="content-section">
+            <div class="page-title">
+                <i class="fas fa-shopping-cart"></i>
+                <span>الطلبات النشطة</span>
+            </div>
+            
+            <div class="tables-container" id="activeOrders">
+                <!-- سيتم ملؤها بالبيانات -->
+            </div>
+        </section>
+        
+        <!-- المخزون -->
+        <section id="inventory-section" class="content-section">
+            <div class="page-title">
+                <i class="fas fa-boxes"></i>
+                <span>إدارة المخزون</span>
+                <button class="btn btn-primary" id="addInventoryBtn" style="margin-right: auto;">
+                    <i class="fas fa-plus"></i>
+                    <span>إضافة منتج</span>
+                </button>
+            </div>
+            
+            <div class="inventory-grid" id="inventoryItems">
+                <!-- سيتم ملؤها بالبيانات -->
+            </div>
+        </section>
+        
+        <!-- قائمة الطعام -->
+        <section id="menu-section" class="content-section">
+            <div class="page-title">
+                <i class="fas fa-utensils"></i>
+                <span>قائمة الطعام</span>
+                <button class="btn btn-primary" id="addMenuItemBtn" style="margin-right: auto;">
+                    <i class="fas fa-plus"></i>
+                    <span>إضافة صنف</span>
+                </button>
+            </div>
+            
+            <div id="menuCategories">
+                <!-- سيتم ملؤها بالبيانات -->
+            </div>
+        </section>
+        
+        <!-- الحسابات والأرباح -->
+        <section id="accounts-section" class="content-section">
+            <div class="page-title">
+                <i class="fas fa-chart-line"></i>
+                <span>الحسابات والأرباح</span>
+                <button class="btn btn-primary" id="addTransactionBtn" style="margin-right: auto;">
+                    <i class="fas fa-plus"></i>
+                    <span>إضافة معاملة</span>
+                </button>
+            </div>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon icon-income">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>إجمالي الإيرادات</h3>
+                        <div class="stat-value" id="accountsIncome">0 ل. س</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon icon-expense">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>إجمالي المصروفات</h3>
+                        <div class="stat-value" id="accountsExpenses">0 ل. س</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon icon-profit">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>صافي الأرباح</h3>
+                        <div class="stat-value" id="accountsProfit">0 ل. س</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="financial-summary">
+                <div class="transactions-table">
+                    <h3>سجل المعاملات المالية</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>الوصف</th>
+                                <th>النوع</th>
+                                <th>المبلغ</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allTransactions">
+                            <!-- سيتم ملؤها بالبيانات -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="income-expense-chart">
+                    <h3>توزيع المصروفات</h3>
+                    <div class="chart-container">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- التقارير -->
+        <section id="reports-section" class="content-section">
+            <div class="page-title">
+                <i class="fas fa-file-alt"></i>
+                <span>التقارير والإحصائيات</span>
+                <button class="btn btn-primary" id="generateReportBtn" style="margin-right: auto;">
+                    <i class="fas fa-download"></i>
+                    <span>تصدير تقرير</span>
+                </button>
+            </div>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>تقارير اليوم</h3>
+                        <div class="stat-value">تقرير المبيعات</div>
+                        <div class="stat-change">
+                            <button class="btn btn-sm btn-primary">عرض</button>
+                            <button class="btn btn-sm btn-secondary">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>تقارير الأسبوع</h3>
+                        <div class="stat-value">تقرير المخزون</div>
+                        <div class="stat-change">
+                            <button class="btn btn-sm btn-primary">عرض</button>
+                            <button class="btn btn-sm btn-secondary">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>تقارير الشهر</h3>
+                        <div class="stat-value">تقرير الأرباح</div>
+                        <div class="stat-change">
+                            <button class="btn btn-sm btn-primary">عرض</button>
+                            <button class="btn btn-sm btn-secondary">تحميل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- نافذة الطلب -->
+    <div class="order-modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-shopping-cart"></i> طلب جديد - الطاولة <span id="modalTableNumber"></span></h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-summary">
+                    <div class="order-items">
+                        <h3>الطلبات المضافة</h3>
+                        <div id="orderItemsList">
+                            <!-- سيتم ملؤها بالبيانات -->
+                        </div>
+                        <div class="order-total" id="orderTotalSection" style="display: none;">
+                            <div class="total-line">
+                                <span>المجموع الفرعي:</span>
+                                <span id="subtotal">0 ل. س</span>
+                            </div>
+                            <div class="total-line">
+                                <span>الضريبة (15%):</span>
+                                <span id="taxAmount">0 ل. س</span>
+                            </div>
+                            <div class="total-line grand-total">
+                                <span>الإجمالي:</span>
+                                <span id="grandTotal">0 ل. س</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 style="margin-bottom: 20px; color: var(--primary);">قائمة الطعام</h3>
+                        <div class="menu-categories" id="modalCategories">
+                            <!-- سيتم ملؤها بالبيانات -->
+                        </div>
+                        <div class="menu-items-grid" id="modalMenuItems">
+                            <!-- سيتم ملؤها بالبيانات -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelOrder">
+                    <i class="fas fa-times"></i>
+                    <span>إلغاء الطلب</span>
+                </button>
+                <div>
+                    <button class="btn btn-primary" id="saveOrder">
+                        <i class="fas fa-save"></i>
+                        <span>حفظ الطلب</span>
+                    </button>
+                    <button class="btn btn-success" id="completeOrder">
+                        <i class="fas fa-check"></i>
+                        <span>إكمال الدفع</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <script>
-    const data = JSON.parse(localStorage.getItem('studentData'));
-    const subjects = {
-      scientific: {
-        "الرياضيات": 120,
-        "الفيزياء": 100,
-        "الكيمياء": 100,
-        "العلوم": 80,
-        "اللغة العربية": 100,
-        "اللغة الإنجليزية": 100
-      },
-      literary: {
-        "الفلسفة": 100,
-        "التاريخ": 100,
-        "الجغرافيا": 100,
-        "اللغة العربية": 100,
-        "اللغة الفرنسية": 100,
-        "اللغة الإنجليزية": 100
-      }
-    };
-
-    const minPass = 40;
-    const branch = data.branch;
-    const marks = data.marks;
-    const maxMarks = subjects[branch];
-    let total = 0;
-    let passed = true;
-
-    document.getElementById('studentName').textContent = data.name;
-    document.getElementById('studentNumber').textContent = data.number;
-    document.getElementById('studentBranch').textContent = branch === 'scientific' ? 'علمي' : 'أدبي';
-
-    const table = document.getElementById('marksTable');
-
-    for (let subject in maxMarks) {
-      const score = marks[subject] || 0;
-      const max = maxMarks[subject];
-      const status = score >= minPass ? "✅" : "❌";
-      if (score < minPass) passed = false;
-      total += score;
-
-      const row = `<tr>
-        <td>${subject}</td>
-        <td>${score}</td>
-        <td>${max}</td>
-        <td>${minPass}</td>
-        <td>${status}</td>
-      </tr>`;
-      table.innerHTML += row;
-    }
-
-    document.getElementById('totalScore').textContent = total;
-    document.get
+    
+    <!-- زر الإضافة العائم -->
+    <button class="fab" id="quickAddBtn" title="إضافة سريعة">
+        <i class="fas fa-plus"></i>
+    </button>
+    
+    <!-- مكتبة Chart.js للرسوم البيانية -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // البيانات الأساسية للتطبيق
+        let restaurantData = {
+            // بيانات الطاولات
+            tables: [
+                { id: 1, number: "ط1", capacity: 4, status: "empty", currentOrder: null },
+                { id: 2, number: "ط2", capacity: 2, status: "occupied", currentOrder: 101 },
+                { id: 3, number: "ط3", capacity: 6, status: "reserved", currentOrder: null },
+                { id: 4, number: "ط4", capacity: 4, status: "empty", currentOrder: null },
+                { id: 5, number: "ط5", capacity: 8, status: "occupied", currentOrder: 102 },
+                { id: 6, number: "ط6", capacity: 4, status: "empty", currentOrder: null },
+                { id: 7, number: "ط7", capacity: 2, status: "occupied", currentOrder: 103 },
+                { id: 8, number: "ط8", capacity: 4, status: "empty", currentOrder: null }
+            ],
+            
+            // بيانات القائمة (مستمدة من ملف Excel)
+            menu: {
+                drinks: [
+                    { id: 1, name: "شاي", price: 20, category: "drinks", image: "☕" },
+                    { id: 2, name: "قهوة", price: 20, category: "drinks", image: "☕" },
+                    { id: 3, name: "نسكافيه 3 ب 1", price: 20, category: "drinks", image: "☕" },
+                    { id: 4, name: "زهورات", price: 20, category: "drinks", image: "☕" },
+                    { id: 5, name: "مياه بقين", price: 10, category: "drinks", image: "💧" },
+                    { id: 6, name: "عصير عادي", price: 25, category: "drinks", image: "🥤" },
+                    { id: 7, name: "عصير طبيعي", price: 40, category: "drinks", image: "🍹" },
+                    { id: 8, name: "بيبسي", price: 25, category: "drinks", image: "🥤" },
+                    { id: 9, name: "سقن اب", price: 25, category: "drinks", image: "🥤" },
+                    { id: 10, name: "بيرا", price: 35, category: "drinks", image: "🍺" },
+                    { id: 11, name: "بيرا مكسيكي", price: 40, category: "drinks", image: "🍺" },
+                    { id: 12, name: "عرق 2/1", price: 45, category: "drinks", image: "🥃" },
+                    { id: 13, name: "مشروب طاقة", price: 30, category: "drinks", image: "⚡" }
+                ],
+                services: [
+                    { id: 14, name: "موالح", price: 15, category: "services", image: "🍊" },
+                    { id: 15, name: "اركيلة", price: 30, category: "services", image: "💨" },
+                    { id: 16, name: "تبديل راس", price: 15, category: "services", image: "🔄" },
+                    { id: 17, name: "برنامج فني", price: 50, category: "services", image: "🎤" },
+                    { id: 18, name: "خدمة مشروب", price: 20, category: "services", image: "🍸" },
+                    { id: 19, name: "جااك", price: 25, category: "services", image: "🥃" },
+                    { id: 20, name: "كاسة عرق", price: 20, category: "services", image: "🥃" },
+                    { id: 21, name: "كاسة فوتكا", price: 35, category: "services", image: "🥃" },
+                    { id: 22, name: "هوت شوكلت", price: 30, category: "services", image: "☕" }
+                ],
+                appetizers: [
+                    { id: 23, name: "مسبحة", price: 25, category: "appetizers", image: "🥘" },
+                    { id: 24, name: "متبل", price: 25, category: "appetizers", image: "🥗" },
+                    { id: 25, name: "محمرة", price: 25, category: "appetizers", image: "🍲" },
+                    { id: 26, name: "لبنة", price: 25, category: "appetizers", image: "🧀" },
+                    { id: 27, name: "بطاطا", price: 25, category: "appetizers", image: "🍟" },
+                    { id: 28, name: "جاط خضرة", price: 25, category: "appetizers", image: "🥗" },
+                    { id: 29, name: "زيتون", price: 25, category: "appetizers", image: "🫒" },
+                    { id: 30, name: "جرجير", price: 35, category: "appetizers", image: "🥗" },
+                    { id: 31, name: "فتوش", price: 35, category: "appetizers", image: "🥗" },
+                    { id: 32, name: "ارمنية", price: 35, category: "appetizers", image: "🥘" },
+                    { id: 33, name: "لوزية بائنجان", price: 35, category: "appetizers", image: "🍆" }
+                ],
+                meals: [
+                    { id: 34, name: "جوانح بانيه", price: 40, category: "meals", image: "🍗" },
+                    { id: 35, name: "سمك", price: 60, category: "meals", image: "🐟" },
+                    { id: 36, name: "كريسبي", price: 35, category: "meals", image: "🍗" },
+                    { id: 37, name: "نقانق", price: 30, category: "meals", image: "🌭" },
+                    { id: 38, name: "سوده", price: 0, category: "meals", image: "🍖" }
+                ]
+            },
+            
+            // بيانات المخزون
+            inventory: [
+                { id: 1, name: "قهوة", quantity: 50, minQuantity: 20, unit: "كيلو" },
+                { id: 2, name: "شاي", quantity: 30, minQuantity: 15, unit: "كيلو" },
+                { id: 3, name: "سكر", quantity: 100, minQuantity: 30, unit: "كيلو" },
+                { id: 4, name: "دجاج", quantity: 25, minQuantity: 10, unit: "كيلو" },
+                { id: 5, name: "لحم", quantity: 15, minQuantity: 8, unit: "كيلو" },
+                { id: 6, name: "سمك", quantity: 12, minQuantity: 5, unit: "كيلو" },
+                { id: 7, name: "خضروات", quantity: 40, minQuantity: 20, unit: "كيلو" },
+                { id: 8, name: "مشروبات غازية", quantity: 200, minQuantity: 50, unit: "عبوة" }
+            ],
+            
+            // بيانات الطلبات
+            orders: [
+                { id: 101, tableId: 2, items: [
+                    { menuId: 1, name: "شاي", price: 20, quantity: 2 },
+                    { menuId: 23, name: "مسبحة", price: 25, quantity: 1 },
+                    { menuId: 34, name: "جوانح بانيه", price: 40, quantity: 1 }
+                ], total: 105, status: "pending", timestamp: new Date().getTime() - 3600000 },
+                { id: 102, tableId: 5, items: [
+                    { menuId: 6, name: "عصير عادي", price: 25, quantity: 4 },
+                    { menuId: 30, name: "جرجير", price: 35, quantity: 2 },
+                    { menuId: 35, name: "سمك", price: 60, quantity: 2 }
+                ], total: 350, status: "pending", timestamp: new Date().getTime() - 1800000 },
+                { id: 103, tableId: 7, items: [
+                    { menuId: 2, name: "قهوة", price: 20, quantity: 1 },
+                    { menuId: 27, name: "بطاطا", price: 25, quantity: 1 }
+                ], total: 45, status: "pending", timestamp: new Date().getTime() - 900000 }
+            ],
+            
+            // بيانات المعاملات المالية
+            transactions: [
+                { id: 1, date: "2023-10-01", description: "بيع طاولة 2", type: "income", amount: 105 },
+                { id: 2, date: "2023-10-01", description: "مشتريات مواد خام", type: "expense", amount: 250 },
+                { id: 3, date: "2023-10-01", description: "بيع طاولة 5", type: "income", amount: 350 },
+                { id: 4, date: "2023-10-01", description: "رواتب الموظفين", type: "expense", amount: 1200 },
+                { id: 5, date: "2023-10-01", description: "بيع طاولة 7", type: "income", amount: 45 },
+                { id: 6, date: "2023-10-01", description: "فاتورة كهرباء", type: "expense", amount: 300 },
+                { id: 7, date: "2023-10-02", description: "شراء قهوة", type: "expense", amount: 150 },
+                { id: 8, date: "2023-10-02", description: "بيع طاولة 1", type: "income", amount: 120 }
+            ],
+            
+            // بيانات إضافية
+            categories: [
+                { id: "drinks", name: "المشروبات", icon: "🥤" },
+                { id: "services", name: "الخدمات", icon: "🔧" },
+                { id: "appetizers", name: "المقبلات", icon: "🥗" },
+                { id: "meals", name: "الوجبات", icon: "🍽️" }
+            ],
+            
+            // متغيرات النظام
+            nextOrderId: 104,
+            nextTableId: 9,
+            nextInventoryId: 9,
+            nextTransactionId: 9
+        };
+        
+        // متغيرات الحالة
+        let currentOrder = {
+            tableId: null,
+            items: [],
+            currentCategory: 'drinks'
+        };
+        
+        // الرسوم البيانية
+        let financeChart = null;
+        let expensesChart = null;
+        
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحميل البيانات من localStorage إن وجدت
+            loadDataFromStorage();
+            
+            // تحديث التاريخ والوقت
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // تهيئة التنقل بين الأقسام
+            initNavigation();
+            
+            // عرض لوحة التحكم
+            displayDashboard();
+            
+            // إعداد أزرار الإضافة
+            setupAddButtons();
+            
+            // إعداد نافذة الطلب
+            setupOrderModal();
+            
+            // إنشاء الرسوم البيانية
+            createCharts();
+            
+            // تحديث الإحصائيات
+            updateStatistics();
+        });
+        
+        // تحديث التاريخ والوقت
+        function updateDateTime() {
+            const now = new Date();
+            const dateTimeStr = now.toLocaleDateString('ar-SA', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) + ' | ' + now.toLocaleTimeString('ar-SA');
+            
+            document.getElementById('currentDateTime').textContent = dateTimeStr;
+        }
+        
+        // تحميل البيانات من localStorage
+        function loadDataFromStorage() {
+            const savedData = localStorage.getItem('restaurantData');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                
+                // استعادة البيانات مع الحفاظ على التواريخ
+                restaurantData.tables = parsedData.tables || restaurantData.tables;
+                restaurantData.menu = parsedData.menu || restaurantData.menu;
+                restaurantData.inventory = parsedData.inventory || restaurantData.inventory;
+                restaurantData.orders = parsedData.orders || restaurantData.orders;
+                restaurantData.transactions = parsedData.transactions || restaurantData.transactions;
+                restaurantData.nextOrderId = parsedData.nextOrderId || restaurantData.nextOrderId;
+                restaurantData.nextTableId = parsedData.nextTableId || restaurantData.nextTableId;
+                restaurantData.nextInventoryId = parsedData.nextInventoryId || restaurantData.nextInventoryId;
+                restaurantData.nextTransactionId = parsedData.nextTransactionId || restaurantData.nextTransactionId;
+            }
+        }
+        
+        // حفظ البيانات إلى localStorage
+        function saveDataToStorage() {
+            localStorage.setItem('restaurantData', JSON.stringify(restaurantData));
+        }
+        
+        // تهيئة التنقل بين الأقسام
+        function initNavigation() {
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // تحديث التبويبات النشطة
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // إخفاء جميع الأقسام
+                    document.querySelectorAll('.content-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // إظهار القسم المحدد
+                    document.getElementById(`${tabId}-section`).classList.add('active');
+                    
+                    // تحديث محتوى القسم
+                    switch(tabId) {
+                        case 'dashboard':
+                            displayDashboard();
+                            break;
+                        case 'tables':
+                            displayTables();
+                            break;
+                        case 'orders':
+                            displayOrders();
+                            break;
+                        case 'inventory':
+                            displayInventory();
+                            break;
+                        case 'menu':
+                            displayMenu();
+                            break;
+                        case 'accounts':
+                            displayAccounts();
+                            break;
+                        case 'reports':
+                            displayReports();
+                            break;
+                    }
+                });
+            });
+        }
+        
+        // عرض لوحة التحكم
+        function displayDashboard() {
+            updateStatistics();
+            displayRecentTransactions();
+            
+            // تحديث الرسوم البيانية
+            if (financeChart) {
+                financeChart.destroy();
+            }
+            createCharts();
+        }
+        
+        // تحديث الإحصائيات
+        function updateStatistics() {
+            // حساب الإيرادات
+            const totalIncome = restaurantData.transactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            // حساب المصروفات
+            const totalExpenses = restaurantData.transactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            // حساب الأرباح
+            const netProfit = totalIncome - totalExpenses;
+            
+            // حساب الطاولات المشغولة
+            const occupiedTables = restaurantData.tables.filter(t => t.status === 'occupied').length;
+            const totalTables = restaurantData.tables.length;
+            
+            // حساب المنتجات تحت الحد الأدنى
+            const lowStockItems = restaurantData.inventory.filter(item => item.quantity < item.minQuantity).length;
+            
+            // حساب الطلبات اليوم
+            const today = new Date().toISOString().split('T')[0];
+            const todayOrders = restaurantData.orders.filter(order => {
+                const orderDate = new Date(order.timestamp).toISOString().split('T')[0];
+                return orderDate === today;
+            }).length;
+            
+            // تحديث العرض
+            document.getElementById('totalIncome').textContent = `${totalIncome.toLocaleString()} ل. س`;
+            document.getElementById('totalExpenses').textContent = `${totalExpenses.toLocaleString()} ل. س`;
+            document.getElementById('netProfit').textContent = `${netProfit.toLocaleString()} ل. س`;
+            document.getElementById('occupiedTables').textContent = `${occupiedTables}/${totalTables}`;
+            document.getElementById('lowStock').textContent = `${lowStockItems} منتج`;
+            document.getElementById('todayOrders').textContent = `${todayOrders} طلب`;
+            
+            // تحديث الحسابات
+            document.getElementById('accountsIncome').textContent = `${totalIncome.toLocaleString()} ل. س`;
+            document.getElementById('accountsExpenses').textContent = `${totalExpenses.toLocaleString()} ل. س`;
+            document.getElementById('accountsProfit').textContent = `${netProfit.toLocaleString()} ل. س`;
+        }
+        
+        // عرض المعاملات الحديثة
+        function displayRecentTransactions() {
+            const container = document.getElementById('recentTransactions');
+            const recentTransactions = [...restaurantData.transactions]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5);
+            
+            container.innerHTML = '';
+            
+            recentTransactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${transaction.date}</td>
+                    <td>${transaction.description}</td>
+                    <td>
+                        <span class="${transaction.type === 'income' ? 'transaction-income' : 'transaction-expense'}">
+                            ${transaction.type === 'income' ? 'إيراد' : 'مصروف'}
+                        </span>
+                    </td>
+                    <td class="${transaction.type === 'income' ? 'transaction-income' : 'transaction-expense'}">
+                        ${transaction.amount.toLocaleString()} ل. س
+                    </td>
+                `;
+                
+                container.appendChild(row);
+            });
+        }
+        
+        // إنشاء الرسوم البيانية
+        function createCharts() {
+            const financeCtx = document.getElementById('financeChart').getContext('2d');
+            
+            // تجميع البيانات الشهرية
+            const monthlyData = {};
+            restaurantData.transactions.forEach(transaction => {
+                const month = transaction.date.substring(0, 7); // YYYY-MM
+                if (!monthlyData[month]) {
+                    monthlyData[month] = { income: 0, expense: 0 };
+                }
+                
+                if (transaction.type === 'income') {
+                    monthlyData[month].income += transaction.amount;
+                } else {
+                    monthlyData[month].expense += transaction.amount;
+                }
+            });
+            
+            const months = Object.keys(monthlyData).slice(-6); // آخر 6 أشهر
+            const incomeData = months.map(month => monthlyData[month]?.income || 0);
+            const expenseData = months.map(month => monthlyData[month]?.expense || 0);
+            
+            financeChart = new Chart(financeCtx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'الإيرادات',
+                            data: incomeData,
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'المصروفات',
+                            data: expenseData,
+                            borderColor: '#F44336',
+                            backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            rtl: true,
+                            labels: {
+                                font: {
+                                    family: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString() + ' ل. س';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // مخطط توزيع المصروفات
+            const expensesCtx = document.getElementById('expensesChart').getContext('2d');
+            
+            // تجميع المصروفات حسب الفئة
+            const expenseCategories = {
+                'مواد خام': 0,
+                'رواتب': 0,
+                'مرافق': 0,
+                'أخرى': 0
+            };
+            
+            restaurantData.transactions
+                .filter(t => t.type === 'expense')
+                .forEach(transaction => {
+                    const desc = transaction.description.toLowerCase();
+                    if (desc.includes('خام') || desc.includes('مشتريات') || desc.includes('قهوة') || desc.includes('شاي')) {
+                        expenseCategories['مواد خام'] += transaction.amount;
+                    } else if (desc.includes('رواتب') || desc.includes('موظفين')) {
+                        expenseCategories['رواتب'] += transaction.amount;
+                    } else if (desc.includes('كهرباء') || desc.includes('ماء') || desc.includes('غاز')) {
+                        expenseCategories['مرافق'] += transaction.amount;
+                    } else {
+                        expenseCategories['أخرى'] += transaction.amount;
+                    }
+                });
+            
+            expensesChart = new Chart(expensesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(expenseCategories),
+                    datasets: [{
+                        data: Object.values(expenseCategories),
+                        backgroundColor: [
+                            '#4CAF50',
+                            '#2196F3',
+                            '#FF9800',
+                            '#9C27B0'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            rtl: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        // عرض الطاولات
+        function displayTables() {
+            const container = document.getElementById('tablesList');
+            container.innerHTML = '';
+            
+            restaurantData.tables.forEach(table => {
+                const tableCard = document.createElement('div');
+                tableCard.className = 'table-card';
+                
+                let statusText, statusClass;
+                switch(table.status) {
+                    case 'empty':
+                        statusText = 'فارغة';
+                        statusClass = 'status-empty';
+                        break;
+                    case 'occupied':
+                        statusText = 'مشغولة';
+                        statusClass = 'status-occupied';
+                        break;
+                    case 'reserved':
+                        statusText = 'محجوزة';
+                        statusClass = 'status-reserved';
+                        break;
+                }
+                
+                const order = table.currentOrder ? 
+                    restaurantData.orders.find(o => o.id === table.currentOrder) : null;
+                
+                tableCard.innerHTML = `
+                    <div class="table-header">
+                        <div>
+                            <h3 style="margin: 0; font-size: 20px;">${table.number}</h3>
+                            <div style="font-size: 14px; opacity: 0.9;">سعة ${table.capacity} أشخاص</div>
+                        </div>
+                        <div class="table-status ${statusClass}">${statusText}</div>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-info">
+                            <div class="table-info-item">
+                                <span>الحالة:</span>
+                                <span style="font-weight: 600;">${statusText}</span>
+                            </div>
+                            ${order ? `
+                            <div class="table-info-item">
+                                <span>رقم الطلب:</span>
+                                <span style="font-weight: 600;">${order.id}</span>
+                            </div>
+                            <div class="table-info-item">
+                                <span>إجمالي الطلب:</span>
+                                <span style="font-weight: 600; color: #4CAF50;">${order.total} ل. س</span>
+                            </div>
+                            ` : ''}
+                            <div class="table-info-item">
+                                <span>آخر تحديث:</span>
+                                <span>منذ قليل</span>
+                            </div>
+                        </div>
+                        <div class="table-actions">
+                            ${table.status === 'empty' ? `
+                            <button class="btn btn-primary btn-sm" onclick="startOrder(${table.id})">
+                                <i class="fas fa-plus"></i>
+                                <span>بدء طلب</span>
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="reserveTable(${table.id})">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>حجز</span>
+                            </button>
+                            ` : ''}
+                            ${table.status === 'occupied' ? `
+                            <button class="btn btn-primary btn-sm" onclick="viewOrder(${table.id})">
+                                <i class="fas fa-eye"></i>
+                                <span>عرض الطلب</span>
+                            </button>
+                            <button class="btn btn-success btn-sm" onclick="completeTableOrder(${table.id})">
+                                <i class="fas fa-check"></i>
+                                <span>إكمال الدفع</span>
+                            </button>
+                            ` : ''}
+                            ${table.status === 'reserved' ? `
+                            <button class="btn btn-primary btn-sm" onclick="cancelReservation(${table.id})">
+                                <i class="fas fa-times"></i>
+                                <span>إلغاء الحجز</span>
+                            </button>
+                            ` : ''}
+                            <button class="btn btn-danger btn-sm" onclick="deleteTable(${table.id})">
+                                <i class="fas fa-trash"></i>
+                                <span>حذف</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(tableCard);
+            });
+        }
+        
+        // عرض الطلبات النشطة
+        function displayOrders() {
+            const container = document.getElementById('activeOrders');
+            const activeOrders = restaurantData.orders.filter(order => order.status === 'pending');
+            
+            if (activeOrders.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #6c757d;">
+                        <i class="fas fa-shopping-cart" style="font-size: 60px; margin-bottom: 20px; opacity: 0.5;"></i>
+                        <h3 style="margin-bottom: 10px;">لا توجد طلبات نشطة حالياً</h3>
+                        <p>ابدأ بإنشاء طلب جديد من قسم إدارة الطاولات</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            activeOrders.forEach(order => {
+                const table = restaurantData.tables.find(t => t.id === order.tableId);
+                if (!table) return;
+                
+                const orderCard = document.createElement('div');
+                orderCard.className = 'table-card';
+                
+                // حساب الوقت المنقضي
+                const elapsed = Math.floor((Date.now() - order.timestamp) / 60000);
+                let elapsedText = 'الآن';
+                if (elapsed > 0) {
+                    elapsedText = `منذ ${elapsed} دقيقة`;
+                }
+                
+                orderCard.innerHTML = `
+                    <div class="table-header">
+                        <div>
+                            <h3 style="margin: 0; font-size: 20px;">طلب #${order.id}</h3>
+                            <div style="font-size: 14px; opacity: 0.9;">الطاولة ${table.number}</div>
+                        </div>
+                        <div class="table-status status-occupied">نشط</div>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-info">
+                            <div class="table-info-item">
+                                <span>عدد الأصناف:</span>
+                                <span style="font-weight: 600;">${order.items.length}</span>
+                            </div>
+                            <div class="table-info-item">
+                                <span>إجمالي الطلب:</span>
+                                <span style="font-weight: 600; color: #4CAF50;">${order.total} ل. س</span>
+                            </div>
+                            <div class="table-info-item">
+                                <span>وقت الطلب:</span>
+                                <span>${elapsedText}</span>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>الأصناف المطلوبة:</strong>
+                            <div style="margin-top: 8px; font-size: 14px;">
+                                ${order.items.map(item => 
+                                    `${item.name} (${item.quantity}x)`
+                                ).join('، ')}
+                            </div>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-primary btn-sm" onclick="viewOrderDetails(${order.id})">
+                                <i class="fas fa-eye"></i>
+                                <span>عرض التفاصيل</span>
+                            </button>
+                            <button class="btn btn-success btn-sm" onclick="completeOrderPayment(${order.id})">
+                                <i class="fas fa-check"></i>
+                                <span>إكمال الدفع</span>
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="cancelOrder(${order.id})">
+                                <i class="fas fa-times"></i>
+                                <span>إلغاء الطلب</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(orderCard);
+            });
+        }
+        
+        // عرض المخزون
+        function displayInventory() {
+            const container = document.getElementById('inventoryItems');
+            container.innerHTML = '';
+            
+            restaurantData.inventory.forEach(item => {
+                const percentage = (item.quantity / item.minQuantity) * 100;
+                const isLowStock = item.quantity < item.minQuantity;
+                
+                const inventoryItem = document.createElement('div');
+                inventoryItem.className = 'inventory-item';
+                
+                inventoryItem.innerHTML = `
+                    <div class="inventory-header">
+                        <div class="inventory-name">${item.name}</div>
+                        <div class="inventory-quantity">${item.quantity} ${item.unit}</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>الحد الأدنى: ${item.minQuantity} ${item.unit}</span>
+                            <span style="color: ${isLowStock ? '#D32F2F' : '#4CAF50'}; font-weight: 600;">
+                                ${isLowStock ? 'منخفض' : 'جيد'}
+                            </span>
+                        </div>
+                        <div class="inventory-progress">
+                            <div class="progress-bar" style="width: ${Math.min(percentage, 100)}%; 
+                                background-color: ${isLowStock ? '#D32F2F' : '#4CAF50'};">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inventory-actions">
+                        <button class="btn btn-primary btn-sm" onclick="updateInventory(${item.id}, 'add')">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="updateInventory(${item.id}, 'remove')">
+                            <i class="fas fa-minus"></i>
+                            <span>خصم</span>
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteInventoryItem(${item.id})">
+                            <i class="fas fa-trash"></i>
+                            <span>حذف</span>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(inventoryItem);
+            });
+        }
+        
+        // عرض قائمة الطعام
+        function displayMenu() {
+            const container = document.getElementById('menuCategories');
+            container.innerHTML = '';
+            
+            restaurantData.categories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'menu-category';
+                
+                const items = restaurantData.menu[category.id] || [];
+                
+                categoryDiv.innerHTML = `
+                    <div class="category-title">
+                        <span>${category.icon} ${category.name}</span>
+                        <button class="btn btn-sm btn-primary" onclick="addMenuItemToCategory('${category.id}')">
+                            <i class="fas fa-plus"></i>
+                            <span>إضافة صنف</span>
+                        </button>
+                    </div>
+                    <div class="category-items">
+                        ${items.length > 0 ? items.map(item => `
+                            <div class="menu-item-card">
+                                <div class="item-header">
+                                    <div class="item-name">${item.image} ${item.name}</div>
+                                    <div class="item-price">${item.price} ل. س</div>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="btn btn-primary btn-sm" onclick="editMenuItem(${item.id})">
+                                        <i class="fas fa-edit"></i>
+                                        <span>تعديل</span>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteMenuItem(${item.id})">
+                                        <i class="fas fa-trash"></i>
+                                        <span>حذف</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('') : `
+                            <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: #6c757d;">
+                                <i class="fas fa-utensils" style="font-size: 40px; margin-bottom: 15px; opacity: 0.5;"></i>
+                                <h4 style="margin-bottom: 10px;">لا توجد أصناف في هذه الفئة</h4>
+                                <p>يمكنك إضافة أصناف جديدة باستخدام زر "إضافة صنف" أعلاه</p>
+                            </div>
+                        `}
+                    </div>
+                `;
+                
+                container.appendChild(categoryDiv);
+            });
+        }
+        
+        // عرض الحسابات
+        function displayAccounts() {
+            displayAllTransactions();
+        }
+        
+        // عرض جميع المعاملات
+        function displayAllTransactions() {
+            const container = document.getElementById('allTransactions');
+            container.innerHTML = '';
+            
+            const sortedTransactions = [...restaurantData.transactions]
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sortedTransactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${transaction.date}</td>
+                    <td>${transaction.description}</td>
+                    <td>
+                        <span class="${transaction.type === 'income' ? 'transaction-income' : 'transaction-expense'}">
+                            ${transaction.type === 'income' ? 'إيراد' : 'مصروف'}
+                        </span>
+                    </td>
+                    <td class="${transaction.type === 'income' ? 'transaction-income' : 'transaction-expense'}">
+                        ${transaction.amount.toLocaleString()} ل. س
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteTransaction(${transaction.id})">
+                            <i class="fas fa-trash"></i>
+                            <span>حذف</span>
+                        </button>
+                    </td>
+                `;
+                
+                container.appendChild(row);
+            });
+        }
+        
+        // عرض التقارير
+        function displayReports() {
+            // يمكن إضافة المزيد من التقارير هنا
+        }
+        
+        // إعداد أزرار الإضافة
+        function setupAddButtons() {
+            document.getElementById('addTableBtn').addEventListener('click', function() {
+                const tableNumber = prompt('أدخل رقم الطاولة:');
+                if (!tableNumber) return;
+                
+                const capacity = prompt('أدخل سعة الطاولة (عدد الأشخاص):');
+                if (!capacity || isNaN(capacity)) return;
+                
+                const newTable = {
+                    id: restaurantData.nextTableId++,
+                    number: tableNumber,
+                    capacity: parseInt(capacity),
+                    status: 'empty',
+                    currentOrder: null
+                };
+                
+                restaurantData.tables.push(newTable);
+                saveDataToStorage();
+                displayTables();
+                showNotification('تم إضافة الطاولة بنجاح', 'success');
+            });
+            
+            document.getElementById('addInventoryBtn').addEventListener('click', function() {
+                const name = prompt('أدخل اسم المنتج:');
+                if (!name) return;
+                
+                const quantity = prompt('أدخل الكمية الحالية:');
+                if (!quantity || isNaN(quantity)) return;
+                
+                const minQuantity = prompt('أدخل الحد الأدنى للكمية:');
+                if (!minQuantity || isNaN(minQuantity)) return;
+                
+                const unit = prompt('أدخل وحدة القياس (كيلو، عبوة، إلخ):') || 'وحدة';
+                
+                const newItem = {
+                    id: restaurantData.nextInventoryId++,
+                    name: name,
+                    quantity: parseInt(quantity),
+                    minQuantity: parseInt(minQuantity),
+                    unit: unit
+                };
+                
+                restaurantData.inventory.push(newItem);
+                saveDataToStorage();
+                displayInventory();
+                showNotification('تم إضافة المنتج للمخزون بنجاح', 'success');
+            });
+            
+            document.getElementById('addMenuItemBtn').addEventListener('click', function() {
+                const category = prompt('أدخل الفئة (drinks, services, appetizers, meals):');
+                if (!category || !restaurantData.menu[category]) {
+                    showNotification('فئة غير صالحة', 'error');
+                    return;
+                }
+                
+                addMenuItemToCategory(category);
+            });
+            
+            document.getElementById('addTransactionBtn').addEventListener('click', function() {
+                const type = prompt('نوع المعاملة (income للإيرادات، expense للمصروفات):');
+                if (!type || (type !== 'income' && type !== 'expense')) {
+                    showNotification('نوع غير صالح', 'error');
+                    return;
+                }
+                
+                const description = prompt('أدخل وصف المعاملة:');
+                if (!description) return;
+                
+                const amount = prompt('أدخل المبلغ:');
+                if (!amount || isNaN(amount)) return;
+                
+                const newTransaction = {
+                    id: restaurantData.nextTransactionId++,
+                    date: new Date().toISOString().split('T')[0],
+                    description: description,
+                    type: type,
+                    amount: parseFloat(amount)
+                };
+                
+                restaurantData.transactions.push(newTransaction);
+                saveDataToStorage();
+                displayAccounts();
+                updateStatistics();
+                showNotification('تم إضافة المعاملة بنجاح', 'success');
+            });
+            
+            document.getElementById('generateReportBtn').addEventListener('click', function() {
+                generateReport();
+            });
+        }
+        
+        // إعداد نافذة الطلب
+        function setupOrderModal() {
+            const modal = document.getElementById('orderModal');
+            const closeBtn = document.getElementById('closeModal');
+            const cancelBtn = document.getElementById('cancelOrder');
+            const saveBtn = document.getElementById('saveOrder');
+            const completeBtn = document.getElementById('completeOrder');
+            
+            closeBtn.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+            
+            cancelBtn.addEventListener('click', function() {
+                if (confirm('هل تريد إلغاء هذا الطلب؟')) {
+                    currentOrder = { tableId: null, items: [], currentCategory: 'drinks' };
+                    modal.classList.remove('active');
+                }
+            });
+            
+            saveBtn.addEventListener('click', function() {
+                saveOrder();
+            });
+            
+            completeBtn.addEventListener('click', function() {
+                completeOrderPayment();
+            });
+            
+            // إغلاق النافذة عند النقر خارجها
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        }
+        
+        // بدء طلب جديد
+        function startOrder(tableId) {
+            const table = restaurantData.tables.find(t => t.id === tableId);
+            if (!table || table.status !== 'empty') return;
+            
+            currentOrder = {
+                tableId: tableId,
+                items: [],
+                currentCategory: 'drinks'
+            };
+            
+            document.getElementById('modalTableNumber').textContent = table.number;
+            updateOrderModal();
+            
+            const modal = document.getElementById('orderModal');
+            modal.classList.add('active');
+        }
+        
+        // تحديث نافذة الطلب
+        function updateOrderModal() {
+            // تحديث الفئات
+            const categoriesContainer = document.getElementById('modalCategories');
+            categoriesContainer.innerHTML = '';
+            
+            restaurantData.categories.forEach(category => {
+                const btn = document.createElement('button');
+                btn.className = `category-btn ${currentOrder.currentCategory === category.id ? 'active' : ''}`;
+                btn.textContent = category.name;
+                btn.addEventListener('click', function() {
+                    currentOrder.currentCategory = category.id;
+                    updateOrderModal();
+                });
+                
+                categoriesContainer.appendChild(btn);
+            });
+            
+            // تحديث الأصناف
+            const itemsContainer = document.getElementById('modalMenuItems');
+            itemsContainer.innerHTML = '';
+            
+            const categoryItems = restaurantData.menu[currentOrder.currentCategory] || [];
+            
+            categoryItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'menu-item';
+                itemDiv.innerHTML = `
+                    <div style="font-size: 40px; margin-bottom: 10px;">${item.image}</div>
+                    <div class="menu-item-name">${item.name}</div>
+                    <div class="menu-item-price">${item.price} ل. س</div>
+                `;
+                
+                itemDiv.addEventListener('click', function() {
+                    addItemToOrder(item);
+                });
+                
+                itemsContainer.appendChild(itemDiv);
+            });
+            
+            // تحديث قائمة الطلبات
+            updateOrderItemsList();
+        }
+        
+        // إضافة صنف للطلب
+        function addItemToOrder(item) {
+            const existingItem = currentOrder.items.find(i => i.menuId === item.id);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                currentOrder.items.push({
+                    menuId: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: 1
+                });
+            }
+            
+            updateOrderItemsList();
+            showNotification(`تم إضافة ${item.name} للطلب`, 'success');
+        }
+        
+        // تحديث قائمة أصناف الطلب
+        function updateOrderItemsList() {
+            const container = document.getElementById('orderItemsList');
+            const totalSection = document.getElementById('orderTotalSection');
+            
+            if (currentOrder.items.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 30px; color: #6c757d;">
+                        <i class="fas fa-shopping-cart" style="font-size: 40px; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h4 style="margin-bottom: 10px;">لا توجد أصناف في الطلب</h4>
+                        <p>اختر أصنافاً من قائمة الطعام</p>
+                    </div>
+                `;
+                totalSection.style.display = 'none';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            let subtotal = 0;
+            
+            currentOrder.items.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'order-item';
+                itemDiv.innerHTML = `
+                    <div>
+                        <div style="font-weight: 600;">${item.name}</div>
+                        <div style="font-size: 14px; color: #6c757d;">${item.price} ل. س للوحدة</div>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div class="item-quantity-controls">
+                            <button class="quantity-btn" onclick="updateOrderItemQuantity(${index}, -1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <div class="quantity">${item.quantity}</div>
+                            <button class="quantity-btn" onclick="updateOrderItemQuantity(${index}, 1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="item-total" style="margin: 0 15px;">${itemTotal} ل. س</div>
+                        <button class="remove-item" onclick="removeOrderItem(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(itemDiv);
+            });
+            
+            // حساب المجموع
+            const taxRate = 0.15;
+            const taxAmount = subtotal * taxRate;
+            const grandTotal = subtotal + taxAmount;
+            
+            document.getElementById('subtotal').textContent = `${subtotal.toLocaleString()} ل. س`;
+            document.getElementById('taxAmount').textContent = `${taxAmount.toLocaleString()} ل. س`;
+            document.getElementById('grandTotal').textContent = `${grandTotal.toLocaleString()} ل. س`;
+            
+            totalSection.style.display = 'block';
+        }
+        
+        // تحديث كمية الصنف في الطلب
+        function updateOrderItemQuantity(index, change) {
+            const item = currentOrder.items[index];
+            item.quantity += change;
+            
+            if (item.quantity <= 0) {
+                currentOrder.items.splice(index, 1);
+            }
+            
+            updateOrderItemsList();
+        }
+        
+        // إزالة صنف من الطلب
+        function removeOrderItem(index) {
+            currentOrder.items.splice(index, 1);
+            updateOrderItemsList();
+            showNotification('تم إزالة الصنف من الطلب', 'warning');
+        }
+        
+        // حفظ الطلب
+        function saveOrder() {
+            if (currentOrder.items.length === 0) {
+                showNotification('الطلب فارغ. أضف أصنافاً أولاً.', 'error');
+                return;
+            }
+            
+            const table = restaurantData.tables.find(t => t.id === currentOrder.tableId);
+            if (!table) return;
+            
+            // حساب الإجمالي
+            const subtotal = currentOrder.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const taxAmount = subtotal * 0.15;
+            const total = subtotal + taxAmount;
+            
+            // إنشاء الطلب
+            const newOrder = {
+                id: restaurantData.nextOrderId++,
+                tableId: currentOrder.tableId,
+                items: [...currentOrder.items],
+                total: total,
+                status: 'pending',
+                timestamp: Date.now()
+            };
+            
+            // تحديث الطاولة
+            table.status = 'occupied';
+            table.currentOrder = newOrder.id;
+            
+            // إضافة الطلب
+            restaurantData.orders.push(newOrder);
+            
+            // إضافة معاملة مالية
+            restaurantData.transactions.push({
+                id: restaurantData.nextTransactionId++,
+                date: new Date().toISOString().split('T')[0],
+                description: `بيع طاولة ${table.number}`,
+                type: 'income',
+                amount: total
+            });
+            
+            // تحديث المخزون (تخفيض الكميات)
+            updateInventoryForOrder(newOrder);
+            
+            // حفظ البيانات
+            saveDataToStorage();
+            
+            // إغلاق النافذة وإعادة التعيين
+            document.getElementById('orderModal').classList.remove('active');
+            currentOrder = { tableId: null, items: [], currentCategory: 'drinks' };
+            
+            // تحديث العرض
+            displayTables();
+            displayOrders();
+            updateStatistics();
+            
+            showNotification('تم حفظ الطلب بنجاح', 'success');
+        }
+        
+        // تحديث المخزون بناءً على الطلب
+        function updateInventoryForOrder(order) {
+            // هذه دالة مبسطة، في التطبيق الحقيقي يجب ربط كل صنف بمكوناته من المخزون
+            order.items.forEach(item => {
+                // هنا يمكن إضافة منطق لخصم الكميات من المخزون
+                // بناءً على مكونات كل صنف
+            });
+        }
+        
+        // إكمال دفع الطلب
+        function completeOrderPayment() {
+            if (currentOrder.tableId) {
+                // إذا كان هناك طلب نشط في النافذة
+                saveOrder();
+                completeTableOrder(currentOrder.tableId);
+            } else {
+                showNotification('لا يوجد طلب نشط', 'error');
+            }
+        }
+        
+        // إكمال دفع طاولة
+        function completeTableOrder(tableId) {
+            const table = restaurantData.tables.find(t => t.id === tableId);
+            if (!table || table.status !== 'occupied') return;
+            
+            const order = restaurantData.orders.find(o => o.id === table.currentOrder);
+            if (!order) return;
+            
+            // تحديث حالة الطلب
+            order.status = 'completed';
+            
+            // تحديث الطاولة
+            table.status = 'empty';
+            table.currentOrder = null;
+            
+            // حفظ البيانات
+            saveDataToStorage();
+            
+            // تحديث العرض
+            displayTables();
+            displayOrders();
+            
+            showNotification(`تم إكمال دفع طلب #${order.id} بقيمة ${order.total} ل. س`, 'success');
+        }
+        
+        // عرض تفاصيل الطلب
+        function viewOrderDetails(orderId) {
+            const order = restaurantData.orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            const table = restaurantData.tables.find(t => t.id === order.tableId);
+            
+            let message = `تفاصيل الطلب #${orderId}\n`;
+            message += `الطاولة: ${table ? table.number : 'غير معروفة'}\n`;
+            message += `الحالة: ${order.status === 'pending' ? 'قيد الانتظار' : 'مكتمل'}\n\n`;
+            message += 'الأصناف:\n';
+            
+            order.items.forEach(item => {
+                message += `- ${item.name} (${item.quantity}x) = ${item.price * item.quantity} ل. س\n`;
+            });
+            
+            message += `\nالإجمالي: ${order.total} ل. س`;
+            
+            alert(message);
+        }
+        
+        // إلغاء الطلب
+        function cancelOrder(orderId) {
+            if (!confirm('هل أنت متأكد من إلغاء هذا الطلب؟')) return;
+            
+            const orderIndex = restaurantData.orders.findIndex(o => o.id === orderId);
+            if (orderIndex === -1) return;
+            
+            const order = restaurantData.orders[orderIndex];
+            const table = restaurantData.tables.find(t => t.id === order.tableId);
+            
+            if (table) {
+                table.status = 'empty';
+                table.currentOrder = null;
+            }
+            
+            // إزالة الطلب
+            restaurantData.orders.splice(orderIndex, 1);
+            
+            // حفظ البيانات
+            saveDataToStorage();
+            
+            // تحديث العرض
+            displayOrders();
+            displayTables();
+            
+            showNotification('تم إلغاء الطلب بنجاح', 'warning');
+        }
+        
+        // حجز طاولة
+        function reserveTable(tableId) {
+            const table = restaurantData.tables.find(t => t.id === tableId);
+            if (!table || table.status !== 'empty') return;
+            
+            table.status = 'reserved';
+            saveDataToStorage();
+            displayTables();
+            
+            showNotification(`تم حجز الطاولة ${table.number}`, 'success');
+        }
+        
+        // إلغاء حجز طاولة
+        function cancelReservation(tableId) {
+            const table = restaurantData.tables.find(t => t.id === tableId);
+            if (!table || table.status !== 'reserved') return;
+            
+            table.status = 'empty';
+            saveDataToStorage();
+            displayTables();
+            
+            showNotification(`تم إلغاء حجز الطاولة ${table.number}`, 'warning');
+        }
+        
+        // حذف طاولة
+        function deleteTable(tableId) {
+            if (!confirm('هل أنت متأكد من حذف هذه الطاولة؟')) return;
+            
+            const tableIndex = restaurantData.tables.findIndex(t => t.id === tableId);
+            if (tableIndex === -1) return;
+            
+            restaurantData.tables.splice(tableIndex, 1);
+            saveDataToStorage();
+            displayTables();
+            
+            showNotification('تم حذف الطاولة بنجاح', 'warning');
+        }
+        
+        // تحديث المخزون
+        function updateInventory(itemId, action) {
+            const item = restaurantData.inventory.find(i => i.id === itemId);
+            if (!item) return;
+            
+            const amount = prompt(`أدخل الكمية ال${action === 'add' ? 'مضافة' : 'مخصومة'}:`);
+            if (!amount || isNaN(amount)) return;
+            
+            const change = parseInt(amount);
+            
+            if (action === 'add') {
+                item.quantity += change;
+                showNotification(`تم إضافة ${change} ${item.unit} إلى ${item.name}`, 'success');
+            } else {
+                if (item.quantity - change < 0) {
+                    showNotification('الكمية غير كافية', 'error');
+                    return;
+                }
+                item.quantity -= change;
+                showNotification(`تم خصم ${change} ${item.unit} من ${item.name}`, 'warning');
+            }
+            
+            saveDataToStorage();
+            displayInventory();
+            updateStatistics();
+        }
+        
+        // حذف عنصر من المخزون
+        function deleteInventoryItem(itemId) {
+            if (!confirm('هل أنت متأكد من حذف هذا المنتج من المخزون؟')) return;
+            
+            const itemIndex = restaurantData.inventory.findIndex(i => i.id === itemId);
+            if (itemIndex === -1) return;
+            
+            restaurantData.inventory.splice(itemIndex, 1);
+            saveDataToStorage();
+            displayInventory();
+            
+            showNotification('تم حذف المنتج من المخزون', 'warning');
+        }
+        
+        // إضافة صنف للقائمة
+        function addMenuItemToCategory(categoryId) {
+            const name = prompt('أدخل اسم الصنف:');
+            if (!name) return;
+            
+            const price = prompt('أدخل السعر:');
+            if (!price || isNaN(price)) return;
+            
+            const emoji = prompt('أدخل إيموجي أو رمز للصنف (اختياري):') || '🍽️';
+            
+            const newItem = {
+                id: restaurantData.menu[categoryId].length + 1,
+                name: name,
+                price: parseInt(price),
+                category: categoryId,
+                image: emoji
+            };
+            
+            restaurantData.menu[categoryId].push(newItem);
+            saveDataToStorage();
+            displayMenu();
+            
+            showNotification('تم إضافة الصنف للقائمة بنجاح', 'success');
+        }
+        
+        // تعديل صنف في القائمة
+        function editMenuItem(itemId) {
+            // البحث عن الصنف
+            let item, categoryId;
+            for (const cat in restaurantData.menu) {
+                const foundItem = restaurantData.menu[cat].find(i => i.id === itemId);
+                if (foundItem) {
+                    item = foundItem;
+                    categoryId = cat;
+                    break;
+                }
+            }
+            
+            if (!item) return;
+            
+            const newName = prompt('أدخل الاسم الجديد:', item.name);
+            if (!newName) return;
+            
+            const newPrice = prompt('أدخل السعر الجديد:', item.price);
+            if (!newPrice || isNaN(newPrice)) return;
+            
+            const newEmoji = prompt('أدخل الإيموجي الجديد:', item.image) || item.image;
+            
+            item.name = newName;
+            item.price = parseInt(newPrice);
+            item.image = newEmoji;
+            
+            saveDataToStorage();
+            displayMenu();
+            
+            showNotification('تم تعديل الصنف بنجاح', 'success');
+        }
+        
+        // حذف صنف من القائمة
+        function deleteMenuItem(itemId) {
+            if (!confirm('هل أنت متأكد من حذف هذا الصنف من القائمة؟')) return;
+            
+            for (const cat in restaurantData.menu) {
+                const itemIndex = restaurantData.menu[cat].findIndex(i => i.id === itemId);
+                if (itemIndex !== -1) {
+                    restaurantData.menu[cat].splice(itemIndex, 1);
+                    break;
+                }
+            }
+            
+            saveDataToStorage();
+            displayMenu();
+            
+            showNotification('تم حذف الصنف من القائمة', 'warning');
+        }
+        
+        // حذف معاملة مالية
+        function deleteTransaction(transactionId) {
+            if (!confirm('هل أنت متأكد من حذف هذه المعاملة؟')) return;
+            
+            const transactionIndex = restaurantData.transactions.findIndex(t => t.id === transactionId);
+            if (transactionIndex === -1) return;
+            
+            restaurantData.transactions.splice(transactionIndex, 1);
+            saveDataToStorage();
+            displayAccounts();
+            updateStatistics();
+            
+            showNotification('تم حذف المعاملة بنجاح', 'warning');
+        }
+        
+        // إنشاء تقرير
+        function generateReport() {
+            // حساب الإحصائيات
+            const totalIncome = restaurantData.transactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const totalExpenses = restaurantData.transactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const netProfit = totalIncome - totalExpenses;
+            
+            const today = new Date().toISOString().split('T')[0];
+            const todayOrders = restaurantData.orders.filter(order => {
+                const orderDate = new Date(order.timestamp).toISOString().split('T')[0];
+                return orderDate === today;
+            });
+            
+            const todayIncome = todayOrders.reduce((sum, order) => sum + order.total, 0);
+            
+            // إنشاء محتوى التقرير
+            let reportContent = `تقرير نظام إدارة المطعم\n`;
+            reportContent += `تاريخ التقرير: ${new Date().toLocaleDateString('ar-SA')}\n`;
+            reportContent += `========================================\n\n`;
+            
+            reportContent += `الإحصائيات المالية:\n`;
+            reportContent += `- إجمالي الإيرادات: ${totalIncome.toLocaleString()} ل. س\n`;
+            reportContent += `- إجمالي المصروفات: ${totalExpenses.toLocaleString()} ل. س\n`;
+            reportContent += `- صافي الأرباح: ${netProfit.toLocaleString()} ل. س\n\n`;
+            
+            reportContent += `إحصائيات اليوم (${today}):\n`;
+            reportContent += `- عدد الطلبات: ${todayOrders.length}\n`;
+            reportContent += `- إيرادات اليوم: ${todayIncome.toLocaleString()} ل. س\n\n`;
+            
+            reportContent += `إحصائيات الطاولات:\n`;
+            const emptyTables = restaurantData.tables.filter(t => t.status === 'empty').length;
+            const occupiedTables = restaurantData.tables.filter(t => t.status === 'occupied').length;
+            const reservedTables = restaurantData.tables.filter(t => t.status === 'reserved').length;
+            reportContent += `- إجمالي الطاولات: ${restaurantData.tables.length}\n`;
+            reportContent += `- الطاولات الفارغة: ${emptyTables}\n`;
+            reportContent += `- الطاولات المشغولة: ${occupiedTables}\n`;
+            reportContent += `- الطاولات المحجوزة: ${reservedTables}\n\n`;
+            
+            reportContent += `إحصائيات المخزون:\n`;
+            const lowStockItems = restaurantData.inventory.filter(item => item.quantity < item.minQuantity);
+            reportContent += `- إجمالي المنتجات: ${restaurantData.inventory.length}\n`;
+            reportContent += `- المنتجات تحت الحد الأدنى: ${lowStockItems.length}\n`;
+            
+            if (lowStockItems.length > 0) {
+                reportContent += `  (${lowStockItems.map(item => item.name).join(', ')})\n`;
+            }
+            
+            // إنشاء ملف التقرير
+            const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `تقرير_المطعم_${today}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('تم إنشاء التقرير بنجاح', 'success');
+        }
+        
+        // عرض إشعار
+        function showNotification(message, type) {
+            // إنشاء عنصر الإشعار
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                left: 20px;
+                background-color: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#F44336' : '#FF9800'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 3000;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                max-width: 400px;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            const icon = type === 'success' ? '✓' : type === 'error' ? '✗' : '!';
+            notification.innerHTML = `
+                <span style="font-size: 20px;">${icon}</span>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // إزالة الإشعار بعد 3 ثوانٍ
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+            
+            // إضافة أنيميشن
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(-100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(-100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // تصدير البيانات كملف JSON
+        function exportData() {
+            const dataStr = JSON.stringify(restaurantData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = 'بيانات_المطعم.json';
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('تم تصدير البيانات بنجاح', 'success');
+        }
+        
+        // استيراد البيانات من ملف JSON
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        
+                        // التحقق من صحة البيانات
+                        if (importedData.tables && importedData.menu && importedData.inventory) {
+                            if (confirm('هل تريد استبدال البيانات الحالية بالبيانات المستوردة؟')) {
+                                restaurantData = importedData;
+                                saveDataToStorage();
+                                
+                                // تحديث جميع الأقسام
+                                displayDashboard();
+                                displayTables();
+                                displayOrders();
+                                displayInventory();
+                                displayMenu();
+                                displayAccounts();
+                                
+                                showNotification('تم استيراد البيانات بنجاح', 'success');
+                            }
+                        } else {
+                            showNotification('ملف غير صالح', 'error');
+                        }
+                    } catch (error) {
+                        showNotification('خطأ في قراءة الملف', 'error');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+        
+        // إضافة زر سريع للتصدير والاستيراد
+        document.getElementById('quickAddBtn').addEventListener('click', function() {
+            const menu = document.createElement('div');
+            menu.style.cssText = `
+                position: fixed;
+                bottom: 90px;
+                left: 30px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+                z-index: 2000;
+                min-width: 200px;
+                overflow: hidden;
+            `;
+            
+            menu.innerHTML = `
+                <div style="padding: 15px; border-bottom: 1px solid #eee; font-weight: 600; color: #333;">
+                    <i class="fas fa-bolt" style="margin-left: 8px;"></i>
+                    إجراءات سريعة
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <button style="padding: 12px 15px; border: none; background: none; text-align: right; cursor: pointer; 
+                            display: flex; align-items: center; gap: 10px; transition: background 0.2s;" 
+                            onclick="exportData()">
+                        <i class="fas fa-download" style="color: #4CAF50;"></i>
+                        <span>تصدير البيانات</span>
+                    </button>
+                    <button style="padding: 12px 15px; border: none; background: none; text-align: right; cursor: pointer; 
+                            display: flex; align-items: center; gap: 10px; transition: background 0.2s;" 
+                            onclick="importData()">
+                        <i class="fas fa-upload" style="color: #2196F3;"></i>
+                        <span>استيراد البيانات</span>
+                    </button>
+                    <button style="padding: 12px 15px; border: none; background: none; text-align: right; cursor: pointer; 
+                            display: flex; align-items: center; gap: 10px; transition: background 0.2s;" 
+                            onclick="showNotification('جاري إنشاء نسخة احتياطية...', 'success')">
+                        <i class="fas fa-save" style="color: #FF9800;"></i>
+                        <span>نسخة احتياطية</span>
+                    </button>
+                    <button style="padding: 12px 15px; border: none; background: none; text-align: right; cursor: pointer; 
+                            display: flex; align-items: center; gap: 10px; transition: background 0.2s;" 
+                            onclick="location.reload()">
+                        <i class="fas fa-redo" style="color: #9C27B0;"></i>
+                        <span>تحديث الصفحة</span>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(menu);
+            
+            // إغلاق القائمة عند النقر خارجها
+            const closeMenu = function(e) {
+                if (!menu.contains(e.target) && e.target.id !== 'quickAddBtn') {
+                    document.body.removeChild(menu);
+                    document.removeEventListener('click', closeMenu);
+                }
+            };
+            
+            setTimeout(() => {
+                document.addEventListener('click', closeMenu);
+            }, 100);
+        });
+    </script>
+</body>
+</html>
