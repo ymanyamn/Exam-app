@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة مطعم مزاج</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #c19a6b;
+            --primary-dark: #a67c52;
+            --secondary-color: #2a2a2a;
+            --dark-bg: #121212;
+            --darker-bg: #0a0a0a;
+            --light-text: #f5f5f5;
+            --gray-text: #b0b0b0;
+            --success-color: #4CAF50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --info-color: #2196F3;
+            --border-color: #333;
+            --card-bg: #1e1e1e;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* الترويسة */
+        header {
+            position: relative;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+        }
+
+        .logo {
+            font-family: 'Georgia', serif;
+            font-size: 5rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 20px rgba(193, 154, 107, 0.5);
+            letter-spacing: 5px;
+        }
+
+        .logo-sub {
+            font-size: 1.2rem;
+            color: var(--gray-text);
+            margin-top: 10px;
+        }
+
+        .programmer-info {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            color: var(--gray-text);
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+        }
+
+        /* التنقل بين الأقسام */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--gray-text);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* قسم إدارة الطاولات */
+        .tables-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .table-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+        }
+
+        .table-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .table-card.active {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(193, 154, 107, 0.3);
+        }
+
+        .table-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .table-status {
+            font-size: 0.9rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .available {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success-color);
+        }
+
+        .occupied {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--danger-color);
+        }
+
+        /* نافذة الطاولة */
+        .table-modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 450px;
+            height: 100%;
+            background-color: var(--darker-bg);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.4s ease;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .table-modal.active {
+            transform: translateX(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--gray-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .order-items {
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .item-name {
+            flex-grow: 1;
+        }
+
+        .item-price {
+            color: var(--primary-color);
+            margin: 0 15px;
+        }
+
+        .add-item-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .add-item-form select, .add-item-form button {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--light-text);
+        }
+
+        .add-item-form select {
+            flex-grow: 1;
+            margin-left: 10px;
+            border-radius: 5px;
+        }
+
+        .add-item-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 50px;
+        }
+
+        .table-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            background-color: var(--card-bg);
+            border-radius: 5px;
+            margin-top: 20px;
+            color: var(--primary-color);
+        }
+
+        /* جدول الأراكيل */
+        .araqil-container {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .araqil-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .araqil-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .araqil-table th, .araqil-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .araqil-table th {
+            background-color: rgba(193, 154, 107, 0.1);
+            color: var(--primary-color);
+        }
+
+        .araqil-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .today-summary {
+            display: flex;
+            justify-content: space-between;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* قسم الصادر والوارد */
+        .finance-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .finance-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .finance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .finance-type {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .sader {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--danger-color);
+        }
+
+        .warid {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success-color);
+        }
+
+        .transaction-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .transaction-form input, .transaction-form select {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            border-radius: 5px;
+            flex: 1;
+        }
+
+        .transaction-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 40px;
+        }
+
+        .transactions-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .transaction-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .transaction-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .transaction-actions button {
+            background: none;
+            border: none;
+            color: var(--gray-text);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .transaction-actions button:hover {
+            color: var(--primary-color);
+        }
+
+        .total-amount {
+            font-size: 1.3rem;
+            text-align: center;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* قسم الصافي */
+        .net-container {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .net-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .positive {
+            color: var(--success-color);
+        }
+
+        .negative {
+            color: var(--danger-color);
+        }
+
+        /* أزرار التحكم */
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .control-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .save-btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .reset-btn {
+            background-color: transparent;
+            color: var(--gray-text);
+            border: 1px solid var(--border-color);
+        }
+
+        .reset-btn:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1100px) {
+            .finance-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .tables-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3.5rem;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+            
+            .table-modal {
+                width: 100%;
+            }
+            
+            .araqil-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- الترويسة -->
+        <header>
+            <div class="programmer-info">
+                <i class="fas fa-code"></i> تم التطوير بواسطة: فريق برمجة مطعم مزاج
+            </div>
+            <div class="logo-container">
+                <div class="logo">مزاج</div>
+                <div class="logo-sub">مطعم و مقهى</div>
+            </div>
+        </header>
+
+        <!-- أزرار التنقل بين الأقسام -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tables">إدارة الطاولات</button>
+            <button class="tab-btn" data-tab="araqil">جدول الأراكيل</button>
+            <button class="tab-btn" data-tab="finance">الصادر والوارد</button>
+        </div>
+
+        <!-- قسم إدارة الطاولات -->
+        <div id="tables" class="tab-content active">
+            <h2 class="section-title">إدارة الطاولات</h2>
+            <div class="tables-container" id="tablesContainer">
+                <!-- سيتم إنشاء الطاولات ديناميكياً بواسطة JavaScript -->
+            </div>
+        </div>
+
+        <!-- قسم جدول الأراكيل -->
+        <div id="araqil" class="tab-content">
+            <div class="araqil-container">
+                <div class="araqil-header">
+                    <h2 class="section-title">جدول الأراكيل</h2>
+                    <div class="today-date" id="todayDate"></div>
+                </div>
+                <table class="araqil-table">
+                    <thead>
+                        <tr>
+                            <th>النوع</th>
+                            <th>العدد</th>
+                            <th>سعر المعلم</th>
+                            <th>سعر المحل</th>
+                            <th>إجمالي المعلم</th>
+                            <th>إجمالي المحل</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>أركيلة</td>
+                            <td id="araqilCount">0</td>
+                            <td>15,000 ل.س</td>
+                            <td>15,000 ل.س</td>
+                            <td id="araqilTeacherTotal">0 ل.س</td>
+                            <td id="araqilShopTotal">0 ل.س</td>
+                        </tr>
+                        <tr>
+                            <td>تبديل</td>
+                            <td id="tabdeelCount">0</td>
+                            <td>10,000 ل.س</td>
+                            <td>5,000 ل.س</td>
+                            <td id="tabdeelTeacherTotal">0 ل.س</td>
+                            <td id="tabdeelShopTotal">0 ل.س</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="today-summary">
+                    <div class="summary-item">
+                        <div>إجمالي الأراكيل اليوم</div>
+                        <div class="summary-value" id="totalAraqilToday">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div>صافي المعلم اليوم</div>
+                        <div class="summary-value" id="teacherNetToday">0 ل.س</div>
+                    </div>
+                    <div class="summary-item">
+                        <div>صافي المحل اليوم</div>
+                        <div class="summary-value" id="shopNetToday">0 ل.س</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم الصادر والوارد -->
+        <div id="finance" class="tab-content">
+            <div class="finance-container">
+                <!-- الصادر -->
+                <div class="finance-card">
+                    <div class="finance-header">
+                        <h3 class="section-title">الصادر</h3>
+                        <span class="finance-type sader">صادر</span>
+                    </div>
+                    <div class="transaction-form" id="saderForm">
+                        <select id="saderCategory">
+                            <option value="">اختر نوع الصرف</option>
+                            <option value="rent">إيجار</option>
+                            <option value="salaries">رواتب</option>
+                            <option value="utilities">مرافق</option>
+                            <option value="supplies">مستلزمات</option>
+                            <option value="maintenance">صيانة</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                        <input type="text" id="saderDescription" placeholder="وصف الصرف">
+                        <input type="number" id="saderAmount" placeholder="المبلغ">
+                        <button type="button" id="addSader"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="transactions-list" id="saderList">
+                        <!-- قائمة الصادرات -->
+                    </div>
+                    <div class="total-amount">
+                        إجمالي الصادر: <span id="saderTotal">0</span> ل.س
+                    </div>
+                </div>
+
+                <!-- الوارد -->
+                <div class="finance-card">
+                    <div class="finance-header">
+                        <h3 class="section-title">الوارد</h3>
+                        <span class="finance-type warid">وارد</span>
+                    </div>
+                    <div class="transaction-form" id="waridForm">
+                        <select id="waridCategory">
+                            <option value="">اختر نوع الدخل</option>
+                            <option value="sales">مبيعات</option>
+                            <option value="araqil">أراكيل</option>
+                            <option value="delivery">توصيل</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                        <input type="text" id="waridDescription" placeholder="وصف الدخل">
+                        <input type="number" id="waridAmount" placeholder="المبلغ">
+                        <button type="button" id="addWarid"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="transactions-list" id="waridList">
+                        <!-- قائمة الواردات -->
+                    </div>
+                    <div class="total-amount">
+                        إجمالي الوارد: <span id="waridTotal">0</span> ل.س
+                    </div>
+                </div>
+            </div>
+
+            <!-- قسم الصافي -->
+            <div class="net-container">
+                <h3 class="section-title">الصافي النهائي</h3>
+                <div class="net-value" id="netValue">0 ل.س</div>
+                <div id="netStatus"></div>
+            </div>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="control-buttons">
+            <button class="control-btn save-btn" id="saveData">
+                <i class="fas fa-save"></i> حفظ البيانات
+            </button>
+            <button class="control-btn reset-btn" id="resetData">
+                <i class="fas fa-redo"></i> إعادة تعيين
+            </button>
+        </div>
+    </div>
+
+    <!-- نافذة الطاولة -->
+    <div class="table-modal" id="tableModal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modalTableTitle">الطاولة 1</h3>
+            <button class="close-modal" id="closeModal">&times;</button>
+        </div>
+        <div class="order-items" id="orderItems">
+            <!-- عناصر الطلب تظهر هنا -->
+        </div>
+        <div class="add-item-form">
+            <select id="itemSelect">
+                <option value="">اختر مادة</option>
+                <option value="1">مشروبات</option>
+                <option value="2">مقبلات</option>
+                <option value="3">أراكيلة</option>
+                <option value="4">تبديل أراكيلة</option>
+                <option value="5">أطباق رئيسية</option>
+                <option value="6">حلويات</option>
+            </select>
+            <button id="addItemBtn"><i class="fas fa-plus"></i></button>
+        </div>
+        <div class="table-total">
+            الإجمالي: <span id="modalTotal">0</span> ل.س
+        </div>
+    </div>
+
+    <script>
+        // بيانات التطبيق
+        const appData = {
+            tables: [],
+            orders: {},
+            araqil: {
+                araqilCount: 0,
+                tabdeelCount: 0
+            },
+            finance: {
+                sader: [],
+                warid: []
+            },
+            menuItems: [
+                { id: 1, name: "مشروبات", price: 5000 },
+                { id: 2, name: "مقبلات", price: 10000 },
+                { id: 3, name: "أراكيلة", price: 30000 },
+                { id: 4, name: "تبديل أراكيلة", price: 15000 },
+                { id: 5, name: "أطباق رئيسية", price: 25000 },
+                { id: 6, name: "حلويات", price: 8000 }
+            ],
+            currentTable: null
+        };
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+            loadData();
+        });
+
+        // تهيئة التطبيق
+        function initializeApp() {
+            // إنشاء الطاولات
+            for (let i = 1; i <= 15; i++) {
+                appData.tables.push({
+                    id: i,
+                    number: i,
+                    status: Math.random() > 0.5 ? 'available' : 'occupied'
+                });
+                
+                appData.orders[i] = [];
+            }
+
+            // عرض الطاولات
+            renderTables();
+            
+            // عرض تاريخ اليوم
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('todayDate').textContent = today.toLocaleDateString('ar-EG', options);
+            
+            // تحديث أرقام الأراكيل
+            updateAraqilSummary();
+            
+            // تحديث الصافي المالي
+            updateFinanceSummary();
+        }
+
+        // إعداد مستمعي الأحداث
+        function setupEventListeners() {
+            // أزرار التبويب
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(this.dataset.tab).classList.add('active');
+                });
+            });
+            
+            // إغلاق نافذة الطاولة
+            document.getElementById('closeModal').addEventListener('click', closeTableModal);
+            
+            // إضافة عنصر للطلب
+            document.getElementById('addItemBtn').addEventListener('click', addItemToOrder);
+            
+            // إضافة صادر
+            document.getElementById('addSader').addEventListener('click', addSaderTransaction);
+            
+            // إضافة وارد
+            document.getElementById('addWarid').addEventListener('click', addWaridTransaction);
+            
+            // حفظ البيانات
+            document.getElementById('saveData').addEventListener('click', saveData);
+            
+            // إعادة تعيين
+            document.getElementById('resetData').addEventListener('click', resetData);
+            
+            // إغلاق النافذة بالضغط خارجها
+            document.addEventListener('click', function(event) {
+                const modal = document.getElementById('tableModal');
+                if (event.target === modal) {
+                    closeTableModal();
+                }
+            });
+        }
+
+        // عرض الطاولات
+        function renderTables() {
+            const tablesContainer = document.getElementById('tablesContainer');
+            tablesContainer.innerHTML = '';
+            
+            appData.tables.forEach(table => {
+                const tableCard = document.createElement('div');
+                tableCard.className = `table-card ${table.status}`;
+                if (table.id === appData.currentTable) {
+                    tableCard.classList.add('active');
+                }
+                
+                tableCard.innerHTML = `
+                    <div class="table-number">${table.number}</div>
+                    <div class="table-status ${table.status}">
+                        ${table.status === 'available' ? 'متاحة' : 'محجوزة'}
+                    </div>
+                `;
+                
+                tableCard.addEventListener('click', () => openTableModal(table.id));
+                tablesContainer.appendChild(tableCard);
+            });
+        }
+
+        // فتح نافذة الطاولة
+        function openTableModal(tableId) {
+            appData.currentTable = tableId;
+            const table = appData.tables.find(t => t.id === tableId);
+            
+            document.getElementById('modalTableTitle').textContent = `الطاولة ${table.number}`;
+            document.getElementById('tableModal').classList.add('active');
+            
+            renderOrderItems(tableId);
+            renderTables();
+        }
+
+        // إغلاق نافذة الطاولة
+        function closeTableModal() {
+            document.getElementById('tableModal').classList.remove('active');
+            appData.currentTable = null;
+            renderTables();
+        }
+
+        // عرض عناصر الطلب
+        function renderOrderItems(tableId) {
+            const orderItemsContainer = document.getElementById('orderItems');
+            const orders = appData.orders[tableId] || [];
+            
+            orderItemsContainer.innerHTML = '';
+            
+            let total = 0;
+            
+            if (orders.length === 0) {
+                orderItemsContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--gray-text);">لا توجد طلبات على هذه الطاولة</div>';
+            } else {
+                orders.forEach((item, index) => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'order-item';
+                    itemElement.innerHTML = `
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">${item.price.toLocaleString()} ل.س</div>
+                        <div class="item-actions">
+                            <button class="remove-item" data-index="${index}"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                    orderItemsContainer.appendChild(itemElement);
+                    total += item.price;
+                    
+                    // إضافة حدث الحذف
+                    itemElement.querySelector('.remove-item').addEventListener('click', function() {
+                        removeItemFromOrder(tableId, index);
+                    });
+                });
+            }
+            
+            document.getElementById('modalTotal').textContent = total.toLocaleString();
+        }
+
+        // إضافة عنصر للطلب
+        function addItemToOrder() {
+            if (!appData.currentTable) return;
+            
+            const itemSelect = document.getElementById('itemSelect');
+            const selectedItemId = parseInt(itemSelect.value);
+            
+            if (!selectedItemId) {
+                alert('يرجى اختيار مادة');
+                return;
+            }
+            
+            const selectedItem = appData.menuItems.find(item => item.id === selectedItemId);
+            
+            if (selectedItem) {
+                appData.orders[appData.currentTable].push({
+                    id: selectedItem.id,
+                    name: selectedItem.name,
+                    price: selectedItem.price
+                });
+                
+                // تحديث عداد الأراكيل إذا كانت المادة أراكيلة أو تبديل
+                if (selectedItem.id === 3) {
+                    appData.araqil.araqilCount++;
+                } else if (selectedItem.id === 4) {
+                    appData.araqil.tabdeelCount++;
+                }
+                
+                renderOrderItems(appData.currentTable);
+                updateAraqilSummary();
+                itemSelect.value = '';
+            }
+        }
+
+        // إزالة عنصر من الطلب
+        function removeItemFromOrder(tableId, itemIndex) {
+            const removedItem = appData.orders[tableId][itemIndex];
+            
+            // تحديث عداد الأراكيل إذا كانت المادة أراكيلة أو تبديل
+            if (removedItem.id === 3) {
+                appData.araqil.araqilCount--;
+            } else if (removedItem.id === 4) {
+                appData.araqil.tabdeelCount--;
+            }
+            
+            appData.orders[tableId].splice(itemIndex, 1);
+            renderOrderItems(tableId);
+            updateAraqilSummary();
+        }
+
+        // تحديث ملخص الأراكيل
+        function updateAraqilSummary() {
+            document.getElementById('araqilCount').textContent = appData.araqil.araqilCount;
+            document.getElementById('tabdeelCount').textContent = appData.araqil.tabdeelCount;
+            
+            const araqilTeacherTotal = appData.araqil.araqilCount * 15000;
+            const araqilShopTotal = appData.araqil.araqilCount * 15000;
+            const tabdeelTeacherTotal = appData.araqil.tabdeelCount * 10000;
+            const tabdeelShopTotal = appData.araqil.tabdeelCount * 5000;
+            
+            document.getElementById('araqilTeacherTotal').textContent = araqilTeacherTotal.toLocaleString() + ' ل.س';
+            document.getElementById('araqilShopTotal').textContent = araqilShopTotal.toLocaleString() + ' ل.س';
+            document.getElementById('tabdeelTeacherTotal').textContent = tabdeelTeacherTotal.toLocaleString() + ' ل.س';
+            document.getElementById('tabdeelShopTotal').textContent = tabdeelShopTotal.toLocaleString() + ' ل.س';
+            
+            const totalAraqilToday = appData.araqil.araqilCount + appData.araqil.tabdeelCount;
+            const teacherNetToday = araqilTeacherTotal + tabdeelTeacherTotal;
+            const shopNetToday = araqilShopTotal + tabdeelShopTotal;
+            
+            document.getElementById('totalAraqilToday').textContent = totalAraqilToday;
+            document.getElementById('teacherNetToday').textContent = teacherNetToday.toLocaleString() + ' ل.س';
+            document.getElementById('shopNetToday').textContent = shopNetToday.toLocaleString() + ' ل.س';
+        }
+
+        // إضافة معاملة صادر
+        function addSaderTransaction() {
+            const category = document.getElementById('saderCategory').value;
+            const description = document.getElementById('saderDescription').value;
+            const amount = parseFloat(document.getElementById('saderAmount').value);
+            
+            if (!category || !description || !amount || amount <= 0) {
+                alert('يرجى ملء جميع الحقول بشكل صحيح');
+                return;
+            }
+            
+            const transaction = {
+                id: Date.now(),
+                category,
+                description,
+                amount,
+                date: new Date().toLocaleString('ar-EG')
+            };
+            
+            appData.finance.sader.push(transaction);
+            renderSaderList();
+            updateFinanceSummary();
+            
+            // إعادة تعيين الحقول
+            document.getElementById('saderCategory').value = '';
+            document.getElementById('saderDescription').value = '';
+            document.getElementById('saderAmount').value = '';
+        }
+
+        // عرض قائمة الصادر
+        function renderSaderList() {
+            const saderList = document.getElementById('saderList');
+            saderList.innerHTML = '';
+            
+            let total = 0;
+            
+            appData.finance.sader.forEach(transaction => {
+                total += transaction.amount;
+                
+                const transactionElement = document.createElement('div');
+                transactionElement.className = 'transaction-item';
+                transactionElement.innerHTML = `
+                    <div>
+                        <div>${transaction.description}</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-text);">${transaction.date}</div>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="color: var(--danger-color); margin-left: 15px;">${transaction.amount.toLocaleString()} ل.س</div>
+                        <div class="transaction-actions">
+                            <button class="edit-transaction" data-id="${transaction.id}" data-type="sader"><i class="fas fa-edit"></i></button>
+                            <button class="delete-transaction" data-id="${transaction.id}" data-type="sader"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                saderList.appendChild(transactionElement);
+            });
+            
+            document.getElementById('saderTotal').textContent = total.toLocaleString();
+            
+            // إضافة أحداث الحذف والتعديل
+            document.querySelectorAll('.delete-transaction[data-type="sader"]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    deleteTransaction(id, 'sader');
+                });
+            });
+        }
+
+        // إضافة معاملة وارد
+        function addWaridTransaction() {
+            const category = document.getElementById('waridCategory').value;
+            const description = document.getElementById('waridDescription').value;
+            const amount = parseFloat(document.getElementById('waridAmount').value);
+            
+            if (!category || !description || !amount || amount <= 0) {
+                alert('يرجى ملء جميع الحقول بشكل صحيح');
+                return;
+            }
+            
+            const transaction = {
+                id: Date.now(),
+                category,
+                description,
+                amount,
+                date: new Date().toLocaleString('ar-EG')
+            };
+            
+            appData.finance.warid.push(transaction);
+            renderWaridList();
+            updateFinanceSummary();
+            
+            // إعادة تعيين الحقول
+            document.getElementById('waridCategory').value = '';
+            document.getElementById('waridDescription').value = '';
+            document.getElementById('waridAmount').value = '';
+        }
+
+        // عرض قائمة الوارد
+        function renderWaridList() {
+            const waridList = document.getElementById('waridList');
+            waridList.innerHTML = '';
+            
+            let total = 0;
+            
+            appData.finance.warid.forEach(transaction => {
+                total += transaction.amount;
+                
+                const transactionElement = document.createElement('div');
+                transactionElement.className = 'transaction-item';
+                transactionElement.innerHTML = `
+                    <div>
+                        <div>${transaction.description}</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-text);">${transaction.date}</div>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="color: var(--success-color); margin-left: 15px;">${transaction.amount.toLocaleString()} ل.س</div>
+                        <div class="transaction-actions">
+                            <button class="edit-transaction" data-id="${transaction.id}" data-type="warid"><i class="fas fa-edit"></i></button>
+                            <button class="delete-transaction" data-id="${transaction.id}" data-type="warid"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+                waridList.appendChild(transactionElement);
+            });
+            
+            document.getElementById('waridTotal').textContent = total.toLocaleString();
+            
+            // إضافة أحداث الحذف والتعديل
+            document.querySelectorAll('.delete-transaction[data-type="warid"]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.dataset.id);
+                    deleteTransaction(id, 'warid');
+                });
+            });
+        }
+
+        // حذف معاملة
+        function deleteTransaction(id, type) {
+            if (confirm('هل أنت متأكد من حذف هذه المعاملة؟')) {
+                if (type === 'sader') {
+                    appData.finance.sader = appData.finance.sader.filter(t => t.id !== id);
+                    renderSaderList();
+                } else {
+                    appData.finance.warid = appData.finance.warid.filter(t => t.id !== id);
+                    renderWaridList();
+                }
+                updateFinanceSummary();
+            }
+        }
+
+        // تحديث الملخص المالي
+        function updateFinanceSummary() {
+            const saderTotal = appData.finance.sader.reduce((sum, t) => sum + t.amount, 0);
+            const waridTotal = appData.finance.warid.reduce((sum, t) => sum + t.amount, 0);
+            const netTotal = waridTotal - saderTotal;
+            
+            const netValueElement = document.getElementById('netValue');
+            const netStatusElement = document.getElementById('netStatus');
+            
+            netValueElement.textContent = Math.abs(netTotal).toLocaleString() + ' ل.س';
+            
+            if (netTotal >= 0) {
+                netValueElement.className = 'net-value positive';
+                netStatusElement.innerHTML = '<span style="color: var(--success-color);"><i class="fas fa-arrow-up"></i> أرباح</span>';
+            } else {
+                netValueElement.className = 'net-value negative';
+                netStatusElement.innerHTML = '<span style="color: var(--danger-color);"><i class="fas fa-arrow-down"></i> خسائر</span>';
+            }
+        }
+
+        // حفظ البيانات
+        function saveData() {
+            localStorage.setItem('mazajRestaurantData', JSON.stringify(appData));
+            alert('تم حفظ البيانات بنجاح!');
+        }
+
+        // تحميل البيانات
+        function loadData() {
+            const savedData = localStorage.getItem('mazajRestaurantData');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                
+                // تحديث البيانات مع الحفاظ على الهيكل
+                if (parsedData.tables) appData.tables = parsedData.tables;
+                if (parsedData.orders) appData.orders = parsedData.orders;
+                if (parsedData.araqil) appData.araqil = parsedData.araqil;
+                if (parsedData.finance) appData.finance = parsedData.finance;
+                
+                // إعادة العرض
+                renderTables();
+                updateAraqilSummary();
+                renderSaderList();
+                renderWaridList();
+                updateFinanceSummary();
+            }
+        }
+
+        // إعادة تعيين البيانات
+        function resetData() {
+            if (confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟ سيتم فقدان جميع المعلومات الحالية.')) {
+                localStorage.removeItem('mazajRestaurantData');
+                
+                // إعادة تعيين البيانات
+                appData.orders = {};
+                for (let i = 1; i <= 15; i++) {
+                    appData.orders[i] = [];
+                }
+                
+                appData.araqil = {
+                    araqilCount: 0,
+                    tabdeelCount: 0
+                };
+                
+                appData.finance = {
+                    sader: [],
+                    warid: []
+                };
+                
+                // إعادة العرض
+                renderTables();
+                updateAraqilSummary();
+                renderSaderList();
+                renderWaridList();
+                updateFinanceSummary();
+                
+                alert('تم إعادة تعيين البيانات بنجاح');
+            }
+        }
+    </script>
+</body>
+</html>
