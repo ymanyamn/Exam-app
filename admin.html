@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>داماسكينو مول - اتصال صوتي مباشر</title>
+    <title>داماسكينو - اتصال ذكي</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #1a365d 0%, #2a4a7d 100%);
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
             color: white;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -24,377 +25,331 @@
         
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 400px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(212, 175, 55, 0.3);
-        }
-        
-        .logo {
-            font-size: 2.8rem;
-            color: #FFD700;
-            font-weight: 900;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .subtitle {
-            color: #e0e0ff;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
-        
-        .phone-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin: 40px 0;
-        }
-        
-        .phone-button {
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid transparent;
             border-radius: 20px;
-            padding: 25px 20px;
-            color: white;
-            font-size: 1.4rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .phone-button:hover {
-            transform: translateY(-5px);
-            background: rgba(212, 175, 55, 0.2);
-            border-color: #FFD700;
-        }
-        
-        .phone-button:active {
-            transform: translateY(-2px);
-        }
-        
-        .button-number {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: #FFD700;
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .button-info {
-            flex: 1;
-            text-align: right;
-            padding-right: 20px;
-        }
-        
-        .button-title {
-            font-size: 1.5rem;
-            margin-bottom: 5px;
-        }
-        
-        .button-desc {
-            font-size: 0.9rem;
-            color: #b0c4de;
-        }
-        
-        .button-icon {
-            font-size: 2rem;
-            color: #FFD700;
-        }
-        
-        .call-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .call-content {
-            background: linear-gradient(145deg, #1a365d, #2a4a7d);
-            border-radius: 25px;
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
+            padding: 30px;
             text-align: center;
-            border: 3px solid #FFD700;
-            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
         
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .call-icon {
-            font-size: 4rem;
-            color: #4CAF50;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        .call-title {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            color: #FFD700;
-        }
-        
-        .call-number {
+        .title {
             font-size: 2rem;
-            font-weight: 700;
+            color: gold;
+            margin-bottom: 10px;
+        }
+        
+        .channel-selector {
+            margin: 30px 0;
+        }
+        
+        .channel-btn {
+            width: 100%;
+            padding: 20px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid transparent;
+            border-radius: 15px;
             color: white;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            direction: ltr;
-            letter-spacing: 2px;
-        }
-        
-        .call-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .call-btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            gap: 15px;
         }
         
-        .call-btn.call {
-            background: #4CAF50;
-            color: white;
+        .channel-btn.active {
+            background: rgba(212, 175, 55, 0.3);
+            border-color: gold;
+            transform: scale(1.02);
         }
         
-        .call-btn.close {
-            background: #f44336;
-            color: white;
-        }
-        
-        .call-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        .instructions {
-            margin-top: 40px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-            font-size: 0.9rem;
-            color: #b0c4de;
-            line-height: 1.6;
-        }
-        
-        .qr-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-        }
-        
-        .qr-code {
-            width: 150px;
-            height: 150px;
-            background: white;
-            margin: 15px auto;
-            border-radius: 15px;
+        .channel-number {
+            width: 40px;
+            height: 40px;
+            background: gold;
+            color: #1a2980;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #1a365d;
-            font-weight: 700;
-            font-size: 0.8rem;
-            text-align: center;
-            padding: 10px;
+            font-weight: bold;
         }
         
-        @media (max-width: 600px) {
-            .container {
-                padding: 30px 20px;
-                border-radius: 20px;
-            }
-            
-            .logo {
-                font-size: 2.2rem;
-            }
-            
-            .phone-button {
-                padding: 20px 15px;
-                font-size: 1.2rem;
-            }
-            
-            .button-number {
-                width: 60px;
-                height: 60px;
-                font-size: 2rem;
-            }
-            
-            .call-content {
-                padding: 30px 20px;
-            }
+        .voice-controls {
+            margin-top: 40px;
+        }
+        
+        #voiceButton {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ff416c, #ff4b2b);
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+            box-shadow: 0 10px 30px rgba(255, 65, 108, 0.3);
+        }
+        
+        #voiceButton.listening {
+            background: linear-gradient(145deg, #4CAF50, #2E7D32);
+            animation: pulse 1.5s infinite;
+            transform: scale(1.05);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+        
+        .message-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        
+        .status {
+            margin-top: 20px;
+            color: #b0e0e6;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">داماسكينو مول</div>
-        <div class="subtitle">نظام الاتصال الصوتي المباشر - يعمل من المتصفح فقط</div>
+        <div class="title">🎤 اتصال صوتي ذكي</div>
+        <div style="color: #ccc; margin-bottom: 20px;">
+            تحدث وسنرسل رسالتك تلقائياً
+        </div>
         
-        <div class="phone-buttons">
-            <!-- زر الأمن -->
-            <div class="phone-button" onclick="openCallModal('الأمن والسلامة', '+966501234567')">
-                <div class="button-number">1</div>
-                <div class="button-info">
-                    <div class="button-title">الأمن والسلامة</div>
-                    <div class="button-desc">اتصال مباشر مع غرفة العمليات الأمنية</div>
+        <div class="channel-selector">
+            <button class="channel-btn active" onclick="selectChannel(1)">
+                <div class="channel-number">1</div>
+                <div style="text-align: right;">
+                    <div>الأمن والسلامة</div>
+                    <div style="font-size: 0.8rem; color: #ccc;">ارسل رسالة صوتية للأمن</div>
                 </div>
-                <div class="button-icon">🛡️</div>
-            </div>
+            </button>
             
-            <!-- زر الإدارة -->
-            <div class="phone-button" onclick="openCallModal('الإدارة العامة', '+966502345678')">
-                <div class="button-number">2</div>
-                <div class="button-info">
-                    <div class="button-title">الإدارة العامة</div>
-                    <div class="button-desc">اتصال مباشر مع مكتب الإدارة الرئيسي</div>
+            <button class="channel-btn" onclick="selectChannel(2)">
+                <div class="channel-number">2</div>
+                <div style="text-align: right;">
+                    <div>الإدارة العامة</div>
+                    <div style="font-size: 0.8rem; color: #ccc;">ارسل رسالة صوتية للإدارة</div>
                 </div>
-                <div class="button-icon">🏢</div>
+            </button>
+        </div>
+        
+        <div class="voice-controls">
+            <button id="voiceButton" ontouchstart="startListening()" 
+                    onmousedown="startListening()" ontouchend="stopListening()" 
+                    onmouseup="stopListening()">
+                <span style="font-size: 2rem;">🎤</span>
+                اضغط وتحدث
+            </button>
+            
+            <div class="message-box" id="messageDisplay">
+                اضغط الزر الأحمر وتحدث... وسنرسل رسالتك
             </div>
         </div>
         
-        <div class="instructions">
-            <strong>🎯 كيف يعمل النظام:</strong><br>
-            1. اضغط على الزر المطلوب<br>
-            2. اضغط على "الاتصال الآن"<br>
-            3. المتصفح سيتصل مباشرة بالرقم<br>
-            4. تتحدث مباشرة مع القسم المطلوب<br>
-            <span style="color: #FFD700;">لا حاجة لتثبيت أي تطبيق!</span>
-        </div>
-        
-        <div class="qr-section">
-            <div style="margin-bottom: 10px;">📱 امسح الكود للدخول السريع:</div>
-            <div class="qr-code">
-                <div>داماسكينو مول<br>نظام الاتصال<br>damaschino.link</div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- نافذة الاتصال -->
-    <div class="call-modal" id="callModal">
-        <div class="call-content">
-            <div class="call-icon">📞</div>
-            <div class="call-title" id="callDepartment">الأمن والسلامة</div>
-            <div style="color: #b0c4de; margin-bottom: 20px;">
-                جاري الاتصال بالقسم المحدد...
-            </div>
-            
-            <div class="call-number" id="callNumber">+966501234567</div>
-            
-            <div class="call-actions">
-                <button class="call-btn call" onclick="makeCall()">
-                    <span style="font-size: 1.3rem;">📞</span>
-                    الاتصال الآن
-                </button>
-                <button class="call-btn close" onclick="closeCallModal()">
-                    <span style="font-size: 1.3rem;">✖</span>
-                    إلغاء
-                </button>
-            </div>
-            
-            <div style="margin-top: 25px; color: #b0c4de; font-size: 0.9rem;">
-                <i class="fas fa-info-circle"></i> سيتم فتح تطبيق الهاتف للتحدث مباشرة
-            </div>
+        <div class="status" id="status">
+            اختر القناة ثم اضغط وتحدث
         </div>
     </div>
 
     <script>
-        let currentPhoneNumber = '';
-        let currentDepartment = '';
+        let selectedChannel = 1;
+        let isListening = false;
+        let recognition = null;
         
-        function openCallModal(department, phoneNumber) {
-            currentDepartment = department;
-            currentPhoneNumber = phoneNumber;
+        // دعم متصفحات مختلفة
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        function selectChannel(channel) {
+            selectedChannel = channel;
             
-            document.getElementById('callDepartment').textContent = department;
-            document.getElementById('callNumber').textContent = phoneNumber;
-            document.getElementById('callModal').style.display = 'flex';
+            // تحديث الواجهة
+            document.querySelectorAll('.channel-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            document.getElementById('status').textContent = 
+                `القناة ${channel} نشطة - ${channel === 1 ? 'الأمن' : 'الإدارة'}`;
         }
         
-        function closeCallModal() {
-            document.getElementById('callModal').style.display = 'none';
-        }
-        
-        function makeCall() {
-            // استخدام tel: protocol للاتصال بالرقم مباشرة
-            window.location.href = `tel:${currentPhoneNumber}`;
+        function startListening() {
+            if (!SpeechRecognition) {
+                alert('المتصفح لا يدخص التعرف على الصوت. جرب Chrome أو Edge');
+                return;
+            }
             
-            // إغلاق النافذة بعد ثانية
-            setTimeout(() => {
-                closeCallModal();
+            isListening = true;
+            document.getElementById('voiceButton').classList.add('listening');
+            document.getElementById('messageDisplay').textContent = '🎤 أستمع إليك... تحدث الآن';
+            
+            // تهيئة التعرف على الصوت
+            recognition = new SpeechRecognition();
+            recognition.lang = 'ar-SA'; // العربية السعودية
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            
+            recognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                }
                 
-                // عرض رسالة تأكيد
-                alert(`✅ تم بدء الاتصال بـ ${currentDepartment}\nالرقم: ${currentPhoneNumber}`);
+                document.getElementById('messageDisplay').textContent = transcript;
+                
+                // إذا كانت النتيجة نهائية، أرسلها
+                if (event.results[0].isFinal) {
+                    sendVoiceMessage(transcript);
+                }
+            };
+            
+            recognition.onerror = (event) => {
+                console.error('خطأ في التعرف:', event.error);
+                document.getElementById('status').textContent = 'خطأ في التعرف على الصوت';
+            };
+            
+            recognition.start();
+        }
+        
+        function stopListening() {
+            if (recognition && isListening) {
+                isListening = false;
+                recognition.stop();
+                document.getElementById('voiceButton').classList.remove('listening');
+                document.getElementById('status').textContent = 'تم إرسال رسالتك';
+            }
+        }
+        
+        function sendVoiceMessage(message) {
+            // هنا يمكنك إرسال الرسالة إلى الخادم
+            // لكن لأغراض العرض، سنعرضها فقط
+            
+            const channelName = selectedChannel === 1 ? 'الأمن' : 'الإدارة';
+            
+            // محاكاة إرسال الرسالة
+            setTimeout(() => {
+                document.getElementById('status').textContent = 
+                    `✅ تم إرسال رسالتك إلى ${channelName}: "${message}"`;
+                
+                // إظهار رسالة نجاح
+                showNotification(`رسالتك وصلت إلى ${channelName}`);
+                
+                // محاكاة الرد بعد 3 ثوان
+                setTimeout(() => {
+                    simulateResponse(channelName);
+                }, 3000);
             }, 1000);
         }
         
-        // إغلاق النافذة بالضغط على ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeCallModal();
-            }
-        });
+        function simulateResponse(channel) {
+            const responses = {
+                'الأمن': [
+                    "تم استلام رسالتك، فريق الأمن في الطريق",
+                    "نفهم الموقف، جاري الإرسال",
+                    "شكراً للإبلاغ، نتخذ الإجراءات اللازمة"
+                ],
+                'الإدارة': [
+                    "شكراً على تواصلكم، سنعالج الأمر",
+                    "تم استلام ملاحظتكم، نشكركم",
+                    "نقدر اقتراحكم، سندرس الأمر"
+                ]
+            };
+            
+            const randomResponse = responses[channel][Math.floor(Math.random() * responses[channel].length)];
+            
+            // عرض الرد
+            document.getElementById('messageDisplay').innerHTML = 
+                `<span style="color: #4CAF50;">📞 ${channel}:</span> ${randomResponse}`;
+            
+            // قراءة الرد صوتياً
+            speakResponse(randomResponse);
+        }
         
-        // إغلاق النافذة بالضغط خارجها
-        document.getElementById('callModal').addEventListener('click', (e) => {
-            if (e.target.id === 'callModal') {
-                closeCallModal();
+        function speakResponse(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ar-SA';
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
             }
-        });
+        }
         
-        // توليد كود QR ديناميكي (للعرض فقط)
+        function showNotification(message) {
+            // إنشاء إشعار بسيط
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 15px;
+                border-radius: 10px;
+                text-align: center;
+                z-index: 1000;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                animation: slideDown 0.3s ease-out;
+            `;
+            
+            // إضافة أنيميشن
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideDown {
+                    from { transform: translateY(-100px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // إزالة الإشعار بعد 3 ثوان
+            setTimeout(() => {
+                notification.style.animation = 'slideDown 0.3s ease-out reverse';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // بدء التشغيل
         window.onload = function() {
-            console.log('نظام اتصال داماسكينو مول - جاهز للعمل!');
-            console.log('📞 اضغط زر 1 للاتصال بالأمن');
-            console.log('🏢 اضغط زر 2 للاتصال بالإدارة');
+            console.log('النظام جاهز! اضغط الزر الأحمر وتحدث');
+            
+            // اختبار دعم المتصفح
+            if (!SpeechRecognition) {
+                document.getElementById('status').textContent = 
+                    '⚠️ المتصفح لا يدعم التعرف على الصوت. جرب Chrome على الجوال';
+            }
         };
     </script>
 </body>
