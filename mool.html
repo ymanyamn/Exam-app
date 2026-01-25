@@ -15,217 +15,182 @@
         }
         
         :root {
-            --primary: #121212;
+            --primary: #0A0A0A;
             --secondary: #FF6B35;
             --accent: #FF6B35;
-            --light: #1E1E1E;
-            --dark: #0A0A0A;
-            --success: #4CAF50;
-            --warning: #FF9800;
+            --card-bg: #1A1A1A;
             --text: #FFFFFF;
-            --text-secondary: #AAAAAA;
-            --card-bg: #1E1E1E;
+            --text-secondary: #CCCCCC;
             --border: #333333;
+            --success: #2ECC71;
+            --warning: #FF9800;
+            --danger: #FF5252;
         }
         
         body {
             background-color: var(--primary);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.5;
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
         
-        /* تطبيق كامل الشاشة */
-        html, body {
-            height: 100%;
-            width: 100%;
-            position: fixed;
-            overflow: hidden;
-        }
-        
+        /* تطبيق كامل الشاشة للهاتف */
         .app-container {
-            height: 100vh;
             width: 100vw;
-            display: flex;
-            flex-direction: column;
+            min-height: 100vh;
+            max-width: 100%;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--primary) 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 100%);
+            position: relative;
         }
         
         /* Header - شريط الحالة والتطبيق */
         .app-header {
-            background-color: rgba(10, 10, 10, 0.95);
-            padding-top: env(safe-area-inset-top, 0);
-            position: relative;
+            background: linear-gradient(135deg, var(--primary) 0%, #151515 100%);
+            padding: 10px 15px;
+            position: sticky;
+            top: 0;
             z-index: 100;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
             border-bottom: 1px solid var(--border);
-        }
-        
-        .status-bar {
-            height: 24px;
-            background-color: transparent;
-        }
-        
-        .header-content {
-            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: relative;
         }
         
         .logo-container {
             display: flex;
             align-items: center;
+            gap: 12px;
         }
         
         .logo {
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             background: linear-gradient(135deg, var(--secondary) 0%, #FF8B35 100%);
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 12px;
-            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
         }
         
         .logo i {
-            font-size: 28px;
+            font-size: 22px;
             color: white;
         }
         
         .header-text {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .app-title {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 700;
             color: white;
-            margin-bottom: 3px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            line-height: 1.2;
         }
         
         .app-subtitle {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
-            opacity: 0.9;
+            margin-top: 2px;
         }
         
         /* معلومات المبرمج في الزاوية اليمنى */
         .developer-info {
-            position: absolute;
-            left: 20px;
-            top: 15px;
-            text-align: left;
             background: rgba(255, 107, 53, 0.1);
-            padding: 10px 15px;
-            border-radius: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
             border: 1px solid rgba(255, 107, 53, 0.2);
-            backdrop-filter: blur(10px);
-            max-width: 250px;
+            text-align: center;
+            max-width: 140px;
         }
         
         .developer-name {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--secondary);
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .developer-name i {
-            margin-right: 8px;
-            font-size: 16px;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .developer-phone {
-            font-size: 13px;
+            font-size: 11px;
             color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
+        /* شاشة الترحيب الرئيسية */
+        .welcome-screen {
             display: flex;
+            flex-direction: column;
             align-items: center;
-        }
-        
-        .developer-phone i {
-            margin-right: 8px;
-            font-size: 14px;
-            color: var(--secondary);
-        }
-        
-        /* العنوان الرئيسي في منتصف الصفحة */
-        .main-title-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            justify-content: center;
+            padding: 40px 20px;
             text-align: center;
-            z-index: 1;
-            width: 90%;
-            max-width: 800px;
-            padding: 40px;
-            background: rgba(30, 30, 30, 0.7);
-            border-radius: 25px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            min-height: calc(100vh - 140px); /* ارتفاع الشاشة - الهيدر والفوتر */
         }
         
         .main-title {
-            font-size: 3.5rem;
+            font-size: 28px;
             font-weight: 800;
             color: white;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
-            line-height: 1.2;
-            background: linear-gradient(135deg, #FFFFFF 0%, var(--secondary) 100%);
+            margin-bottom: 15px;
+            line-height: 1.3;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .main-title span {
+            background: linear-gradient(135deg, var(--secondary) 0%, #FF8B35 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
         .main-subtitle {
-            font-size: 1.4rem;
+            font-size: 16px;
             color: var(--text-secondary);
             margin-bottom: 30px;
+            max-width: 500px;
             line-height: 1.5;
         }
         
         .main-description {
-            font-size: 1.1rem;
+            font-size: 14px;
             color: var(--text-secondary);
             line-height: 1.6;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0 auto 40px;
             padding: 20px;
-            background: rgba(10, 10, 10, 0.5);
+            background: rgba(30, 30, 30, 0.5);
             border-radius: 15px;
             border-left: 4px solid var(--secondary);
         }
         
         /* Navigation - شريط التنقل السفلي */
         .bottom-nav {
-            background-color: rgba(10, 10, 10, 0.95);
-            padding-bottom: env(safe-area-inset-bottom, 0);
+            background: linear-gradient(135deg, var(--primary) 0%, #151515 100%);
             border-top: 1px solid var(--border);
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             z-index: 100;
-            height: 80px;
+            height: 70px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(15px);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            padding-bottom: env(safe-area-inset-bottom);
         }
         
         .nav-item {
@@ -235,10 +200,9 @@
             justify-content: center;
             width: 25%;
             height: 100%;
-            padding: 10px 0;
             text-decoration: none;
             color: var(--text-secondary);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             position: relative;
         }
         
@@ -247,50 +211,50 @@
         }
         
         .nav-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-            transition: all 0.3s ease;
-            width: 50px;
-            height: 50px;
+            font-size: 20px;
+            margin-bottom: 6px;
+            transition: all 0.2s ease;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 15px;
-            background: rgba(255, 107, 53, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
         }
         
         .nav-item.active .nav-icon {
             background: rgba(255, 107, 53, 0.2);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
         }
         
         .nav-text {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
         }
         
         /* Content Area */
         .content-area {
-            flex: 1;
+            padding: 20px 15px 90px; /* مساحة للتنقل السفلي */
+            min-height: calc(100vh - 70px);
             overflow-y: auto;
-            padding: 20px;
-            padding-bottom: 100px; /* مساحة لشريط التنقل السفلي */
             -webkit-overflow-scrolling: touch;
-            position: relative;
-            z-index: 2;
-            background: transparent;
+        }
+        
+        /* إخفاء شاشة الترحيب عند التنقل */
+        .welcome-screen.hidden {
+            display: none;
         }
         
         /* Content Sections */
         .content-section {
             display: none;
-            animation: fadeIn 0.5s ease;
-            min-height: 100%;
+            animation: fadeIn 0.3s ease;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
@@ -299,51 +263,49 @@
         }
         
         .section-title {
-            font-size: 28px;
+            font-size: 22px;
             color: white;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         .section-title i {
-            margin-left: 15px;
+            margin-left: 12px;
             color: var(--secondary);
-            font-size: 32px;
+            font-size: 24px;
         }
         
         /* Form Styles */
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .form-label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: var(--text-secondary);
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .form-control {
             width: 100%;
-            padding: 18px 20px;
-            background-color: rgba(30, 30, 30, 0.8);
-            border: 2px solid var(--border);
-            border-radius: 15px;
+            padding: 16px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             font-size: 16px;
             color: white;
             transition: all 0.3s;
-            backdrop-filter: blur(10px);
         }
         
         .form-control:focus {
             border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
             outline: none;
             background-color: rgba(40, 40, 40, 0.8);
         }
@@ -352,22 +314,21 @@
             color: #666;
         }
         
-        /* Buttons - أزرار مستطيلة برتقالية */
+        /* Buttons */
         .btn {
-            padding: 20px 30px;
+            padding: 18px 20px;
             border: none;
-            border-radius: 15px;
-            font-size: 18px;
+            border-radius: 12px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
+            gap: 10px;
             width: 100%;
-            margin-bottom: 15px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 12px;
             position: relative;
             overflow: hidden;
         }
@@ -381,29 +342,14 @@
             color: white;
         }
         
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #FF5722 0%, var(--secondary) 100%);
-            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.5);
-        }
-        
         .btn-secondary {
             background: linear-gradient(135deg, #333 0%, #555 100%);
             color: white;
         }
         
-        .btn-secondary:hover {
-            background: linear-gradient(135deg, #444 0%, #666 100%);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        }
-        
         .btn-success {
-            background: linear-gradient(135deg, var(--success) 0%, #66BB6A 100%);
+            background: linear-gradient(135deg, var(--success) 0%, #27AE60 100%);
             color: white;
-        }
-        
-        .btn-success:hover {
-            background: linear-gradient(135deg, #388E3C 0%, var(--success) 100%);
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
         }
         
         .btn-warning {
@@ -411,59 +357,46 @@
             color: white;
         }
         
-        .btn-warning:hover {
-            background: linear-gradient(135deg, #F57C00 0%, var(--warning) 100%);
-            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.5);
-        }
-        
-        .btn i {
-            margin-left: 12px;
-            font-size: 20px;
-        }
-        
         /* Product Camera */
         .camera-container {
-            border: 3px dashed var(--border);
-            border-radius: 20px;
-            padding: 30px;
+            border: 2px dashed var(--border);
+            border-radius: 15px;
+            padding: 20px;
             text-align: center;
-            margin-bottom: 30px;
-            background-color: rgba(30, 30, 30, 0.6);
-            min-height: 350px;
+            margin-bottom: 25px;
+            background-color: var(--card-bg);
+            min-height: 250px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
         }
         
         #camera-view {
             width: 100%;
-            max-width: 450px;
-            border-radius: 15px;
+            max-width: 100%;
+            border-radius: 12px;
             display: none;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             transform: scaleX(-1);
             background-color: black;
-            border: 2px solid var(--border);
         }
         
         #captured-image {
             max-width: 100%;
-            max-height: 300px;
-            border-radius: 15px;
+            max-height: 200px;
+            border-radius: 12px;
             display: none;
-            margin-bottom: 20px;
-            border: 3px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 15px;
+            border: 2px solid var(--border);
         }
         
         .camera-controls {
             display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 10px;
             width: 100%;
+            max-width: 300px;
         }
         
         /* Product Display */
@@ -471,23 +404,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px;
-            background: rgba(30, 30, 30, 0.8);
-            border-radius: 20px;
-            margin-top: 30px;
+            padding: 25px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            margin-top: 20px;
             text-align: center;
-            border: 2px solid var(--border);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
         }
         
         .product-image {
             max-width: 100%;
-            max-height: 300px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border: 3px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-height: 200px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border);
         }
         
         .product-info {
@@ -497,7 +427,7 @@
         .product-field {
             display: flex;
             justify-content: space-between;
-            padding: 20px 0;
+            padding: 15px 0;
             border-bottom: 1px solid var(--border);
         }
         
@@ -508,62 +438,59 @@
         .field-label {
             font-weight: 600;
             color: var(--text-secondary);
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .field-value {
             color: white;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 16px;
         }
         
         .price-value {
             color: var(--secondary);
-            font-size: 36px;
+            font-size: 28px;
             font-weight: 800;
-            text-shadow: 0 2px 10px rgba(255, 107, 53, 0.4);
         }
         
         /* Products Grid */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
         
         .product-card {
-            background: rgba(30, 30, 30, 0.8);
-            border-radius: 20px;
+            background: var(--card-bg);
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s ease;
-            border: 2px solid var(--border);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
         }
         
         .product-card:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            border-color: var(--secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
         
         .product-card-img {
             width: 100%;
-            height: 160px;
+            height: 120px;
             object-fit: cover;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
         
         .product-card-body {
-            padding: 20px;
+            padding: 15px;
         }
         
         .product-card-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: white;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -571,75 +498,54 @@
         
         .product-card-code {
             color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-size: 12px;
+            margin-bottom: 10px;
         }
         
         .product-card-price {
             color: var(--secondary);
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 800;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+            margin-bottom: 15px;
         }
         
         .product-card-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         
         .product-card-actions .btn {
-            padding: 12px;
-            font-size: 14px;
+            padding: 10px;
+            font-size: 12px;
             margin: 0;
-            border-radius: 12px;
+            flex: 1;
         }
         
         /* Barcode Scanner */
         .barcode-scanner {
-            border: 3px dashed var(--border);
-            border-radius: 20px;
-            padding: 30px;
+            border: 2px dashed var(--border);
+            border-radius: 15px;
+            padding: 20px;
             text-align: center;
-            margin-bottom: 30px;
-            background-color: rgba(30, 30, 30, 0.6);
-            min-height: 400px;
+            margin-bottom: 25px;
+            background-color: var(--card-bg);
+            min-height: 300px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-        
-        #barcode-scanner-view {
-            width: 100%;
-            max-width: 450px;
-            border-radius: 15px;
-            display: none;
-            margin-bottom: 20px;
-            background-color: black;
-        }
-        
-        .scanner-controls {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            width: 100%;
         }
         
         .scanner-frame {
             position: relative;
             width: 100%;
-            max-width: 450px;
-            height: 350px;
+            height: 250px;
             overflow: hidden;
-            border-radius: 20px;
-            margin-bottom: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
             display: none;
             background-color: black;
-            border: 3px solid var(--border);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--border);
         }
         
         .scanner-frame video {
@@ -658,17 +564,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.5);
         }
         
         .scanner-line {
-            width: 85%;
-            height: 5px;
+            width: 80%;
+            height: 3px;
             background: linear-gradient(90deg, transparent, var(--secondary), transparent);
             position: relative;
             animation: scan 2s linear infinite;
-            box-shadow: 0 0 30px rgba(255, 107, 53, 0.8);
-            border-radius: 3px;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.7);
         }
         
         @keyframes scan {
@@ -679,48 +584,49 @@
         .scanner-guide {
             color: white;
             font-weight: bold;
-            text-shadow: 0 3px 6px rgba(0,0,0,0.9);
-            margin-top: 40px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            margin-top: 30px;
             text-align: center;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px 25px;
-            border-radius: 12px;
-            font-size: 18px;
-            border: 2px solid rgba(255, 107, 53, 0.3);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        
+        .scanner-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
         }
         
         /* Search Tabs */
         .search-tabs {
             display: flex;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--border);
-            background-color: rgba(30, 30, 30, 0.8);
-            border-radius: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            background-color: var(--card-bg);
+            border-radius: 10px;
             overflow: hidden;
-            backdrop-filter: blur(10px);
         }
         
         .search-tab {
             flex: 1;
-            padding: 20px;
+            padding: 15px;
             cursor: pointer;
             font-weight: 600;
             text-align: center;
             color: var(--text-secondary);
             transition: all 0.3s ease;
-            border-bottom: 4px solid transparent;
-            font-size: 16px;
-        }
-        
-        .search-tab:hover {
-            color: white;
-            background-color: rgba(255, 107, 53, 0.1);
+            border-bottom: 3px solid transparent;
+            font-size: 14px;
         }
         
         .search-tab.active {
             color: var(--secondary);
-            border-bottom: 4px solid var(--secondary);
-            background-color: rgba(255, 107, 53, 0.15);
+            border-bottom: 3px solid var(--secondary);
+            background-color: rgba(255, 107, 53, 0.1);
         }
         
         .search-tab-content {
@@ -733,14 +639,12 @@
         
         /* Alerts */
         .alert {
-            padding: 20px 25px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
             display: none;
-            border-left: 6px solid;
-            background-color: rgba(30, 30, 30, 0.9);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--border);
+            border-left: 4px solid;
+            background-color: var(--card-bg);
         }
         
         .alert-success {
@@ -749,8 +653,8 @@
         }
         
         .alert-error {
-            border-left-color: #FF5252;
-            color: #FF5252;
+            border-left-color: var(--danger);
+            color: var(--danger);
         }
         
         .alert-info {
@@ -761,13 +665,13 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 30px;
+            padding: 50px 20px;
             color: var(--text-secondary);
         }
         
         .empty-state i {
-            font-size: 80px;
-            margin-bottom: 25px;
+            font-size: 60px;
+            margin-bottom: 20px;
             color: #333;
         }
         
@@ -775,18 +679,17 @@
         .loading {
             display: none;
             text-align: center;
-            padding: 50px 30px;
+            padding: 40px 20px;
         }
         
         .loading-spinner {
-            border: 5px solid rgba(255, 255, 255, 0.1);
-            border-top: 5px solid var(--secondary);
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--secondary);
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 25px;
-            box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+            margin: 0 auto 15px;
         }
         
         @keyframes spin {
@@ -803,224 +706,269 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
+            z-index: 1000;
             align-items: center;
             justify-content: center;
             padding: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(5px);
         }
         
         .modal-content {
-            background: rgba(30, 30, 30, 0.95);
-            border-radius: 25px;
+            background: var(--card-bg);
+            border-radius: 20px;
             width: 100%;
-            max-width: 550px;
+            max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
-            border: 2px solid var(--border);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-            animation: modalIn 0.4s ease;
-            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            animation: modalIn 0.3s ease;
         }
         
         @keyframes modalIn {
-            from { transform: scale(0.8); opacity: 0; }
+            from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
         
         .modal-header {
-            padding: 30px 30px 20px;
-            border-bottom: 2px solid var(--border);
-            display: flex;
-            align-items: center;
+            padding: 25px 25px 15px;
+            border-bottom: 1px solid var(--border);
         }
         
         .modal-title {
-            font-size: 24px;
+            font-size: 20px;
             color: white;
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .modal-body {
-            padding: 30px;
+            padding: 25px;
         }
         
         /* Responsive */
         @media (max-width: 768px) {
+            .welcome-screen {
+                padding: 30px 15px;
+            }
+            
             .main-title {
-                font-size: 2.5rem;
+                font-size: 24px;
             }
             
             .main-subtitle {
-                font-size: 1.1rem;
+                font-size: 14px;
             }
             
             .main-description {
-                font-size: 0.9rem;
+                font-size: 13px;
                 padding: 15px;
+                margin-bottom: 30px;
             }
             
             .developer-info {
-                max-width: 200px;
-                padding: 8px 12px;
+                max-width: 120px;
+                padding: 6px 10px;
             }
             
             .developer-name {
-                font-size: 12px;
+                font-size: 11px;
             }
             
             .developer-phone {
-                font-size: 11px;
+                font-size: 10px;
             }
             
             .content-area {
-                padding: 15px;
-                padding-bottom: 90px;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 15px;
-            }
-            
-            .btn {
-                padding: 18px 25px;
-                font-size: 16px;
-            }
-            
-            .section-title {
-                font-size: 24px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .main-title {
-                font-size: 2rem;
-            }
-            
-            .main-title-container {
-                padding: 25px;
-            }
-            
-            .nav-icon {
-                width: 45px;
-                height: 45px;
-                font-size: 20px;
-            }
-            
-            .nav-text {
-                font-size: 11px;
-            }
-            
-            .bottom-nav {
-                height: 75px;
+                padding: 15px 12px 80px;
             }
             
             .products-grid {
                 grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 12px;
+            }
+            
+            .btn {
+                padding: 16px;
+                font-size: 15px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .camera-container,
+            .barcode-scanner {
+                min-height: 220px;
+                padding: 15px;
+            }
+            
+            .scanner-frame {
+                height: 200px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .app-header {
+                height: 60px;
+                padding: 10px;
+            }
+            
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .logo i {
+                font-size: 20px;
+            }
+            
+            .app-title {
+                font-size: 16px;
+            }
+            
+            .app-subtitle {
+                font-size: 11px;
+            }
+            
+            .main-title {
+                font-size: 22px;
+            }
+            
+            .nav-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+            
+            .nav-text {
+                font-size: 10px;
+            }
+            
+            .bottom-nav {
+                height: 65px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                gap: 10px;
+            }
+            
+            .product-card-img {
+                height: 100px;
+            }
+            
+            .product-card-body {
+                padding: 12px;
+            }
+            
+            .product-card-title {
+                font-size: 14px;
+            }
+            
+            .product-card-price {
+                font-size: 16px;
+            }
+            
+            .product-card-actions .btn {
+                padding: 8px;
+                font-size: 11px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .main-title {
+                font-size: 20px;
+            }
+            
+            .developer-info {
+                display: none;
             }
         }
         
         /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
         
         ::-webkit-scrollbar-track {
-            background: rgba(30, 30, 30, 0.5);
+            background: transparent;
         }
         
         ::-webkit-scrollbar-thumb {
-            background: var(--secondary);
-            border-radius: 4px;
+            background: var(--border);
+            border-radius: 3px;
         }
         
-        ::-webkit-scrollbar-thumb:hover {
-            background: #FF8B35;
+        /* Safe Area Support */
+        .safe-area-top {
+            padding-top: env(safe-area-inset-top);
         }
         
-        /* Animation for main title */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -40%);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
+        .safe-area-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
         }
         
-        .main-title-container {
-            animation: fadeInUp 1s ease-out;
-        }
-        
-        /* Background Pattern */
-        .bg-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 107, 53, 0.08) 0%, transparent 50%);
-            z-index: 0;
-            pointer-events: none;
+        /* Hidden file input */
+        .hidden-input {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="bg-pattern"></div>
-    
     <div class="app-container">
-        <!-- العنوان الرئيسي في منتصف الصفحة -->
-        <div class="main-title-container">
-            <h1 class="main-title">تطبيق إدارة الأسعار للموظفين</h1>
-            <p class="main-subtitle">خاص بالمولات الكبيرة والمتاجر المتعددة</p>
-            <div class="main-description">
-                تطبيق متكامل لإدارة أسعار المنتجات، مسح الباركود، وتحديث المعلومات بشكل فوري وسهل للموظفين والعاملين في المتاجر الكبيرة.
-            </div>
-        </div>
-        
         <!-- App Header -->
         <header class="app-header">
-            <div class="status-bar"></div>
-            <div class="header-content">
-                <div class="logo-container">
-                    <div class="logo">
-                        <i class="fas fa-store-alt"></i>
-                    </div>
-                    <div class="header-text">
-                        <h1 class="app-title">مول داماسكينو</h1>
-                        <p class="app-subtitle">نظام إدارة الأسعار المتكامل</p>
-                    </div>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-store-alt"></i>
                 </div>
-                
-                <!-- معلومات المبرمج في الزاوية اليمنى -->
-                <div class="developer-info">
-                    <div class="developer-name">
-                        <i class="fas fa-user-tie"></i>
-                        يمان محمد الحسين
-                    </div>
-                    <div class="developer-phone">
-                        <i class="fas fa-phone"></i>
-                        0952725590
-                    </div>
+                <div class="header-text">
+                    <h1 class="app-title">مول داماسكينو</h1>
+                    <p class="app-subtitle">إدارة الأسعار للموظفين</p>
                 </div>
+            </div>
+            
+            <!-- معلومات المبرمج في الزاوية اليمنى -->
+            <div class="developer-info">
+                <div class="developer-name">يمان محمد الحسين</div>
+                <div class="developer-phone">0952725590</div>
             </div>
         </header>
         
+        <!-- شاشة الترحيب الرئيسية -->
+        <div class="welcome-screen" id="welcome-screen">
+            <h1 class="main-title">
+                <span>تطبيق إدارة الأسعار</span><br>
+                للموظفين
+            </h1>
+            <p class="main-subtitle">خاص بالمولات الكبيرة والمتاجر المتعددة</p>
+            <div class="main-description">
+                نظام متكامل لإدارة أسعار المنتجات، مسح الباركود، وتحديث المعلومات بشكل فوري وسهل للموظفين والعاملين.
+            </div>
+            
+            <div style="width: 100%; max-width: 300px;">
+                <button id="get-started-btn" class="btn btn-primary" style="margin-top: 20px;">
+                    <i class="fas fa-play"></i> ابدأ الآن
+                </button>
+            </div>
+        </div>
+        
         <!-- Main Content Area -->
-        <main class="content-area" id="content-area">
+        <main class="content-area" id="content-area" style="display: none;">
             <!-- Lookup Section -->
-            <section id="lookup-section" class="content-section active">
+            <section id="lookup-section" class="content-section">
                 <h2 class="section-title"><i class="fas fa-search"></i> استعلام عن سعر</h2>
                 
                 <div class="search-tabs">
-                    <div class="search-tab active" data-search-type="code">البحث بالكود</div>
-                    <div class="search-tab" data-search-type="price">البحث بالسعر</div>
+                    <div class="search-tab active" data-search-type="code">بالكود</div>
+                    <div class="search-tab" data-search-type="price">بـالسعر</div>
                 </div>
                 
                 <div class="alert alert-success" id="lookup-success"></div>
@@ -1034,7 +982,7 @@
                     </div>
                     
                     <button id="lookup-by-code-btn" class="btn btn-primary">
-                        <i class="fas fa-search"></i> استعلام بالكود
+                        <i class="fas fa-search"></i> استعلام
                     </button>
                 </div>
                 
@@ -1042,16 +990,16 @@
                 <div id="search-by-price" class="search-tab-content">
                     <div class="form-group">
                         <label for="product-price-lookup" class="form-label">أدخل سعر المنتج:</label>
-                        <input type="number" id="product-price-lookup" class="form-control" placeholder="أدخل السعر للبحث">
+                        <input type="number" id="product-price-lookup" class="form-control" placeholder="أدخل السعر">
                     </div>
                     
                     <button id="lookup-by-price-btn" class="btn btn-primary">
-                        <i class="fas fa-search"></i> استعلام بالسعر
+                        <i class="fas fa-search"></i> استعلام
                     </button>
                 </div>
                 
                 <!-- Results Container -->
-                <div id="product-results-container" style="margin-top: 30px;"></div>
+                <div id="product-results-container" style="margin-top: 25px;"></div>
             </section>
             
             <!-- Barcode Scanner Section -->
@@ -1064,9 +1012,9 @@
                 
                 <div class="barcode-scanner">
                     <div id="barcode-instructions">
-                        <i class="fas fa-barcode" style="font-size: 80px; color: #444; margin-bottom: 25px;"></i>
-                        <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 18px;">انقر على "بدء المسح" لمسح باركود المنتج</p>
-                        <p style="color: #666; font-size: 16px;">أو أدخل كود الباركود يدوياً أدناه</p>
+                        <i class="fas fa-barcode" style="font-size: 60px; color: #444; margin-bottom: 20px;"></i>
+                        <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 16px;">انقر على "بدء المسح" لمسح باركود المنتج</p>
+                        <p style="color: #666; font-size: 14px;">أو أدخل كود الباركود يدوياً</p>
                     </div>
                     
                     <div class="scanner-frame" id="scanner-frame">
@@ -1082,21 +1030,21 @@
                             <i class="fas fa-camera"></i> بدء المسح
                         </button>
                         <button id="stop-scan-btn" class="btn btn-secondary" style="display: none;">
-                            <i class="fas fa-stop"></i> إيقاف المسح
+                            <i class="fas fa-stop"></i> إيقاف
                         </button>
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="manual-barcode" class="form-label">أدخل كود الباركود يدوياً:</label>
-                    <input type="text" id="manual-barcode" class="form-control" placeholder="أدخل كود الباركود هنا">
+                    <input type="text" id="manual-barcode" class="form-control" placeholder="أدخل كود الباركود">
                 </div>
                 
                 <button id="lookup-barcode-btn" class="btn btn-primary">
-                    <i class="fas fa-search"></i> استعلام بالباركود
+                    <i class="fas fa-search"></i> استعلام
                 </button>
                 
-                <div id="barcode-result" class="product-display" style="display: none; margin-top: 30px;">
+                <div id="barcode-result" class="product-display" style="display: none; margin-top: 25px;">
                     <img id="barcode-result-image" class="product-image" src="" alt="صورة المنتج">
                     <div class="product-info">
                         <div class="product-field">
@@ -1120,8 +1068,8 @@
                 
                 <div class="camera-container">
                     <div id="camera-instructions">
-                        <i class="fas fa-camera" style="font-size: 80px; color: #444; margin-bottom: 25px;"></i>
-                        <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 18px;">لإضافة منتج جديد، التقط صورة للمنتج</p>
+                        <i class="fas fa-camera" style="font-size: 60px; color: #444; margin-bottom: 20px;"></i>
+                        <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 16px;">لإضافة منتج جديد، التقط صورة للمنتج</p>
                     </div>
                     
                     <video id="camera-view" autoplay playsinline></video>
@@ -1132,7 +1080,7 @@
                             <i class="fas fa-camera"></i> فتح الكاميرا
                         </button>
                         <button id="capture-btn" class="btn btn-secondary" style="display: none;">
-                            <i class="fas fa-camera-retro"></i> التقاط صورة
+                            <i class="fas fa-camera-retro"></i> التقاط
                         </button>
                         <button id="upload-image-btn" class="btn btn-warning">
                             <i class="fas fa-upload"></i> رفع صورة
@@ -1185,14 +1133,14 @@
         </main>
         
         <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="#" class="nav-item active" data-target="lookup-section">
+        <nav class="bottom-nav" style="display: none;" id="bottom-nav">
+            <a href="#" class="nav-item" data-target="lookup-section">
                 <i class="fas fa-search nav-icon"></i>
                 <span class="nav-text">استعلام</span>
             </a>
             <a href="#" class="nav-item" data-target="barcode-section">
                 <i class="fas fa-barcode nav-icon"></i>
-                <span class="nav-text">مسح باركود</span>
+                <span class="nav-text">باركود</span>
             </a>
             <a href="#" class="nav-item" data-target="add-section">
                 <i class="fas fa-plus-circle nav-icon"></i>
@@ -1209,7 +1157,7 @@
     <div id="edit-modal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title"><i class="fas fa-edit" style="margin-left: 10px;"></i> تعديل المنتج</h2>
+                <h2 class="modal-title"><i class="fas fa-edit"></i> تعديل المنتج</h2>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -1229,16 +1177,16 @@
                 
                 <div class="form-group">
                     <label class="form-label">صورة المنتج الحالية:</label>
-                    <img id="edit-product-image" src="" alt="صورة المنتج" style="width: 100%; max-height: 250px; border-radius: 15px; margin-bottom: 20px; border: 3px solid var(--border);">
+                    <img id="edit-product-image" src="" alt="صورة المنتج" style="width: 100%; max-height: 200px; border-radius: 12px; margin-bottom: 15px; border: 2px solid var(--border);">
                     <button id="change-image-btn" class="btn btn-warning">
                         <i class="fas fa-exchange-alt"></i> تغيير الصورة
                     </button>
-                    <input type="file" id="edit-image-upload" accept="image/*" style="display: none;">
+                    <input type="file" id="edit-image-upload" accept="image/*" class="hidden-input">
                 </div>
                 
-                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                <div style="display: flex; gap: 12px; margin-top: 20px;">
                     <button id="update-product-btn" class="btn btn-success" style="flex: 1;">
-                        <i class="fas fa-save"></i> حفظ التعديلات
+                        <i class="fas fa-save"></i> حفظ
                     </button>
                     <button id="close-edit-modal-btn" class="btn btn-secondary" style="flex: 1;">
                         <i class="fas fa-times"></i> إلغاء
@@ -1249,7 +1197,7 @@
     </div>
     
     <!-- Hidden file inputs -->
-    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+    <input type="file" id="image-upload" accept="image/*" class="hidden-input">
     
     <!-- JavaScript Code -->
     <script>
@@ -1261,6 +1209,9 @@
         
         // تهيئة التطبيق عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
+            // زر البدء
+            document.getElementById('get-started-btn').addEventListener('click', startApp);
+            
             // تعيين أحداث التنقل
             setupNavigation();
             
@@ -1279,14 +1230,21 @@
             // تعيين أحداث نافذة التعديل
             setupEditModal();
             
-            // تحميل المنتجات عند فتح قسم المنتجات
-            document.querySelector('.nav-item[data-target="products-section"]').addEventListener('click', loadProducts);
-            
             // إضافة بعض المنتجات الافتراضية إذا لم تكن هناك منتجات
             if (products.length === 0) {
                 addSampleProducts();
             }
         });
+        
+        // بدء التطبيق
+        function startApp() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('content-area').style.display = 'block';
+            document.getElementById('bottom-nav').style.display = 'flex';
+            
+            // تفعيل قسم الاستعلام افتراضياً
+            document.querySelector('.nav-item[data-target="lookup-section"]').click();
+        }
         
         // إضافة منتجات افتراضية
         function addSampleProducts() {
@@ -1296,14 +1254,14 @@
                     code: 'DMSK-001', 
                     barcode: '123456789012',
                     price: 120, 
-                    image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxRTEiRTEiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjRkZGNjM1IiBmb250LXdlaWdodD0iYm9sZCI+UHJvZHVjdCAjMTwvdGV4dD48L3N2Zz4='
+                    image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxQTFBMUEiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjRkZGNjM1IiBmb250LXdlaWdodD0iYm9sZCI+UHJvZHVjdCAjMTwvdGV4dD48L3N2Zz4='
                 },
                 { 
                     id: Date.now() + 1, 
                     code: 'DMSK-002', 
                     barcode: '987654321098',
                     price: 85.5, 
-                    image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxRTEiRTEiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjRkZGNjM1IiBmb250LXdlaWdodD0iYm9sZCI+UHJvZHVjdCAjMjwvdGV4dD48L3N2Zz4='
+                    image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxQTFBMUEiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjRkZGNjM1IiBmb250LXdlaWdodD0iYm9sZCI+UHJvZHVjdCAjMjwvdGV4dD48L3N2Zz4='
                 }
             ];
             
@@ -1340,6 +1298,11 @@
                     
                     // التمرير إلى الأعلى
                     document.getElementById('content-area').scrollTop = 0;
+                    
+                    // تحميل المنتجات إذا كان القسم هو المنتجات
+                    if (targetId === 'products-section') {
+                        loadProducts();
+                    }
                 });
             });
         }
@@ -1490,7 +1453,7 @@
                 return;
             }
             
-            let productsHTML = '<h3 style="margin-bottom: 20px; color: white; font-size: 22px;">المنتجات التي تم العثور عليها:</h3>';
+            let productsHTML = '<h3 style="margin-bottom: 15px; color: white; font-size: 18px;">المنتجات التي تم العثور عليها:</h3>';
             productsHTML += '<div class="products-grid">';
             
             productsList.forEach(product => {
@@ -1501,10 +1464,10 @@
                             <h3 class="product-card-title">${product.code}</h3>
                             <p class="product-card-price">${product.price} ر.س</p>
                             <div class="product-card-actions">
-                                <button class="btn btn-primary edit-btn" style="padding: 10px; font-size: 12px; margin: 0;">
+                                <button class="btn btn-primary edit-btn" style="padding: 8px; font-size: 12px; margin: 0;">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-secondary delete-btn" style="padding: 10px; font-size: 12px; margin: 0;">
+                                <button class="btn btn-secondary delete-btn" style="padding: 8px; font-size: 12px; margin: 0;">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -1568,9 +1531,7 @@
                 // محاولة فتح الكاميرا
                 const constraints = {
                     video: {
-                        facingMode: "environment",
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
+                        facingMode: "environment"
                     },
                     audio: false
                 };
@@ -1638,9 +1599,6 @@
             stopScanBtn.style.display = 'none';
             instructions.style.display = 'block';
             infoAlert.style.display = 'none';
-            
-            // إزالة أحداث الاختبار
-            scannerFrame.removeEventListener('click', null);
         }
         
         // معالجة نتيجة الباركود
@@ -1719,9 +1677,7 @@
                     // محاولة فتح الكاميرا الخلفية
                     const constraints = {
                         video: {
-                            facingMode: "environment",
-                            width: { ideal: 1280 },
-                            height: { ideal: 720 }
+                            facingMode: "environment"
                         }
                     };
                     
@@ -1929,10 +1885,10 @@
                     ${product.barcode ? `<p class="product-card-code">${product.barcode}</p>` : ''}
                     <p class="product-card-price">${product.price} ر.س</p>
                     <div class="product-card-actions">
-                        <button class="btn btn-primary edit-btn" style="padding: 10px; font-size: 12px; margin: 0;">
+                        <button class="btn btn-primary edit-btn" style="padding: 8px; font-size: 12px; margin: 0;">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-secondary delete-btn" style="padding: 10px; font-size: 12px; margin: 0;">
+                        <button class="btn btn-secondary delete-btn" style="padding: 8px; font-size: 12px; margin: 0;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
