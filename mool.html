@@ -25,6 +25,7 @@
             --success: #2ECC71;
             --warning: #FF9800;
             --danger: #FF5252;
+            --developer: #4A90E2;
         }
         
         body {
@@ -57,7 +58,7 @@
             z-index: 100;
             border-bottom: 1px solid var(--border);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            height: 70px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -66,12 +67,12 @@
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
         }
         
         .logo {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, var(--secondary) 0%, #FF8B35 100%);
             border-radius: 12px;
             display: flex;
@@ -81,7 +82,7 @@
         }
         
         .logo i {
-            font-size: 22px;
+            font-size: 24px;
             color: white;
         }
         
@@ -91,42 +92,17 @@
         }
         
         .app-title {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 800;
             color: white;
             line-height: 1.2;
+            letter-spacing: -0.5px;
         }
         
         .app-subtitle {
             font-size: 12px;
             color: var(--text-secondary);
-            margin-top: 2px;
-        }
-        
-        /* معلومات المبرمج في الزاوية اليمنى */
-        .developer-info {
-            background: rgba(255, 107, 53, 0.1);
-            padding: 8px 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            text-align: center;
-            max-width: 140px;
-        }
-        
-        .developer-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 3px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .developer-phone {
-            font-size: 11px;
-            color: var(--text-secondary);
-            white-space: nowrap;
+            margin-top: 3px;
         }
         
         /* شاشة الترحيب الرئيسية */
@@ -137,14 +113,15 @@
             justify-content: center;
             padding: 40px 20px;
             text-align: center;
-            min-height: calc(100vh - 140px); /* ارتفاع الشاشة - الهيدر والفوتر */
+            min-height: calc(100vh - 140px);
+            background: linear-gradient(180deg, rgba(10,10,10,0.9) 0%, rgba(26,26,26,0.95) 100%);
         }
         
         .main-title {
-            font-size: 28px;
-            font-weight: 800;
+            font-size: 32px;
+            font-weight: 900;
             color: white;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             line-height: 1.3;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
@@ -154,26 +131,28 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            display: block;
         }
         
         .main-subtitle {
-            font-size: 16px;
+            font-size: 18px;
             color: var(--text-secondary);
             margin-bottom: 30px;
             max-width: 500px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         
         .main-description {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.7;
             max-width: 600px;
             margin: 0 auto 40px;
-            padding: 20px;
-            background: rgba(30, 30, 30, 0.5);
-            border-radius: 15px;
+            padding: 25px;
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 20px;
             border-left: 4px solid var(--secondary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         /* Navigation - شريط التنقل السفلي */
@@ -185,11 +164,11 @@
             left: 0;
             right: 0;
             z-index: 100;
-            height: 70px;
+            height: 80px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
             padding-bottom: env(safe-area-inset-bottom);
         }
         
@@ -202,7 +181,7 @@
             height: 100%;
             text-decoration: none;
             color: var(--text-secondary);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             position: relative;
         }
         
@@ -211,11 +190,11 @@
         }
         
         .nav-icon {
-            font-size: 20px;
+            font-size: 22px;
             margin-bottom: 6px;
-            transition: all 0.2s ease;
-            width: 40px;
-            height: 40px;
+            transition: all 0.3s ease;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -225,19 +204,19 @@
         
         .nav-item.active .nav-icon {
             background: rgba(255, 107, 53, 0.2);
-            transform: translateY(-3px);
+            transform: translateY(-5px);
             box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
         }
         
         .nav-text {
-            font-size: 11px;
-            font-weight: 500;
+            font-size: 12px;
+            font-weight: 600;
         }
         
         /* Content Area */
         .content-area {
-            padding: 20px 15px 90px; /* مساحة للتنقل السفلي */
-            min-height: calc(100vh - 70px);
+            padding: 25px 18px 100px;
+            min-height: calc(100vh - 80px);
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
@@ -250,11 +229,11 @@
         /* Content Sections */
         .content-section {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.4s ease;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
@@ -263,41 +242,41 @@
         }
         
         .section-title {
-            font-size: 22px;
+            font-size: 24px;
             color: white;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
             display: flex;
             align-items: center;
-            font-weight: 700;
+            font-weight: 800;
         }
         
         .section-title i {
-            margin-left: 12px;
+            margin-left: 15px;
             color: var(--secondary);
-            font-size: 24px;
+            font-size: 26px;
         }
         
         /* Form Styles */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         
         .form-label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: var(--text-secondary);
-            font-size: 14px;
+            font-size: 15px;
         }
         
         .form-control {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            border: 2px solid var(--border);
+            border-radius: 15px;
             font-size: 16px;
             color: white;
             transition: all 0.3s;
@@ -305,7 +284,7 @@
         
         .form-control:focus {
             border-color: var(--secondary);
-            box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
             outline: none;
             background-color: rgba(40, 40, 40, 0.8);
         }
@@ -316,19 +295,19 @@
         
         /* Buttons */
         .btn {
-            padding: 18px 20px;
+            padding: 20px;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             position: relative;
             overflow: hidden;
         }
@@ -359,13 +338,13 @@
         
         /* Product Camera */
         .camera-container {
-            border: 2px dashed var(--border);
-            border-radius: 15px;
-            padding: 20px;
+            border: 3px dashed var(--border);
+            border-radius: 20px;
+            padding: 25px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             background-color: var(--card-bg);
-            min-height: 250px;
+            min-height: 280px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -375,28 +354,28 @@
         #camera-view {
             width: 100%;
             max-width: 100%;
-            border-radius: 12px;
+            border-radius: 15px;
             display: none;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             transform: scaleX(-1);
             background-color: black;
         }
         
         #captured-image {
             max-width: 100%;
-            max-height: 200px;
-            border-radius: 12px;
+            max-height: 220px;
+            border-radius: 15px;
             display: none;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             border: 2px solid var(--border);
         }
         
         .camera-controls {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
-            max-width: 300px;
+            max-width: 320px;
         }
         
         /* Product Display */
@@ -404,19 +383,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 25px;
+            padding: 30px;
             background: var(--card-bg);
-            border-radius: 15px;
-            margin-top: 20px;
+            border-radius: 20px;
+            margin-top: 25px;
             text-align: center;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
         
         .product-image {
             max-width: 100%;
-            max-height: 200px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            max-height: 220px;
+            border-radius: 15px;
+            margin-bottom: 25px;
             border: 2px solid var(--border);
         }
         
@@ -427,7 +407,7 @@
         .product-field {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
+            padding: 18px 0;
             border-bottom: 1px solid var(--border);
         }
         
@@ -436,59 +416,59 @@
         }
         
         .field-label {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-secondary);
-            font-size: 16px;
+            font-size: 17px;
         }
         
         .field-value {
             color: white;
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 700;
+            font-size: 17px;
         }
         
         .price-value {
             color: var(--secondary);
-            font-size: 28px;
-            font-weight: 800;
+            font-size: 30px;
+            font-weight: 900;
         }
         
         /* Products Grid */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 18px;
+            margin-top: 25px;
         }
         
         .product-card {
             background: var(--card-bg);
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
             transition: all 0.3s ease;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
         }
         
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
         
         .product-card-img {
             width: 100%;
-            height: 120px;
+            height: 130px;
             object-fit: cover;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 2px solid var(--border);
         }
         
         .product-card-body {
-            padding: 15px;
+            padding: 18px;
         }
         
         .product-card-title {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 17px;
+            font-weight: 800;
             color: white;
             margin-bottom: 8px;
             white-space: nowrap;
@@ -498,38 +478,38 @@
         
         .product-card-code {
             color: var(--text-secondary);
-            font-size: 12px;
-            margin-bottom: 10px;
+            font-size: 13px;
+            margin-bottom: 12px;
         }
         
         .product-card-price {
             color: var(--secondary);
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 18px;
         }
         
         .product-card-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
         
         .product-card-actions .btn {
-            padding: 10px;
-            font-size: 12px;
+            padding: 12px;
+            font-size: 13px;
             margin: 0;
             flex: 1;
         }
         
         /* Barcode Scanner */
         .barcode-scanner {
-            border: 2px dashed var(--border);
-            border-radius: 15px;
-            padding: 20px;
+            border: 3px dashed var(--border);
+            border-radius: 20px;
+            padding: 25px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             background-color: var(--card-bg);
-            min-height: 300px;
+            min-height: 320px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -539,10 +519,10 @@
         .scanner-frame {
             position: relative;
             width: 100%;
-            height: 250px;
+            height: 280px;
             overflow: hidden;
-            border-radius: 15px;
-            margin-bottom: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
             display: none;
             background-color: black;
             border: 2px solid var(--border);
@@ -569,7 +549,7 @@
         
         .scanner-line {
             width: 80%;
-            height: 3px;
+            height: 4px;
             background: linear-gradient(90deg, transparent, var(--secondary), transparent);
             position: relative;
             animation: scan 2s linear infinite;
@@ -588,39 +568,40 @@
             margin-top: 30px;
             text-align: center;
             background: rgba(0, 0, 0, 0.7);
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 14px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 15px;
         }
         
         .scanner-controls {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
-            max-width: 300px;
+            max-width: 320px;
         }
         
         /* Search Tabs */
         .search-tabs {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border);
             background-color: var(--card-bg);
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         
         .search-tab {
             flex: 1;
-            padding: 15px;
+            padding: 18px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             text-align: center;
             color: var(--text-secondary);
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
-            font-size: 14px;
+            font-size: 15px;
         }
         
         .search-tab.active {
@@ -639,12 +620,13 @@
         
         /* Alerts */
         .alert {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 25px;
             display: none;
-            border-left: 4px solid;
+            border-left: 5px solid;
             background-color: var(--card-bg);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
         
         .alert-success {
@@ -665,13 +647,13 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 50px 20px;
+            padding: 60px 25px;
             color: var(--text-secondary);
         }
         
         .empty-state i {
-            font-size: 60px;
-            margin-bottom: 20px;
+            font-size: 70px;
+            margin-bottom: 25px;
             color: #333;
         }
         
@@ -679,17 +661,17 @@
         .loading {
             display: none;
             text-align: center;
-            padding: 40px 20px;
+            padding: 50px 25px;
         }
         
         .loading-spinner {
             border: 4px solid rgba(255, 255, 255, 0.1);
             border-top: 4px solid var(--secondary);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
         }
         
         @keyframes spin {
@@ -705,23 +687,24 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.95);
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            backdrop-filter: blur(5px);
+            padding: 25px;
+            backdrop-filter: blur(8px);
         }
         
         .modal-content {
             background: var(--card-bg);
-            border-radius: 20px;
+            border-radius: 25px;
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             max-height: 90vh;
             overflow-y: auto;
-            border: 1px solid var(--border);
-            animation: modalIn 0.3s ease;
+            border: 2px solid var(--border);
+            animation: modalIn 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
         
         @keyframes modalIn {
@@ -730,103 +713,362 @@
         }
         
         .modal-header {
-            padding: 25px 25px 15px;
-            border-bottom: 1px solid var(--border);
+            padding: 30px 30px 20px;
+            border-bottom: 2px solid var(--border);
         }
         
         .modal-title {
-            font-size: 20px;
+            font-size: 22px;
             color: white;
-            font-weight: 700;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .modal-body {
-            padding: 25px;
+            padding: 30px;
+        }
+        
+        /* Developer Badge - إشعار دائم في الزاوية اليمنى */
+        .developer-badge {
+            position: fixed;
+            top: 100px;
+            right: 15px;
+            z-index: 9999;
+            background: linear-gradient(135deg, var(--developer) 0%, #2C77D6 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            max-width: 200px;
+            animation: slideInRight 0.5s ease;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .developer-badge:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(74, 144, 226, 0.5);
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .badge-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .badge-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .badge-title {
+            font-size: 14px;
+            font-weight: 800;
+        }
+        
+        .developer-details {
+            text-align: center;
+        }
+        
+        .developer-name {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .developer-phone {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+            direction: ltr;
+        }
+        
+        .developer-message {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        
+        /* Floating Developer Button - زر عائم للمبرمج */
+        .floating-developer-btn {
+            position: fixed;
+            bottom: 100px;
+            left: 15px;
+            z-index: 999;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--developer) 0%, #2C77D6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating-developer-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(74, 144, 226, 0.6);
+        }
+        
+        /* Developer Info Modal */
+        .developer-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1A1A1A 0%, #252525 100%);
+            border-radius: 25px;
+            padding: 35px;
+            z-index: 10000;
+            max-width: 450px;
+            width: 90%;
+            border: 2px solid var(--developer);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            display: none;
+            animation: modalIn 0.5s ease;
+        }
+        
+        .developer-modal.active {
+            display: block;
+        }
+        
+        .developer-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+        
+        .developer-modal-overlay.active {
+            display: block;
+        }
+        
+        .developer-modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .developer-modal-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--developer) 0%, #2C77D6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 35px;
+            box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4);
+        }
+        
+        .developer-modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .developer-modal-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+        
+        .developer-info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid var(--developer);
+        }
+        
+        .info-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(74, 144, 226, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--developer);
+        }
+        
+        .info-content h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: white;
+        }
+        
+        .info-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+        
+        .developer-modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-call {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-call:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .btn-close {
+            background: linear-gradient(135deg, #666 0%, #444 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-close:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 102, 102, 0.3);
         }
         
         /* Responsive */
         @media (max-width: 768px) {
             .welcome-screen {
-                padding: 30px 15px;
+                padding: 35px 18px;
             }
             
             .main-title {
-                font-size: 24px;
+                font-size: 28px;
             }
             
             .main-subtitle {
-                font-size: 14px;
+                font-size: 16px;
             }
             
             .main-description {
-                font-size: 13px;
-                padding: 15px;
-                margin-bottom: 30px;
-            }
-            
-            .developer-info {
-                max-width: 120px;
-                padding: 6px 10px;
-            }
-            
-            .developer-name {
-                font-size: 11px;
-            }
-            
-            .developer-phone {
-                font-size: 10px;
+                font-size: 14px;
+                padding: 20px;
+                margin-bottom: 35px;
             }
             
             .content-area {
-                padding: 15px 12px 80px;
+                padding: 20px 15px 90px;
             }
             
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-                gap: 12px;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 15px;
             }
             
             .btn {
-                padding: 16px;
-                font-size: 15px;
+                padding: 18px;
+                font-size: 16px;
             }
             
             .section-title {
-                font-size: 20px;
-                margin-bottom: 20px;
+                font-size: 22px;
+                margin-bottom: 25px;
             }
             
             .camera-container,
             .barcode-scanner {
-                min-height: 220px;
-                padding: 15px;
+                min-height: 250px;
+                padding: 20px;
             }
             
             .scanner-frame {
-                height: 200px;
+                height: 220px;
+            }
+            
+            .developer-badge {
+                top: 90px;
+                max-width: 180px;
+                padding: 12px;
+            }
+            
+            .floating-developer-btn {
+                width: 55px;
+                height: 55px;
+                bottom: 90px;
             }
         }
         
         @media (max-width: 480px) {
             .app-header {
-                height: 60px;
+                height: 75px;
                 padding: 10px;
             }
             
             .logo {
-                width: 40px;
-                height: 40px;
+                width: 45px;
+                height: 45px;
             }
             
             .logo i {
-                font-size: 20px;
+                font-size: 22px;
             }
             
             .app-title {
-                font-size: 16px;
+                font-size: 18px;
             }
             
             .app-subtitle {
@@ -834,67 +1076,105 @@
             }
             
             .main-title {
-                font-size: 22px;
+                font-size: 24px;
             }
             
             .nav-icon {
-                width: 35px;
-                height: 35px;
-                font-size: 18px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
             }
             
             .nav-text {
-                font-size: 10px;
+                font-size: 11px;
             }
             
             .bottom-nav {
-                height: 65px;
+                height: 75px;
             }
             
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-                gap: 10px;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 12px;
             }
             
             .product-card-img {
-                height: 100px;
+                height: 110px;
             }
             
             .product-card-body {
-                padding: 12px;
+                padding: 15px;
             }
             
             .product-card-title {
-                font-size: 14px;
+                font-size: 15px;
             }
             
             .product-card-price {
-                font-size: 16px;
+                font-size: 18px;
             }
             
             .product-card-actions .btn {
-                padding: 8px;
-                font-size: 11px;
+                padding: 10px;
+                font-size: 12px;
+            }
+            
+            .developer-badge {
+                top: 85px;
+                right: 10px;
+                max-width: 160px;
+                padding: 10px;
+            }
+            
+            .badge-title {
+                font-size: 12px;
+            }
+            
+            .developer-name {
+                font-size: 13px;
+            }
+            
+            .developer-phone {
+                font-size: 12px;
+            }
+            
+            .developer-message {
+                font-size: 10px;
+            }
+            
+            .floating-developer-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 85px;
+                left: 10px;
             }
         }
         
         @media (max-width: 360px) {
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
             }
             
             .main-title {
-                font-size: 20px;
+                font-size: 22px;
             }
             
-            .developer-info {
-                display: none;
+            .developer-badge {
+                max-width: 140px;
+                padding: 8px;
+            }
+            
+            .badge-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
             }
         }
         
         /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
         
         ::-webkit-scrollbar-track {
@@ -903,7 +1183,11 @@
         
         ::-webkit-scrollbar-thumb {
             background: var(--border);
-            border-radius: 3px;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
         
         /* Safe Area Support */
@@ -934,27 +1218,102 @@
                     <p class="app-subtitle">إدارة الأسعار للموظفين</p>
                 </div>
             </div>
-            
-            <!-- معلومات المبرمج في الزاوية اليمنى -->
-            <div class="developer-info">
+        </header>
+        
+        <!-- إشعار دائم للمبرمج في الزاوية اليمنى -->
+        <div class="developer-badge" id="developer-badge">
+            <div class="badge-header">
+                <div class="badge-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="badge-title">المبرمج</div>
+            </div>
+            <div class="developer-details">
                 <div class="developer-name">يمان محمد الحسين</div>
                 <div class="developer-phone">0952725590</div>
+                <div class="developer-message">للدعم والتفعيل</div>
             </div>
-        </header>
+        </div>
+        
+        <!-- زر عائم للمبرمج -->
+        <div class="floating-developer-btn" id="floating-developer-btn">
+            <i class="fas fa-user-tie"></i>
+        </div>
+        
+        <!-- نافذة معلومات المبرمج -->
+        <div class="developer-modal-overlay" id="developer-modal-overlay"></div>
+        <div class="developer-modal" id="developer-modal">
+            <div class="developer-modal-header">
+                <div class="developer-modal-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h2 class="developer-modal-title">معلومات المبرمج</h2>
+                <p class="developer-modal-subtitle">للدعم الفني والتفعيل</p>
+            </div>
+            
+            <div class="developer-info-item">
+                <div class="info-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="info-content">
+                    <h3>الاسم الكامل</h3>
+                    <p>يمان محمد الحسين</p>
+                </div>
+            </div>
+            
+            <div class="developer-info-item">
+                <div class="info-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="info-content">
+                    <h3>رقم الهاتف</h3>
+                    <p>0952725590</p>
+                </div>
+            </div>
+            
+            <div class="developer-info-item">
+                <div class="info-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="info-content">
+                    <h3>تخصص البرمجة</h3>
+                    <p>تطبيقات الويب والجوال</p>
+                </div>
+            </div>
+            
+            <div class="developer-info-item">
+                <div class="info-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div class="info-content">
+                    <h3>خدمات الدعم</h3>
+                    <p>تفعيل التطبيق - صيانة - تطوير</p>
+                </div>
+            </div>
+            
+            <div class="developer-modal-actions">
+                <button class="btn-call" onclick="callDeveloper()">
+                    <i class="fas fa-phone"></i> اتصل الآن
+                </button>
+                <button class="btn-close" id="close-developer-modal">
+                    <i class="fas fa-times"></i> إغلاق
+                </button>
+            </div>
+        </div>
         
         <!-- شاشة الترحيب الرئيسية -->
         <div class="welcome-screen" id="welcome-screen">
             <h1 class="main-title">
-                <span> تطبيق إدارة الأستعار</span><br>
-                للموظفين
+                <span>تطبيق إدارة الأسعار</span>
+                <span>للموظفين</span>
             </h1>
             <p class="main-subtitle">خاص بالمولات الكبيرة والمتاجر المتعددة</p>
             <div class="main-description">
-                نظام متكامل لإدارة أسعار المنتجات، مسح الباركود، وتحديث المعلومات بشكل فوري وسهل للموظفين والعاملين.
+                نظام متكامل لإدارة أسعار المنتجات، مسح الباركود، وتحديث المعلومات بشكل فوري وسهل للموظفين والعاملين. يدعم التخزين المحلي والعمل دون اتصال بالإنترنت.
             </div>
             
-            <div style="width: 100%; max-width: 300px;">
-                <button id="get-started-btn" class="btn btn-primary" style="margin-top: 20px;">
+            <div style="width: 100%; max-width: 320px;">
+                <button id="get-started-btn" class="btn btn-primary" style="margin-top: 25px;">
                     <i class="fas fa-play"></i> ابدأ الآن
                 </button>
             </div>
@@ -999,7 +1358,7 @@
                 </div>
                 
                 <!-- Results Container -->
-                <div id="product-results-container" style="margin-top: 25px;"></div>
+                <div id="product-results-container" style="margin-top: 30px;"></div>
             </section>
             
             <!-- Barcode Scanner Section -->
@@ -1012,9 +1371,9 @@
                 
                 <div class="barcode-scanner">
                     <div id="barcode-instructions">
-                        <i class="fas fa-barcode" style="font-size: 60px; color: #444; margin-bottom: 20px;"></i>
-                        <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 16px;">انقر على "بدء المسح" لمسح باركود المنتج</p>
-                        <p style="color: #666; font-size: 14px;">أو أدخل كود الباركود يدوياً</p>
+                        <i class="fas fa-barcode" style="font-size: 65px; color: #444; margin-bottom: 25px;"></i>
+                        <p style="color: var(--text-secondary); margin-bottom: 18px; font-size: 17px;">انقر على "بدء المسح" لمسح باركود المنتج</p>
+                        <p style="color: #666; font-size: 15px;">أو أدخل كود الباركود يدوياً</p>
                     </div>
                     
                     <div class="scanner-frame" id="scanner-frame">
@@ -1044,7 +1403,7 @@
                     <i class="fas fa-search"></i> استعلام
                 </button>
                 
-                <div id="barcode-result" class="product-display" style="display: none; margin-top: 25px;">
+                <div id="barcode-result" class="product-display" style="display: none; margin-top: 30px;">
                     <img id="barcode-result-image" class="product-image" src="" alt="صورة المنتج">
                     <div class="product-info">
                         <div class="product-field">
@@ -1068,8 +1427,8 @@
                 
                 <div class="camera-container">
                     <div id="camera-instructions">
-                        <i class="fas fa-camera" style="font-size: 60px; color: #444; margin-bottom: 20px;"></i>
-                        <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 16px;">لإضافة منتج جديد، التقط صورة للمنتج</p>
+                        <i class="fas fa-camera" style="font-size: 65px; color: #444; margin-bottom: 25px;"></i>
+                        <p style="color: var(--text-secondary); margin-bottom: 18px; font-size: 17px;">لإضافة منتج جديد، التقط صورة للمنتج</p>
                     </div>
                     
                     <video id="camera-view" autoplay playsinline></video>
@@ -1177,14 +1536,14 @@
                 
                 <div class="form-group">
                     <label class="form-label">صورة المنتج الحالية:</label>
-                    <img id="edit-product-image" src="" alt="صورة المنتج" style="width: 100%; max-height: 200px; border-radius: 12px; margin-bottom: 15px; border: 2px solid var(--border);">
+                    <img id="edit-product-image" src="" alt="صورة المنتج" style="width: 100%; max-height: 220px; border-radius: 15px; margin-bottom: 18px; border: 2px solid var(--border);">
                     <button id="change-image-btn" class="btn btn-warning">
                         <i class="fas fa-exchange-alt"></i> تغيير الصورة
                     </button>
                     <input type="file" id="edit-image-upload" accept="image/*" class="hidden-input">
                 </div>
                 
-                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                <div style="display: flex; gap: 15px; margin-top: 25px;">
                     <button id="update-product-btn" class="btn btn-success" style="flex: 1;">
                         <i class="fas fa-save"></i> حفظ
                     </button>
@@ -1230,19 +1589,16 @@
             // تعيين أحداث نافذة التعديل
             setupEditModal();
             
+            // أحداث معلومات المبرمج
+            setupDeveloperInfo();
+            
             // إضافة بعض المنتجات الافتراضية إذا لم تكن هناك منتجات
             if (products.length === 0) {
                 addSampleProducts();
             }
             
-            // ============================================
-            // إشعارات التفعيل للتواصل مع المبرمج
-            // ============================================
-            
-            // عرض الإشعار بعد 5 ثوان من تحميل الصفحة
-            setTimeout(showActivationNotification, 5000);
-            
-            // عرض الإشعار كل 30 دقيقة (1800000 مللي ثانية)
+            // إشعار التفعيل التلقائي
+            setTimeout(showActivationNotification, 10000); // بعد 10 ثوان
             setInterval(showActivationNotification, 1800000); // كل 30 دقيقة
         });
         
@@ -1254,9 +1610,184 @@
             
             // تفعيل قسم الاستعلام افتراضياً
             document.querySelector('.nav-item[data-target="lookup-section"]').click();
+            
+            // إظهار إشعار بداية الاستخدام
+            showStartNotification();
         }
         
-        // إضافة منتجات افتراضية
+        // إعداد أحداث معلومات المبرمج
+        function setupDeveloperInfo() {
+            const floatingBtn = document.getElementById('floating-developer-btn');
+            const developerBadge = document.getElementById('developer-badge');
+            const developerModal = document.getElementById('developer-modal');
+            const developerOverlay = document.getElementById('developer-modal-overlay');
+            const closeDeveloperModal = document.getElementById('close-developer-modal');
+            
+            // عند النقر على الزر العائم
+            floatingBtn.addEventListener('click', function() {
+                developerModal.classList.add('active');
+                developerOverlay.classList.add('active');
+            });
+            
+            // عند النقر على الإشعار الثابت
+            developerBadge.addEventListener('click', function() {
+                developerModal.classList.add('active');
+                developerOverlay.classList.add('active');
+            });
+            
+            // إغلاق نافذة معلومات المبرمج
+            closeDeveloperModal.addEventListener('click', function() {
+                developerModal.classList.remove('active');
+                developerOverlay.classList.remove('active');
+            });
+            
+            // إغلاق عند النقر خارج النافذة
+            developerOverlay.addEventListener('click', function() {
+                developerModal.classList.remove('active');
+                developerOverlay.classList.remove('active');
+            });
+        }
+        
+        // الاتصال بالمبرمج
+        function callDeveloper() {
+            const phoneNumber = '0952725590';
+            window.open(`tel:${phoneNumber}`, '_self');
+        }
+        
+        // إشعار بداية الاستخدام
+        function showStartNotification() {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 90px;
+                right: 15px;
+                left: 15px;
+                background: linear-gradient(135deg, #FF6B35 0%, #FF8B35 100%);
+                color: white;
+                padding: 15px;
+                border-radius: 15px;
+                z-index: 10000;
+                box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+                border: 2px solid rgba(255, 255, 255, 0.2);
+                animation: slideDown 0.5s ease;
+                font-weight: 700;
+                text-align: center;
+                direction: rtl;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <i class="fas fa-info-circle" style="font-size: 20px;"></i>
+                    <span style="flex-grow: 1; margin: 0 10px;">مرحباً بك في تطبيق إدارة الأسعار</span>
+                    <button id="close-start-notification" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div style="font-size: 14px; font-weight: 500;">
+                    للدعم الفني والتفعيل تواصل مع المبرمج
+                </div>
+                <style>
+                    @keyframes slideDown {
+                        from { transform: translateY(-100%); opacity: 0; }
+                        to { transform: translateY(0); opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateY(0); opacity: 1; }
+                        to { transform: translateY(-100%); opacity: 0; }
+                    }
+                </style>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // إضافة حدث لإغلاق الإشعار
+            notification.querySelector('#close-start-notification').addEventListener('click', function() {
+                notification.style.animation = 'slideUp 0.5s ease forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            });
+            
+            // إغلاق الإشعار تلقائياً بعد 8 ثوان
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    const closeBtn = notification.querySelector('#close-start-notification');
+                    if (closeBtn) closeBtn.click();
+                }
+            }, 8000);
+        }
+        
+        // إشعار التفعيل
+        function showActivationNotification() {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 90px;
+                left: 15px;
+                right: 15px;
+                background: linear-gradient(135deg, #4A90E2 0%, #2C77D6 100%);
+                color: white;
+                padding: 18px;
+                border-radius: 15px;
+                z-index: 10000;
+                box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4);
+                border: 2px solid rgba(255, 255, 255, 0.2);
+                animation: slideDown 0.5s ease;
+                font-weight: 700;
+                text-align: center;
+                direction: rtl;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 22px;"></i>
+                    <span style="flex-grow: 1; margin: 0 12px;">تنبيه: التطبيق يحتاج تفعيل</span>
+                    <button id="close-activation-notification" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div style="font-size: 15px; font-weight: 500; margin-bottom: 10px;">
+                    للتفعيل والمساعدة التواصل مع المبرمج
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.2); padding: 12px; border-radius: 10px; font-size: 16px; font-weight: 700;">
+                    يمان محمد الحسين - 0952725590
+                </div>
+                <style>
+                    @keyframes slideDown {
+                        from { transform: translateY(-100%); opacity: 0; }
+                        to { transform: translateY(0); opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateY(0); opacity: 1; }
+                        to { transform: translateY(-100%); opacity: 0; }
+                    }
+                </style>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // إضافة حدث لإغلاق الإشعار
+            notification.querySelector('#close-activation-notification').addEventListener('click', function() {
+                notification.style.animation = 'slideUp 0.5s ease forwards';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            });
+            
+            // إغلاق الإشعار تلقائياً بعد 15 ثانية
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    const closeBtn = notification.querySelector('#close-activation-notification');
+                    if (closeBtn) closeBtn.click();
+                }
+            }, 15000);
+        }
+        
+        // باقي الدوال الأساسية للتطبيق (نفس الكود السابق)
         function addSampleProducts() {
             const sampleProducts = [
                 { 
@@ -1279,7 +1810,6 @@
             localStorage.setItem('damaskino-products', JSON.stringify(products));
         }
         
-        // التنقل بين الأقسام
         function setupNavigation() {
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => {
@@ -1287,29 +1817,20 @@
                     e.preventDefault();
                     const targetId = this.getAttribute('data-target');
                     
-                    // إزالة النشاط من جميع العناصر
                     navItems.forEach(nav => nav.classList.remove('active'));
-                    // إضافة النشاط للعنصر المحدد
                     this.classList.add('active');
                     
-                    // إخفاء جميع الأقسام
                     document.querySelectorAll('.content-section').forEach(section => {
                         section.classList.remove('active');
                     });
                     
-                    // إظهار القسم المحدد
                     document.getElementById(targetId).classList.add('active');
                     
-                    // إغلاق الكاميرا إذا كانت مفتوحة
                     stopCamera();
-                    
-                    // إيقاف مسح الباركود إذا كان يعمل
                     stopBarcodeScanner();
                     
-                    // التمرير إلى الأعلى
                     document.getElementById('content-area').scrollTop = 0;
                     
-                    // تحميل المنتجات إذا كان القسم هو المنتجات
                     if (targetId === 'products-section') {
                         loadProducts();
                     }
@@ -1317,54 +1838,40 @@
             });
         }
         
-        // قسم البحث عن المنتجات
         function setupLookupSection() {
-            // تبويبات البحث
             const searchTabs = document.querySelectorAll('.search-tab');
             searchTabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const searchType = this.getAttribute('data-search-type');
                     
-                    // إزالة النشاط من جميع التبويبات
                     searchTabs.forEach(t => t.classList.remove('active'));
-                    // إضافة النشاط للتبويب المحدد
                     this.classList.add('active');
                     
-                    // إخفاء جميع محتويات البحث
                     document.querySelectorAll('.search-tab-content').forEach(content => {
                         content.classList.remove('active');
                     });
                     
-                    // إظهار محتوى البحث المحدد
                     document.getElementById(`search-by-${searchType}`).classList.add('active');
                 });
             });
             
-            // البحث بالكود
             document.getElementById('lookup-by-code-btn').addEventListener('click', lookupByCode);
             document.getElementById('product-code-lookup').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    lookupByCode();
-                }
+                if (e.key === 'Enter') lookupByCode();
             });
             
-            // البحث بالسعر
             document.getElementById('lookup-by-price-btn').addEventListener('click', lookupByPrice);
             document.getElementById('product-price-lookup').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    lookupByPrice();
-                }
+                if (e.key === 'Enter') lookupByPrice();
             });
         }
         
-        // البحث عن منتج بالكود
         function lookupByCode() {
             const productCode = document.getElementById('product-code-lookup').value.trim();
             const resultsContainer = document.getElementById('product-results-container');
             const successAlert = document.getElementById('lookup-success');
             const errorAlert = document.getElementById('lookup-error');
             
-            // إخفاء جميع التنبيهات
             successAlert.style.display = 'none';
             errorAlert.style.display = 'none';
             
@@ -1375,7 +1882,6 @@
                 return;
             }
             
-            // البحث عن المنتج
             const product = products.find(p => p.code === productCode);
             
             if (!product) {
@@ -1385,21 +1891,17 @@
                 return;
             }
             
-            // عرض تفاصيل المنتج
             displayProductResult(product);
-            
             successAlert.textContent = `تم العثور على المنتج: ${product.code}`;
             successAlert.style.display = 'block';
         }
         
-        // البحث عن منتج بالسعر
         function lookupByPrice() {
             const productPrice = parseFloat(document.getElementById('product-price-lookup').value);
             const resultsContainer = document.getElementById('product-results-container');
             const successAlert = document.getElementById('lookup-success');
             const errorAlert = document.getElementById('lookup-error');
             
-            // إخفاء جميع التنبيهات
             successAlert.style.display = 'none';
             errorAlert.style.display = 'none';
             
@@ -1410,7 +1912,6 @@
                 return;
             }
             
-            // البحث عن المنتجات بالسعر المطابق
             const foundProducts = products.filter(p => p.price === productPrice);
             
             if (foundProducts.length === 0) {
@@ -1420,14 +1921,11 @@
                 return;
             }
             
-            // عرض تفاصيل المنتجات
             displayProductResults(foundProducts);
-            
             successAlert.textContent = `تم العثور على ${foundProducts.length} منتج`;
             successAlert.style.display = 'block';
         }
         
-        // عرض نتيجة منتج واحد
         function displayProductResult(product) {
             const resultsContainer = document.getElementById('product-results-container');
             
@@ -1454,7 +1952,6 @@
             `;
         }
         
-        // عرض نتائج متعددة لمنتجات
         function displayProductResults(productsList) {
             const resultsContainer = document.getElementById('product-results-container');
             
@@ -1463,7 +1960,7 @@
                 return;
             }
             
-            let productsHTML = '<h3 style="margin-bottom: 15px; color: white; font-size: 18px;">المنتجات التي تم العثور عليها:</h3>';
+            let productsHTML = '<h3 style="margin-bottom: 18px; color: white; font-size: 20px;">المنتجات التي تم العثور عليها:</h3>';
             productsHTML += '<div class="products-grid">';
             
             productsList.forEach(product => {
@@ -1474,10 +1971,10 @@
                             <h3 class="product-card-title">${product.code}</h3>
                             <p class="product-card-price">${product.price} ر.س</p>
                             <div class="product-card-actions">
-                                <button class="btn btn-primary edit-btn" style="padding: 8px; font-size: 12px; margin: 0;">
+                                <button class="btn btn-primary edit-btn" style="padding: 10px; font-size: 13px; margin: 0;">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn btn-secondary delete-btn" style="padding: 8px; font-size: 12px; margin: 0;">
+                                <button class="btn btn-secondary delete-btn" style="padding: 10px; font-size: 13px; margin: 0;">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -1489,7 +1986,6 @@
             productsHTML += '</div>';
             resultsContainer.innerHTML = productsHTML;
             
-            // إضافة الأحداث للأزرار الجديدة
             document.querySelectorAll('.edit-btn').forEach((btn, index) => {
                 btn.addEventListener('click', () => openEditModal(productsList[index].id));
             });
@@ -1499,14 +1995,12 @@
             });
         }
         
-        // قسم مسح الباركود
         function setupBarcodeSection() {
             const startScanBtn = document.getElementById('start-scan-btn');
             const stopScanBtn = document.getElementById('stop-scan-btn');
             const manualBarcodeBtn = document.getElementById('lookup-barcode-btn');
             const manualBarcodeInput = document.getElementById('manual-barcode');
             
-            // بدء مسح الباركود
             startScanBtn.addEventListener('click', async function() {
                 try {
                     const scannerFrame = document.getElementById('scanner-frame');
@@ -1517,24 +2011,18 @@
                     const infoAlert = document.getElementById('barcode-info');
                     const errorAlert = document.getElementById('barcode-error');
                     
-                    // إخفاء التنبيهات
                     infoAlert.style.display = 'none';
                     errorAlert.style.display = 'none';
                     
-                    // محاولة فتح الكاميرا
                     const constraints = {
-                        video: {
-                            facingMode: "environment"
-                        },
+                        video: { facingMode: "environment" },
                         audio: false
                     };
                     
-                    // محاولة فتح الكاميرا الخلفية أولاً
                     let stream;
                     try {
                         stream = await navigator.mediaDevices.getUserMedia(constraints);
                     } catch (err) {
-                        // إذا فشلت، نستخدم أي كاميرا متاحة
                         const fallbackConstraints = { video: true };
                         stream = await navigator.mediaDevices.getUserMedia(fallbackConstraints);
                     }
@@ -1551,10 +2039,8 @@
                     infoAlert.textContent = 'يتم الآن مسح الباركود. وجه الكاميرا نحو باركود المنتج.';
                     infoAlert.style.display = 'block';
                     
-                    // إضافة حدث النقر للاختبار
                     scannerFrame.addEventListener('click', function testBarcodeClick() {
                         if (isScanning) {
-                            // توليد باركود عشوائي للاختبار
                             const testCodes = ['123456789012', 'DMSK-001', 'DMSK-002'];
                             const randomCode = testCodes[Math.floor(Math.random() * testCodes.length)];
                             handleBarcodeResult(randomCode);
@@ -1568,25 +2054,16 @@
                 }
             });
             
-            // إيقاف مسح الباركود
             stopScanBtn.addEventListener('click', stopBarcodeScanner);
-            
-            // البحث يدوياً بالباركود
             manualBarcodeBtn.addEventListener('click', lookupByBarcode);
-            
-            // البحث عند الضغط على Enter
             manualBarcodeInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    lookupByBarcode();
-                }
+                if (e.key === 'Enter') lookupByBarcode();
             });
         }
         
-        // إيقاف مسح الباركود
         function stopBarcodeScanner() {
             isScanning = false;
             
-            // إيقاف تيار الكاميرا
             if (currentStream) {
                 currentStream.getTracks().forEach(track => track.stop());
                 currentStream = null;
@@ -1599,7 +2076,6 @@
             const instructions = document.getElementById('barcode-instructions');
             const infoAlert = document.getElementById('barcode-info');
             
-            // إعادة تعيين عناصر واجهة المستخدم
             scannerFrame.style.display = 'none';
             barcodeView.srcObject = null;
             startScanBtn.style.display = 'block';
@@ -1608,23 +2084,18 @@
             infoAlert.style.display = 'none';
         }
         
-        // معالجة نتيجة الباركود
         function handleBarcodeResult(barcode) {
             const manualBarcodeInput = document.getElementById('manual-barcode');
             manualBarcodeInput.value = barcode;
-            
-            // البحث عن المنتج باستخدام الباركود
             lookupByBarcode();
         }
         
-        // البحث عن منتج بالباركود
         function lookupByBarcode() {
             const barcode = document.getElementById('manual-barcode').value.trim();
             const barcodeResult = document.getElementById('barcode-result');
             const successAlert = document.getElementById('barcode-success');
             const errorAlert = document.getElementById('barcode-error');
             
-            // إخفاء جميع التنبيهات
             successAlert.style.display = 'none';
             errorAlert.style.display = 'none';
             
@@ -1635,13 +2106,8 @@
                 return;
             }
             
-            // البحث عن المنتج بالباركود أولاً
             let product = products.find(p => p.barcode === barcode);
-            
-            // إذا لم يتم العثور بالباركود، حاول البحث بالكود
-            if (!product) {
-                product = products.find(p => p.code === barcode);
-            }
+            if (!product) product = products.find(p => p.code === barcode);
             
             if (!product) {
                 errorAlert.textContent = 'لم يتم العثور على منتج بهذا الباركود أو الكود';
@@ -1650,7 +2116,6 @@
                 return;
             }
             
-            // عرض تفاصيل المنتج
             document.getElementById('barcode-result-code').textContent = product.code;
             document.getElementById('barcode-result-price').textContent = `${product.price} ر.س`;
             document.getElementById('barcode-result-image').src = product.image;
@@ -1658,12 +2123,9 @@
             successAlert.textContent = `تم العثور على المنتج: ${product.code}`;
             successAlert.style.display = 'block';
             barcodeResult.style.display = 'flex';
-            
-            // إيقاف الماسح الضوئي بعد العثور على النتيجة
             stopBarcodeScanner();
         }
         
-        // قسم إضافة منتج جديد
         function setupAddSection() {
             const openCameraBtn = document.getElementById('open-camera-btn');
             const captureBtn = document.getElementById('capture-btn');
@@ -1673,7 +2135,6 @@
             
             let capturedImageData = null;
             
-            // فتح الكاميرا
             openCameraBtn.addEventListener('click', async function() {
                 try {
                     const cameraView = document.getElementById('camera-view');
@@ -1681,12 +2142,7 @@
                     const openCameraBtn = document.getElementById('open-camera-btn');
                     const instructions = document.getElementById('camera-instructions');
                     
-                    // محاولة فتح الكاميرا الخلفية
-                    const constraints = {
-                        video: {
-                            facingMode: "environment"
-                        }
-                    };
+                    const constraints = { video: { facingMode: "environment" } };
                     
                     let stream;
                     try {
@@ -1709,7 +2165,6 @@
                 }
             });
             
-            // التقاط صورة
             captureBtn.addEventListener('click', function() {
                 const cameraView = document.getElementById('camera-view');
                 const canvas = document.createElement('canvas');
@@ -1721,17 +2176,13 @@
                 
                 capturedImageData = canvas.toDataURL('image/jpeg', 0.8);
                 showCapturedImage(capturedImageData);
-                
-                // إيقاف الكاميرا
                 stopCamera();
             });
             
-            // رفع صورة
             uploadImageBtn.addEventListener('click', function() {
                 imageUploadInput.click();
             });
             
-            // استقبال الصورة المرفوعة
             imageUploadInput.addEventListener('change', function(e) {
                 if (e.target.files && e.target.files[0]) {
                     const file = e.target.files[0];
@@ -1746,13 +2197,11 @@
                 }
             });
             
-            // حفظ المنتج
             saveProductBtn.addEventListener('click', function() {
                 saveProduct(capturedImageData);
             });
         }
         
-        // إيقاف الكاميرا
         function stopCamera() {
             if (currentStream) {
                 currentStream.getTracks().forEach(track => track.stop());
@@ -1768,7 +2217,6 @@
             }
         }
         
-        // عرض الصورة الملتقطة
         function showCapturedImage(imageData) {
             const capturedImage = document.getElementById('captured-image');
             const instructions = document.getElementById('camera-instructions');
@@ -1778,7 +2226,6 @@
             instructions.style.display = 'none';
         }
         
-        // حفظ المنتج الجديد
         function saveProduct(imageData) {
             const productCode = document.getElementById('product-code').value.trim();
             const productBarcode = document.getElementById('product-barcode').value.trim();
@@ -1786,11 +2233,9 @@
             const successAlert = document.getElementById('add-success');
             const errorAlert = document.getElementById('add-error');
             
-            // إخفاء جميع التنبيهات
             successAlert.style.display = 'none';
             errorAlert.style.display = 'none';
             
-            // التحقق من البيانات المدخلة
             if (!productCode) {
                 errorAlert.textContent = 'يرجى إدخال كود المنتج';
                 errorAlert.style.display = 'block';
@@ -1809,7 +2254,6 @@
                 return;
             }
             
-            // التحقق من عدم تكرار الكود
             const existingProduct = products.find(p => p.code === productCode);
             if (existingProduct) {
                 errorAlert.textContent = 'كود المنتج موجود مسبقاً. يرجى استخدام كود مختلف.';
@@ -1817,7 +2261,6 @@
                 return;
             }
             
-            // إنشاء المنتج الجديد
             const newProduct = {
                 id: Date.now(),
                 code: productCode,
@@ -1826,41 +2269,32 @@
                 image: imageData
             };
             
-            // إضافة المنتج إلى القائمة
             products.push(newProduct);
             localStorage.setItem('damaskino-products', JSON.stringify(products));
             
-            // إظهار رسالة النجاح
             successAlert.textContent = `تم حفظ المنتج "${productCode}" بنجاح`;
             successAlert.style.display = 'block';
             
-            // إعادة تعيين الحقول
             document.getElementById('product-code').value = '';
             document.getElementById('product-barcode').value = '';
             document.getElementById('product-price').value = '';
             document.getElementById('captured-image').style.display = 'none';
             document.getElementById('camera-instructions').style.display = 'block';
-            
-            // إعادة تعيين الكاميرا
             stopCamera();
         }
         
-        // قسم المنتجات
         function setupProductsSection() {
             // سيتم تعيين الأحداث في loadProducts
         }
         
-        // تحميل المنتجات وعرضها
         function loadProducts() {
             const productsList = document.getElementById('products-list');
             const emptyState = document.getElementById('empty-products');
             const loading = document.getElementById('products-loading');
             
-            // إظهار مؤشر التحميل
             loading.style.display = 'block';
             productsList.innerHTML = '';
             
-            // محاكاة وقت التحميل
             setTimeout(() => {
                 loading.style.display = 'none';
                 
@@ -1871,7 +2305,6 @@
                 
                 emptyState.style.display = 'none';
                 
-                // عرض كل المنتجات
                 products.forEach(product => {
                     const productCard = createProductCard(product);
                     productsList.appendChild(productCard);
@@ -1879,7 +2312,6 @@
             }, 300);
         }
         
-        // إنشاء بطاقة منتج
         function createProductCard(product) {
             const card = document.createElement('div');
             card.className = 'product-card';
@@ -1892,17 +2324,16 @@
                     ${product.barcode ? `<p class="product-card-code">${product.barcode}</p>` : ''}
                     <p class="product-card-price">${product.price} ر.س</p>
                     <div class="product-card-actions">
-                        <button class="btn btn-primary edit-btn" style="padding: 8px; font-size: 12px; margin: 0;">
+                        <button class="btn btn-primary edit-btn" style="padding: 12px; font-size: 13px; margin: 0;">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-secondary delete-btn" style="padding: 8px; font-size: 12px; margin: 0;">
+                        <button class="btn btn-secondary delete-btn" style="padding: 12px; font-size: 13px; margin: 0;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 </div>
             `;
             
-            // إضافة أحداث للأزرار
             card.querySelector('.edit-btn').addEventListener('click', function() {
                 openEditModal(product.id);
             });
@@ -1914,24 +2345,20 @@
             return card;
         }
         
-        // فتح نافذة تعديل المنتج
         function openEditModal(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
             
             editingProductId = productId;
             
-            // تعبئة الحقول ببيانات المنتج
             document.getElementById('edit-product-code').value = product.code;
             document.getElementById('edit-product-barcode').value = product.barcode || '';
             document.getElementById('edit-product-price').value = product.price;
             document.getElementById('edit-product-image').src = product.image;
             
-            // إظهار النافذة
             document.getElementById('edit-modal').style.display = 'flex';
         }
         
-        // تهيئة نافذة التعديل
         function setupEditModal() {
             const editModal = document.getElementById('edit-modal');
             const closeBtn = document.getElementById('close-edit-modal-btn');
@@ -1941,18 +2368,15 @@
             
             let newImageData = null;
             
-            // زر الإغلاق
             closeBtn.addEventListener('click', function() {
                 editModal.style.display = 'none';
                 newImageData = null;
             });
             
-            // زر تغيير الصورة
             changeImageBtn.addEventListener('click', function() {
                 editImageUpload.click();
             });
             
-            // استقبال الصورة الجديدة
             editImageUpload.addEventListener('change', function(e) {
                 if (e.target.files && e.target.files[0]) {
                     const file = e.target.files[0];
@@ -1967,13 +2391,11 @@
                 }
             });
             
-            // تحديث المنتج
             updateBtn.addEventListener('click', function() {
                 updateProduct();
             });
         }
         
-        // تحديث بيانات المنتج
         function updateProduct() {
             const productCode = document.getElementById('edit-product-code').value.trim();
             const productBarcode = document.getElementById('edit-product-barcode').value.trim();
@@ -1981,11 +2403,9 @@
             const successAlert = document.getElementById('products-success');
             const errorAlert = document.getElementById('products-error');
             
-            // إخفاء جميع التنبيهات
             successAlert.style.display = 'none';
             errorAlert.style.display = 'none';
             
-            // التحقق من البيانات المدخلة
             if (!productCode) {
                 errorAlert.textContent = 'يرجى إدخال كود المنتج';
                 errorAlert.style.display = 'block';
@@ -1998,7 +2418,6 @@
                 return;
             }
             
-            // البحث عن المنتج للتعديل
             const productIndex = products.findIndex(p => p.id === editingProductId);
             if (productIndex === -1) {
                 errorAlert.textContent = 'المنتج غير موجود';
@@ -2006,123 +2425,39 @@
                 return;
             }
             
-            // تحديث بيانات المنتج
             products[productIndex].code = productCode;
             products[productIndex].barcode = productBarcode || '';
             products[productIndex].price = parseFloat(productPrice);
             
-            // تحديث الصورة إذا تم تغييرها
             if (newImageData) {
                 products[productIndex].image = newImageData;
             }
             
-            // حفظ التعديلات
             localStorage.setItem('damaskino-products', JSON.stringify(products));
             
-            // إغلاق نافذة التعديل
             document.getElementById('edit-modal').style.display = 'none';
             newImageData = null;
             
-            // إظهار رسالة النجاح
             successAlert.textContent = `تم تحديث المنتج "${productCode}" بنجاح`;
             successAlert.style.display = 'block';
-            
-            // إعادة تحميل المنتجات
             loadProducts();
         }
         
-        // حذف منتج
         function deleteProduct(productId) {
             if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
             
-            // البحث عن المنتج
             const productIndex = products.findIndex(p => p.id === productId);
             if (productIndex === -1) return;
             
             const productCode = products[productIndex].code;
             
-            // حذف المنتج
             products.splice(productIndex, 1);
             localStorage.setItem('damaskino-products', JSON.stringify(products));
             
-            // إظهار رسالة النجاح
             const successAlert = document.getElementById('products-success');
             successAlert.textContent = `تم حذف المنتج "${productCode}" بنجاح`;
             successAlert.style.display = 'block';
-            
-            // إعادة تحميل المنتجات
             loadProducts();
-        }
-        
-        // ============================================
-        // إشعارات التفعيل للتواصل مع المبرمج
-        // ============================================
-        
-        function showActivationNotification() {
-            // إنشاء عنصر الإشعار
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 80px;
-                right: 15px;
-                left: 15px;
-                background: linear-gradient(135deg, #FF6B35 0%, #FF8B35 100%);
-                color: white;
-                padding: 15px;
-                border-radius: 12px;
-                z-index: 10000;
-                box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                animation: slideDown 0.5s ease;
-                font-weight: 600;
-                text-align: center;
-                direction: rtl;
-            `;
-            
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-                    <i class="fas fa-exclamation-triangle" style="font-size: 18px;"></i>
-                    <span style="flex-grow: 1; margin: 0 10px;">تنبيه: التطبيق يحتاج تفعيل</span>
-                    <button id="close-notification" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer;">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div style="font-size: 14px; font-weight: normal;">
-                    للتفعيل والمساعدة التواصل مع المبرمج:<br>
-                    <strong>يمان محمد الحسين</strong> - <strong>0952725590</strong>
-                </div>
-                <style>
-                    @keyframes slideDown {
-                        from { transform: translateY(-100%); opacity: 0; }
-                        to { transform: translateY(0); opacity: 1; }
-                    }
-                    @keyframes slideUp {
-                        from { transform: translateY(0); opacity: 1; }
-                        to { transform: translateY(-100%); opacity: 0; }
-                    }
-                </style>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // إضافة حدث لإغلاق الإشعار
-            notification.querySelector('#close-notification').addEventListener('click', function() {
-                notification.style.animation = 'slideUp 0.5s ease forwards';
-                
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 500);
-            });
-            
-            // إغلاق الإشعار تلقائياً بعد 10 ثوان
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    const closeBtn = notification.querySelector('#close-notification');
-                    if (closeBtn) closeBtn.click();
-                }
-            }, 10000);
         }
     </script>
 </body>
