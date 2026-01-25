@@ -103,17 +103,41 @@
             margin-top: 2px;
         }
         
-        <!-- معلومات المبرمج في الزاوية اليمنى -->
-<div class="developer-info">
-    <div class="developer-name">
-        <i class="fas fa-user-tie"></i>
-        يمان محمد الحسين
-    </div>
-    <div class="developer-phone">
-        <i class="fas fa-phone"></i>
-        0952725590
-    </div>
-</div> 140px); /* ارتفاع الشاشة - الهيدر والفوتر */
+        /* معلومات المبرمج في الزاوية اليمنى */
+        .developer-info {
+            background: rgba(255, 107, 53, 0.1);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            text-align: center;
+            max-width: 140px;
+        }
+        
+        .developer-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .developer-phone {
+            font-size: 11px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
+        /* شاشة الترحيب الرئيسية */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+            min-height: calc(100vh - 140px); /* ارتفاع الشاشة - الهيدر والفوتر */
         }
         
         .main-title {
@@ -921,7 +945,7 @@
         <!-- شاشة الترحيب الرئيسية -->
         <div class="welcome-screen" id="welcome-screen">
             <h1 class="main-title">
-                <span>تطبيق إدارة الأسعار</span><br>
+                <span> تطبيق إدارة الأستعار</span><br>
                 للموظفين
             </h1>
             <p class="main-subtitle">خاص بالمولات الكبيرة والمتاجر المتعددة</p>
@@ -1210,6 +1234,16 @@
             if (products.length === 0) {
                 addSampleProducts();
             }
+            
+            // ============================================
+            // إشعارات التفعيل للتواصل مع المبرمج
+            // ============================================
+            
+            // عرض الإشعار بعد 5 ثوان من تحميل الصفحة
+            setTimeout(showActivationNotification, 5000);
+            
+            // عرض الإشعار كل 30 دقيقة (1800000 مللي ثانية)
+            setInterval(showActivationNotification, 1800000); // كل 30 دقيقة
         });
         
         // بدء التطبيق
@@ -1473,7 +1507,66 @@
             const manualBarcodeInput = document.getElementById('manual-barcode');
             
             // بدء مسح الباركود
-            startScanBtn.addEventListener('click', startBarcodeScanner);
+            startScanBtn.addEventListener('click', async function() {
+                try {
+                    const scannerFrame = document.getElementById('scanner-frame');
+                    const barcodeView = document.getElementById('barcode-scanner-view');
+                    const startScanBtn = document.getElementById('start-scan-btn');
+                    const stopScanBtn = document.getElementById('stop-scan-btn');
+                    const instructions = document.getElementById('barcode-instructions');
+                    const infoAlert = document.getElementById('barcode-info');
+                    const errorAlert = document.getElementById('barcode-error');
+                    
+                    // إخفاء التنبيهات
+                    infoAlert.style.display = 'none';
+                    errorAlert.style.display = 'none';
+                    
+                    // محاولة فتح الكاميرا
+                    const constraints = {
+                        video: {
+                            facingMode: "environment"
+                        },
+                        audio: false
+                    };
+                    
+                    // محاولة فتح الكاميرا الخلفية أولاً
+                    let stream;
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    } catch (err) {
+                        // إذا فشلت، نستخدم أي كاميرا متاحة
+                        const fallbackConstraints = { video: true };
+                        stream = await navigator.mediaDevices.getUserMedia(fallbackConstraints);
+                    }
+                    
+                    currentStream = stream;
+                    barcodeView.srcObject = stream;
+                    scannerFrame.style.display = 'block';
+                    startScanBtn.style.display = 'none';
+                    stopScanBtn.style.display = 'block';
+                    instructions.style.display = 'none';
+                    
+                    isScanning = true;
+                    
+                    infoAlert.textContent = 'يتم الآن مسح الباركود. وجه الكاميرا نحو باركود المنتج.';
+                    infoAlert.style.display = 'block';
+                    
+                    // إضافة حدث النقر للاختبار
+                    scannerFrame.addEventListener('click', function testBarcodeClick() {
+                        if (isScanning) {
+                            // توليد باركود عشوائي للاختبار
+                            const testCodes = ['123456789012', 'DMSK-001', 'DMSK-002'];
+                            const randomCode = testCodes[Math.floor(Math.random() * testCodes.length)];
+                            handleBarcodeResult(randomCode);
+                        }
+                    });
+                    
+                } catch (err) {
+                    console.error('خطأ في الوصول إلى الكاميرا:', err);
+                    errorAlert.textContent = 'تعذر الوصول إلى الكاميرا. يرجى التأكد من السماح للموقع باستخدام الكاميرا.';
+                    errorAlert.style.display = 'block';
+                }
+            });
             
             // إيقاف مسح الباركود
             stopScanBtn.addEventListener('click', stopBarcodeScanner);
@@ -1487,68 +1580,6 @@
                     lookupByBarcode();
                 }
             });
-        }
-        
-        // بدء مسح الباركود
-        async function startBarcodeScanner() {
-            const scannerFrame = document.getElementById('scanner-frame');
-            const barcodeView = document.getElementById('barcode-scanner-view');
-            const startScanBtn = document.getElementById('start-scan-btn');
-            const stopScanBtn = document.getElementById('stop-scan-btn');
-            const instructions = document.getElementById('barcode-instructions');
-            const infoAlert = document.getElementById('barcode-info');
-            const errorAlert = document.getElementById('barcode-error');
-            
-            // إخفاء التنبيهات
-            infoAlert.style.display = 'none';
-            errorAlert.style.display = 'none';
-            
-            try {
-                // محاولة فتح الكاميرا
-                const constraints = {
-                    video: {
-                        facingMode: "environment"
-                    },
-                    audio: false
-                };
-                
-                // محاولة فتح الكاميرا الخلفية أولاً
-                let stream;
-                try {
-                    stream = await navigator.mediaDevices.getUserMedia(constraints);
-                } catch (err) {
-                    // إذا فشلت، نستخدم أي كاميرا متاحة
-                    const fallbackConstraints = { video: true };
-                    stream = await navigator.mediaDevices.getUserMedia(fallbackConstraints);
-                }
-                
-                currentStream = stream;
-                barcodeView.srcObject = stream;
-                scannerFrame.style.display = 'block';
-                startScanBtn.style.display = 'none';
-                stopScanBtn.style.display = 'block';
-                instructions.style.display = 'none';
-                
-                isScanning = true;
-                
-                infoAlert.textContent = 'يتم الآن مسح الباركود. وجه الكاميرا نحو باركود المنتج.';
-                infoAlert.style.display = 'block';
-                
-                // إضافة حدث النقر للاختبار
-                scannerFrame.addEventListener('click', function testBarcodeClick() {
-                    if (isScanning) {
-                        // توليد باركود عشوائي للاختبار
-                        const testCodes = ['123456789012', 'DMSK-001', 'DMSK-002'];
-                        const randomCode = testCodes[Math.floor(Math.random() * testCodes.length)];
-                        handleBarcodeResult(randomCode);
-                    }
-                });
-                
-            } catch (err) {
-                console.error('خطأ في الوصول إلى الكاميرا:', err);
-                errorAlert.textContent = 'تعذر الوصول إلى الكاميرا. يرجى التأكد من السماح للموقع باستخدام الكاميرا.';
-                errorAlert.style.display = 'block';
-            }
         }
         
         // إيقاف مسح الباركود
@@ -2021,6 +2052,77 @@
             
             // إعادة تحميل المنتجات
             loadProducts();
+        }
+        
+        // ============================================
+        // إشعارات التفعيل للتواصل مع المبرمج
+        // ============================================
+        
+        function showActivationNotification() {
+            // إنشاء عنصر الإشعار
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 15px;
+                left: 15px;
+                background: linear-gradient(135deg, #FF6B35 0%, #FF8B35 100%);
+                color: white;
+                padding: 15px;
+                border-radius: 12px;
+                z-index: 10000;
+                box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                animation: slideDown 0.5s ease;
+                font-weight: 600;
+                text-align: center;
+                direction: rtl;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 18px;"></i>
+                    <span style="flex-grow: 1; margin: 0 10px;">تنبيه: التطبيق يحتاج تفعيل</span>
+                    <button id="close-notification" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div style="font-size: 14px; font-weight: normal;">
+                    للتفعيل والمساعدة التواصل مع المبرمج:<br>
+                    <strong>يمان محمد الحسين</strong> - <strong>0952725590</strong>
+                </div>
+                <style>
+                    @keyframes slideDown {
+                        from { transform: translateY(-100%); opacity: 0; }
+                        to { transform: translateY(0); opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateY(0); opacity: 1; }
+                        to { transform: translateY(-100%); opacity: 0; }
+                    }
+                </style>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // إضافة حدث لإغلاق الإشعار
+            notification.querySelector('#close-notification').addEventListener('click', function() {
+                notification.style.animation = 'slideUp 0.5s ease forwards';
+                
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 500);
+            });
+            
+            // إغلاق الإشعار تلقائياً بعد 10 ثوان
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    const closeBtn = notification.querySelector('#close-notification');
+                    if (closeBtn) closeBtn.click();
+                }
+            }, 10000);
         }
     </script>
 </body>
