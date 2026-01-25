@@ -3,476 +3,2158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رمضان أحلى مع دامسكينو مول</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <title>مول داماسكينو - إدارة أسعار المنتجات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/library@latest"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --warning: #f39c12;
         }
         
         body {
-            background: linear-gradient(135deg, #0a1f35 0%, #0d2b44 100%);
-            color: #f5f1e8;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
         
-        .ad-container {
-            width: 100%;
-            max-width: 1300px;
-            background: linear-gradient(to bottom, #0c253f, #0d2b44);
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            position: relative;
-            border: 3px solid #d4af37;
-        }
-        
-        .header {
-            background: linear-gradient(to right, #0a1f35, #113250);
-            padding: 40px 30px;
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            padding: 25px 0;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
             text-align: center;
             position: relative;
             overflow: hidden;
-            border-bottom: 2px solid #d4af37;
         }
         
-        .header::before {
+        header::before {
             content: "";
             position: absolute;
             top: 0;
-            right: 0;
+            left: 0;
             width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="%23d4af37" opacity="0.08"/></svg>');
-            background-size: cover;
+            height: 5px;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
         }
         
-        .ramadan-text {
-            font-size: 4rem;
-            font-weight: 800;
-            color: #d4af37;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-        
-        .slogan {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #f5f1e8;
-            margin-bottom: 10px;
-        }
-        
-        .mall-name {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: #27ae60;
-            text-shadow: 0 0 10px rgba(39, 174, 96, 0.3);
-            margin-top: 10px;
-            display: inline-block;
-            padding: 0 20px;
-            border-radius: 15px;
-            background-color: rgba(39, 174, 96, 0.1);
-        }
-        
-        .content {
+        .logo-container {
             display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo i {
+            font-size: 40px;
+            color: var(--secondary);
+        }
+        
+        .app-title {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .app-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
             flex-wrap: wrap;
-            padding: 40px 30px;
         }
         
-        .left-section {
+        .nav-tab {
             flex: 1;
-            min-width: 350px;
-            padding: 20px;
+            min-width: 200px;
+            padding: 18px 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
         }
         
-        .right-section {
-            flex: 1.2;
-            min-width: 350px;
-            padding: 20px;
+        .nav-tab:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .nav-tab.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+            background-color: #f8f9fa;
+        }
+        
+        .nav-tab i {
+            margin-left: 8px;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-section.active {
+            display: block;
         }
         
         .section-title {
-            font-size: 2rem;
-            color: #d4af37;
+            font-size: 22px;
+            color: var(--primary);
             margin-bottom: 25px;
-            text-align: center;
-            padding-bottom: 10px;
-            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: "";
-            position: absolute;
-            bottom: -2px;
-            right: 0;
-            width: 100px;
-            height: 2px;
-            background-color: #27ae60;
-        }
-        
-        .departments-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .department-card {
-            background: linear-gradient(to bottom, #113250, #0a1f35);
-            border-radius: 15px;
-            padding: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .department-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: rgba(212, 175, 55, 0.5);
-        }
-        
-        .department-icon {
-            font-size: 2.2rem;
-            color: #d4af37;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .department-name {
-            font-size: 1.5rem;
-            color: #27ae60;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .department-desc {
-            color: #c9c5bc;
-            line-height: 1.6;
-            font-size: 1rem;
-            flex-grow: 1;
-        }
-        
-        .features-list {
-            margin-top: 30px;
-        }
-        
-        .feature-item {
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            border-right: 4px solid #27ae60;
         }
         
-        .feature-icon {
-            font-size: 1.8rem;
-            color: #d4af37;
-            margin-left: 15px;
-            width: 40px;
+        .section-title i {
+            margin-left: 10px;
+            color: var(--accent);
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d68910;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(243, 156, 18, 0.3);
+        }
+        
+        .btn i {
+            margin-left: 8px;
+        }
+        
+        /* Product Camera */
+        .camera-container {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            background-color: #f9f9f9;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #camera-view {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            display: none;
+            margin-bottom: 15px;
+            transform: scaleX(-1); /* قلب الصورة لجعلها طبيعية */
+        }
+        
+        #captured-image {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 8px;
+            display: none;
+            margin-bottom: 15px;
+        }
+        
+        .camera-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Product Display */
+        .product-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-top: 20px;
             text-align: center;
         }
         
-        .feature-text h3 {
-            color: #f5f1e8;
-            margin-bottom: 5px;
-            font-size: 1.3rem;
+        .product-image {
+            max-width: 300px;
+            max-height: 250px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
         
-        .feature-text p {
-            color: #c9c5bc;
-            font-size: 0.95rem;
-        }
-        
-        .ramadan-image {
+        .product-info {
             width: 100%;
-            max-width: 500px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-            border: 2px solid #d4af37;
-            display: block;
-            margin: 0 auto 30px;
         }
         
-        .footer {
-            background-color: rgba(10, 25, 40, 0.8);
+        .product-field {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-field:last-child {
+            border-bottom: none;
+        }
+        
+        .field-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .field-value {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .price-value {
+            color: var(--secondary);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #eee;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+        
+        .product-card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-card-body {
+            padding: 20px;
+        }
+        
+        .product-card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .product-card-code {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .product-card-price {
+            color: var(--secondary);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .product-card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .programmer-info {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 15px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                min-width: 100%;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .nav-tab.active {
+                border-bottom: 3px solid var(--accent);
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .camera-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .camera-controls .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #777;
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        /* Alerts */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+        
+        .alert-error {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--secondary);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .alert-info {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--accent);
+            border-left: 4px solid var(--accent);
+        }
+        
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Barcode Scanner */
+        .barcode-scanner {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 25px;
+            background-color: #f9f9f9;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #barcode-scanner-view {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            display: none;
+            margin-bottom: 15px;
+        }
+        
+        .scanner-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .scanner-frame {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        .scanner-frame video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .scanner-line {
+            width: 80%;
+            height: 3px;
+            background-color: var(--secondary);
+            position: relative;
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: -50px; }
+            100% { top: 300px; }
+        }
+        
+        .scanner-guide {
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        /* Search Tabs */
+        .search-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e1e5eb;
+        }
+        
+        .search-tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .search-tab:hover {
+            color: var(--accent);
+        }
+        
+        .search-tab.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        .search-tab-content {
+            display: none;
+        }
+        
+        .search-tab-content.active {
+            display: block;
+        }
+        
+        /* Notification Modal */
+        .notification-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .notification-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
             padding: 30px;
             text-align: center;
-            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: popIn 0.3s ease;
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .notification-icon {
+            font-size: 60px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .notification-title {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .notification-message {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .developer-contact {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
         }
         
         .contact-info {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-top: 20px;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
         }
         
         .contact-item {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            font-size: 1.2rem;
-            padding: 12px 25px;
-            background-color: rgba(212, 175, 55, 0.1);
-            border-radius: 50px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
         }
         
         .contact-item i {
-            color: #27ae60;
-            font-size: 1.4rem;
-        }
-        
-        .logo {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #f5f1e8;
-            background-color: rgba(212, 175, 55, 0.9);
-            padding: 10px 20px;
-            border-radius: 10px;
-            z-index: 10;
-        }
-        
-        .opening-hours {
-            background-color: rgba(10, 25, 40, 0.7);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 25px;
-            text-align: center;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-        }
-        
-        .hours-title {
-            color: #d4af37;
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-        
-        .hours-text {
-            color: #f5f1e8;
-            font-size: 1.1rem;
-        }
-        
-        @media (max-width: 1100px) {
-            .content {
-                flex-direction: column;
-            }
-            
-            .left-section, .right-section {
-                width: 100%;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .ramadan-text {
-                font-size: 3rem;
-            }
-            
-            .slogan {
-                font-size: 2rem;
-            }
-            
-            .mall-name {
-                font-size: 2.5rem;
-            }
-            
-            .section-title {
-                font-size: 1.7rem;
-            }
-            
-            .departments-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .contact-info {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-            
-            .logo {
-                position: relative;
-                top: 0;
-                left: 0;
-                margin-bottom: 15px;
-                display: inline-block;
-            }
-            
-            .header {
-                padding: 30px 20px;
-            }
+            color: var(--accent);
         }
     </style>
 </head>
 <body>
-    <div class="ad-container">
-        <div class="logo">DamasKino Mall</div>
-        
-        <div class="header">
-            <h1 class="ramadan-text">رمضان كريم</h1>
-            <h2 class="slogan">رمضان أحلى مع</h2>
-            <h2 class="mall-name">دامسكينو مول</h2>
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-store-alt"></i>
+                </div>
+                <div>
+                    <h1 class="app-title">مول داماسكينو</h1>
+                    <p class="app-subtitle">تطبيق إدارة أسعار المنتجات للعمال</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-target="lookup-section">
+                <i class="fas fa-search"></i> استعلام عن سعر
+            </div>
+            <div class="nav-tab" data-target="barcode-section">
+                <i class="fas fa-barcode"></i> مسح باركود
+            </div>
+            <div class="nav-tab" data-target="add-section">
+                <i class="fas fa-plus-circle"></i> إضافة منتج جديد
+            </div>
+            <div class="nav-tab" data-target="products-section">
+                <i class="fas fa-boxes"></i> جميع المنتجات
+            </div>
+            <div class="nav-tab" data-target="about-section">
+                <i class="fas fa-info-circle"></i> معلومات التطبيق
+            </div>
         </div>
         
-        <div class="content">
-            <div class="left-section">
-                <h3 class="section-title">أقسام مول دامسكينو</h3>
+        <!-- Lookup Section -->
+        <section id="lookup-section" class="content-section active">
+            <h2 class="section-title"><i class="fas fa-search"></i> استعلام عن سعر المنتج</h2>
+            
+            <div class="search-tabs">
+                <div class="search-tab active" data-search-type="code">البحث بالكود</div>
+                <div class="search-tab" data-search-type="price">البحث بالسعر</div>
+            </div>
+            
+            <div class="alert alert-success" id="lookup-success"></div>
+            <div class="alert alert-error" id="lookup-error"></div>
+            
+            <!-- Search by Code -->
+            <div id="search-by-code" class="search-tab-content active">
+                <div class="form-group">
+                    <label for="product-code-lookup" class="form-label">أدخل كود المنتج:</label>
+                    <input type="text" id="product-code-lookup" class="form-control" placeholder="مثال: DMSK-001">
+                </div>
                 
-                <div class="departments-container">
-                    <div class="department-card">
-                        <div class="department-icon">
-                            <i class="fas fa-tshirt"></i>
-                        </div>
-                        <h4 class="department-name">الأزياء والموضة</h4>
-                        <p class="department-desc">أحدث صيحات الموضة العالمية والمحلية للرجال والنساء والأطفال من أشهر الماركات العالمية</p>
+                <button id="lookup-by-code-btn" class="btn btn-primary">
+                    <i class="fas fa-search"></i> استعلام بالكود
+                </button>
+            </div>
+            
+            <!-- Search by Price -->
+            <div id="search-by-price" class="search-tab-content">
+                <div class="form-group">
+                    <label for="product-price-lookup" class="form-label">أدخل سعر المنتج:</label>
+                    <input type="number" id="product-price-lookup" class="form-control" placeholder="أدخل السعر للبحث">
+                </div>
+                
+                <div class="form-group">
+                    <label for="price-search-type" class="form-label">نوع البحث:</label>
+                    <select id="price-search-type" class="form-control">
+                        <option value="exact">البحث بالسعر المطابق تماماً</option>
+                        <option value="range">البحث بنطاق سعري</option>
+                    </select>
+                </div>
+                
+                <div id="price-range-inputs" style="display: none;">
+                    <div class="form-group">
+                        <label for="min-price" class="form-label">الحد الأدنى للسعر:</label>
+                        <input type="number" id="min-price" class="form-control" placeholder="الحد الأدنى">
                     </div>
                     
-                    <div class="department-card">
-                        <div class="department-icon">
-                            <i class="fas fa-utensils"></i>
-                        </div>
-                        <h4 class="department-name">المطاعم والكافتيريات</h4>
-                        <p class="department-desc">تشكيلة واسعة من المطاعم العالمية والعربية تقدم أشهى المأكولات والحلويات الرمضانية</p>
-                    </div>
-                    
-                    <div class="department-card">
-                        <div class="department-icon">
-                            <i class="fas fa-home"></i>
-                        </div>
-                        <h4 class="department-name">الديكور والأثاث المنزلي</h4>
-                        <p class="department-desc">كل ما تحتاجه لتزيين منزلك بأجمل الديكورات والأثاث المنزلي العالي الجودة</p>
-                    </div>
-                    
-                    <div class="department-card">
-                        <div class="department-icon">
-                            <i class="fas fa-child"></i>
-                        </div>
-                        <h4 class="department-name">ملاهي الأطفال والترفيه</h4>
-                        <p class="department-desc">مساحة ترفيهية آمنة وممتعة للأطفال مع ألعاب تعليمية وترفيهية متنوعة</p>
-                    </div>
-                    
-                    <div class="department-card">
-                        <div class="department-icon">
-                            <i class="fas fa-spa"></i>
-                        </div>
-                        <h4 class="department-name">الصحة والجمال</h4>
-                        <p class="department-desc">مراكز التجميل والعناية بالبشرة والصالونات النسائية والرجالية والعطور العالمية</p>
-                    </div>
-                    
-                    <div class="department-card">
-                        <div class="department-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h4 class="department-name">الإلكترونيات والأجهزة</h4>
-                        <p class="department-desc">أحدث الأجهزة الإلكترونية والكهربائية والهواتف الذكية وأجهزة الكمبيوتر</p>
+                    <div class="form-group">
+                        <label for="max-price" class="form-label">الحد الأقصى للسعر:</label>
+                        <input type="number" id="max-price" class="form-control" placeholder="الحد الأقصى">
                     </div>
                 </div>
                 
-                <div class="opening-hours">
-                    <div class="hours-title">ساعات العمل في رمضان</div>
-                    <div class="hours-text">من الساعة 10:00 صباحاً حتى 2:00 بعد منتصف الليل</div>
-                    <div class="hours-text">يوم الجمعة من الساعة 2:00 ظهراً حتى 2:00 بعد منتصف الليل</div>
+                <button id="lookup-by-price-btn" class="btn btn-primary">
+                    <i class="fas fa-search"></i> استعلام بالسعر
+                </button>
+            </div>
+            
+            <!-- Results Container -->
+            <div id="product-results-container" style="margin-top: 30px;"></div>
+        </section>
+        
+        <!-- Barcode Scanner Section -->
+        <section id="barcode-section" class="content-section">
+            <h2 class="section-title"><i class="fas fa-barcode"></i> مسح باركود المنتج</h2>
+            
+            <div class="alert alert-success" id="barcode-success"></div>
+            <div class="alert alert-error" id="barcode-error"></div>
+            <div class="alert alert-info" id="barcode-info"></div>
+            
+            <div class="barcode-scanner">
+                <div id="barcode-instructions">
+                    <i class="fas fa-barcode" style="font-size: 60px; color: #ccc; margin-bottom: 20px;"></i>
+                    <p style="color: #777; margin-bottom: 20px;">انقر على "بدء المسح" لمسح باركود المنتج باستخدام الكاميرا</p>
+                    <p style="color: #999; font-size: 14px;">أو أدخل كود الباركود يدوياً في الحقل أدناه</p>
+                </div>
+                
+                <div class="scanner-frame" id="scanner-frame">
+                    <video id="barcode-scanner-view"></video>
+                    <div class="scanner-overlay">
+                        <div class="scanner-line"></div>
+                        <div class="scanner-guide">وجه الكاميرا نحو باركود المنتج</div>
+                    </div>
+                </div>
+                
+                <div class="scanner-controls">
+                    <button id="start-scan-btn" class="btn btn-primary">
+                        <i class="fas fa-camera"></i> بدء المسح
+                    </button>
+                    <button id="stop-scan-btn" class="btn btn-secondary" style="display: none;">
+                        <i class="fas fa-stop"></i> إيقاف المسح
+                    </button>
+                    <button id="reset-scan-btn" class="btn btn-warning" style="display: none;">
+                        <i class="fas fa-redo"></i> إعادة المحاولة
+                    </button>
                 </div>
             </div>
             
-            <div class="right-section">
-                <img src="https://images.unsplash.com/photo-1611868142124-2d7e9e3833de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="رمضان كريم" class="ramadan-image">
-                
-                <h3 class="section-title">مميزات رمضان في دامسكينو مول</h3>
-                
-                <div class="features-list">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-calendar-star"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h3>فعاليات رمضانية يومية</h3>
-                            <p>فعاليات ترفيهية وثقافية متنوعة طوال أيام الشهر الفضيل</p>
-                        </div>
+            <div class="form-group">
+                <label for="manual-barcode" class="form-label">أو أدخل كود الباركود يدوياً:</label>
+                <input type="text" id="manual-barcode" class="form-control" placeholder="أدخل كود الباركود هنا">
+                <button id="lookup-barcode-btn" class="btn btn-primary" style="margin-top: 15px; width: 100%;">
+                    <i class="fas fa-search"></i> استعلام بالباركود
+                </button>
+            </div>
+            
+            <div id="barcode-result" class="product-display" style="display: none;">
+                <img id="barcode-result-image" class="product-image" src="" alt="صورة المنتج">
+                <div class="product-info">
+                    <div class="product-field">
+                        <span class="field-label">كود المنتج:</span>
+                        <span id="barcode-result-code" class="field-value"></span>
                     </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-gem"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h3>عروض حصرية في جميع الأقسام</h3>
-                            <p>تخفيضات وعروض خاصة في كل أقسام المول طوال شهر رمضان</p>
-                        </div>
+                    <div class="product-field">
+                        <span class="field-label">سعر المنتج:</span>
+                        <span id="barcode-result-price" class="field-value price-value"></span>
                     </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h3>مسابقات وجوائز قيمة</h3>
-                            <p>فرص للفوز بجوائز نقدية وعينية مع كل عملية شراء</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-praying-hands"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h3>مكان مخصص للصلاة</h3>
-                            <p>مصلى واسع ومكيّف لراحة المصلين طوال شهر رمضان</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-car"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h3>مواقف مجانية واسعة</h3>
-                            <p>مواقف سيارات مجانية تتسع لأكثر من 3000 سيارة</p>
-                        </div>
+                    <div class="product-field">
+                        <span class="field-label">كود الباركود:</span>
+                        <span id="barcode-result-barcode" class="field-value"></span>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
         
-        <div class="footer">
-            <p>نرحب بكم في دامسكينو مول لنشارككم أجواء رمضان المبارك ونسعد بخدمتكم</p>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fas fa-phone-alt"></i>
-                    <span>كفرسوسة العنوان</span>
+        <!-- Add Product Section -->
+        <section id="add-section" class="content-section">
+            <h2 class="section-title"><i class="fas fa-plus-circle"></i> إضافة منتج جديد</h2>
+            
+            <div class="alert alert-success" id="add-success"></div>
+            <div class="alert alert-error" id="add-error"></div>
+            
+            <div class="camera-container">
+                <div id="camera-instructions">
+                    <i class="fas fa-camera" style="font-size: 60px; color: #ccc; margin-bottom: 20px;"></i>
+                    <p style="color: #777; margin-bottom: 20px;">انقر على "فتح الكاميرا" لالتقاط صورة للمنتج (الكاميرا الخلفية)</p>
                 </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span> by yman mhmd</span>
+                
+                <video id="camera-view" autoplay></video>
+                <img id="captured-image" alt="الصورة الملتقطة">
+                
+                <div class="camera-controls">
+                    <button id="open-camera-btn" class="btn btn-primary">
+                        <i class="fas fa-camera"></i> فتح الكاميرا (الخلفية)
+                    </button>
+                    <button id="capture-btn" class="btn btn-secondary" style="display: none;">
+                        <i class="fas fa-camera-retro"></i> التقاط صورة
+                    </button>
+                    <button id="upload-image-btn" class="btn btn-warning">
+                        <i class="fas fa-upload"></i> رفع صورة
+                    </button>
+                    <button id="reset-camera-btn" class="btn btn-warning" style="display: none;">
+                        <i class="fas fa-redo"></i> إعادة المحاولة
+                    </button>
                 </div>
-                <div class="contact-item">
-                    <i class="fas fa-hashtag"></i>
-                    <span>#رمضان_دامسكينو</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="product-code" class="form-label">كود المنتج:</label>
+                <input type="text" id="product-code" class="form-control" placeholder="أدخل كود المنتج">
+            </div>
+            
+            <div class="form-group">
+                <label for="product-barcode" class="form-label">كود الباركود (اختياري):</label>
+                <input type="text" id="product-barcode" class="form-control" placeholder="أدخل كود الباركود للمنتج">
+            </div>
+            
+            <div class="form-group">
+                <label for="product-price" class="form-label">سعر المنتج (ريال سعودي):</label>
+                <input type="number" id="product-price" class="form-control" placeholder="أدخل سعر المنتج">
+            </div>
+            
+            <button id="save-product-btn" class="btn btn-success">
+                <i class="fas fa-save"></i> حفظ المنتج
+            </button>
+        </section>
+        
+        <!-- Products Section -->
+        <section id="products-section" class="content-section">
+            <h2 class="section-title"><i class="fas fa-boxes"></i> جميع المنتجات</h2>
+            
+            <div class="alert alert-success" id="products-success"></div>
+            <div class="alert alert-error" id="products-error"></div>
+            
+            <div class="loading" id="products-loading">
+                <div class="loading-spinner"></div>
+                <p>جاري تحميل المنتجات...</p>
+            </div>
+            
+            <div id="products-list" class="products-grid">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+            
+            <div id="empty-products" class="empty-state" style="display: none;">
+                <i class="fas fa-box-open"></i>
+                <h3>لا توجد منتجات مسجلة</h3>
+                <p>قم بإضافة منتجات جديدة باستخدام قسم "إضافة منتج جديد"</p>
+            </div>
+        </section>
+        
+        <!-- About Section -->
+        <section id="about-section" class="content-section">
+            <h2 class="section-title"><i class="fas fa-info-circle"></i> معلومات التطبيق</h2>
+            
+            <div class="product-display">
+                <div class="product-info">
+                    <div class="product-field">
+                        <span class="field-label">اسم التطبيق:</span>
+                        <span class="field-value">مول داماسكينو - إدارة أسعار المنتجات</span>
+                    </div>
+                    <div class="product-field">
+                        <span class="field-label">الغرض:</span>
+                        <span class="field-value">تطبيق خاص للعمال لمعرفة أسعار المواد والمنتجات</span>
+                    </div>
+                    <div class="product-field">
+                        <span class="field-label">المبرمج:</span>
+                        <span class="field-value">يمان محمد الحسين</span>
+                    </div>
+                    <div class="product-field">
+                        <span class="field-label">رقم التواصل:</span>
+                        <span class="field-value">0952725590</span>
+                    </div>
+                    <div class="product-field">
+                        <span class="field-label">تاريخ التصميم:</span>
+                        <span class="field-value">تم تصميمه وتطويره خصيصاً لمول داماسكينو</span>
+                    </div>
+                    <div class="product-field">
+                        <span class="field-label">مميزات التطبيق:</span>
+                        <span class="field-value">إضافة منتجات - البحث عن المنتجات - تعديل وحذف المنتجات - مسح الباركود</span>
+                    </div>
+                    <div class="product-field">
+                        <span class="field-label">معلومة تقنية:</span>
+                        <span class="field-value">الكاميرا تفتح الكاميرا الخلفية تلقائياً</span>
+                    </div>
                 </div>
+                
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; width: 100%;">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;">طريقة الاستخدام:</h3>
+                    <ul style="text-align: right; list-style-type: none; padding-right: 0;">
+                        <li style="margin-bottom: 10px; padding-right: 20px; position: relative;">
+                            <i class="fas fa-check-circle" style="color: var(--success); position: absolute; right: 0;"></i>
+                            قسم "استعلام عن سعر" للبحث عن منتج باستخدام الكود أو السعر
+                        </li>
+                        <li style="margin-bottom: 10px; padding-right: 20px; position: relative;">
+                            <i class="fas fa-check-circle" style="color: var(--success); position: absolute; right: 0;"></i>
+                            قسم "مسح باركود" لمسح باركود المنتج تلقائياً أو يدوياً
+                        </li>
+                        <li style="margin-bottom: 10px; padding-right: 20px; position: relative;">
+                            <i class="fas fa-check-circle" style="color: var(--success); position: absolute; right: 0;"></i>
+                            قسم "إضافة منتج جديد" لإضافة منتجات جديدة مع التقاط صور بالكاميرا الخلفية
+                        </li>
+                        <li style="margin-bottom: 10px; padding-right: 20px; position: relative;">
+                            <i class="fas fa-check-circle" style="color: var(--success); position: absolute; right: 0;"></i>
+                            قسم "جميع المنتجات" لعرض وتعديل وحذف المنتجات
+                        </li>
+                        <li style="margin-bottom: 10px; padding-right: 20px; position: relative;">
+                            <i class="fas fa-check-circle" style="color: var(--success); position: absolute; right: 0;"></i>
+                            البيانات تُخزن تلقائياً في المتصفح ولا تحتاج اتصال إنترنت
+                        </li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 10px; width: 100%; text-align: center;">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;">للتواصل مع المطور:</h3>
+                    <p style="margin-bottom: 10px;"><i class="fas fa-user" style="color: var(--accent); margin-left: 8px;"></i> يمان محمد الحسين</p>
+                    <p style="margin-bottom: 10px;"><i class="fas fa-phone" style="color: var(--accent); margin-left: 8px;"></i> 0952725590</p>
+                    <p style="margin-bottom: 0;"><i class="fas fa-info-circle" style="color: var(--accent); margin-left: 8px;"></i> لحل أي مشكلة أو لتفعيل التطبيق</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <p class="programmer-info">تم تصميم وتطوير التطبيق بواسطة: <strong>يمان محمد الحسين</strong> - هاتف: 0952725590</p>
+            <p class="copyright">© جميع الحقوق محفوظة - تطبيق خاص بمول داماسكينو</p>
+        </div>
+    </footer>
+    
+    <!-- Notification Modal -->
+    <div id="notification-modal" class="notification-modal">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h2 class="notification-title">تذكير مهم!</h2>
+            <p class="notification-message">
+                للتأكد من استمرارية عمل التطبيق وحل أي مشاكل تقنية، يرجى التواصل مع المطور للتفعيل والمتابعة.
+            </p>
+            
+            <div class="developer-contact">
+                <h3 style="color: var(--primary); margin-bottom: 15px;">معلومات التواصل:</h3>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-user"></i>
+                        <span>يمان محمد الحسين</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>0952725590</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="close-notification-btn" class="btn btn-primary" style="margin-top: 25px; width: 100%;">
+                <i class="fas fa-check"></i> فهمت، شكراً
+            </button>
+        </div>
+    </div>
+    
+    <!-- Hidden file inputs -->
+    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+    <input type="file" id="edit-image-upload" accept="image/*" style="display: none;">
+    
+    <!-- Edit Product Modal -->
+    <div id="edit-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 15px; width: 90%; max-width: 500px; padding: 30px; max-height: 90vh; overflow-y: auto;">
+            <h2 style="color: var(--primary); margin-bottom: 25px; display: flex; align-items: center;">
+                <i class="fas fa-edit" style="margin-left: 10px;"></i> تعديل المنتج
+            </h2>
+            
+            <div class="form-group">
+                <label for="edit-product-code" class="form-label">كود المنتج:</label>
+                <input type="text" id="edit-product-code" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="edit-product-barcode" class="form-label">كود الباركود:</label>
+                <input type="text" id="edit-product-barcode" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="edit-product-price" class="form-label">سعر المنتج (ريال سعودي):</label>
+                <input type="number" id="edit-product-price" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">صورة المنتج الحالية:</label>
+                <img id="edit-product-image" src="" alt="صورة المنتج" style="max-width: 100%; max-height: 200px; border-radius: 8px; margin-bottom: 15px;">
+                <button id="change-image-btn" class="btn btn-warning" style="width: 100%;">
+                    <i class="fas fa-exchange-alt"></i> تغيير الصورة
+                </button>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 25px;">
+                <button id="update-product-btn" class="btn btn-success" style="flex: 1;">
+                    <i class="fas fa-save"></i> حفظ التعديلات
+                </button>
+                <button id="close-edit-modal-btn" class="btn btn-secondary" style="flex: 1;">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
             </div>
         </div>
     </div>
+    
+    <script>
+        // المنتجات المخزنة محلياً
+        let products = JSON.parse(localStorage.getItem('damaskino-products')) || [];
+        let currentStream = null;
+        let editingProductId = null;
+        let barcodeScanner = null;
+        let isScanning = false;
+        let notificationInterval = null;
+        
+        // تهيئة التطبيق عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // تعيين أحداث التنقل بين الأقسام
+            setupNavigation();
+            
+            // تعيين أحداث قسم البحث
+            setupLookupSection();
+            
+            // تعيين أحداث قسم الباركود
+            setupBarcodeSection();
+            
+            // تعيين أحداث قسم الإضافة
+            setupAddSection();
+            
+            // تعيين أحداث قسم المنتجات
+            setupProductsSection();
+            
+            // تعيين أحداث نافذة التعديل
+            setupEditModal();
+            
+            // تعيين أحداث الإشعار
+            setupNotification();
+            
+            // تحميل المنتجات عند فتح قسم المنتجات
+            document.querySelector('.nav-tab[data-target="products-section"]').addEventListener('click', loadProducts);
+            
+            // إضافة بعض المنتجات الافتراضية إذا لم تكن هناك منتجات
+            if (products.length === 0) {
+                addSampleProducts();
+            }
+            
+            // بدء مؤقت الإشعار (كل 30 دقيقة)
+            startNotificationTimer();
+        });
+        
+        // إعداد مؤقت الإشعار
+        function setupNotification() {
+            const notificationModal = document.getElementById('notification-modal');
+            const closeNotificationBtn = document.getElementById('close-notification-btn');
+            
+            // زر إغلاق الإشعار
+            closeNotificationBtn.addEventListener('click', function() {
+                notificationModal.style.display = 'none';
+                
+                // إعادة بدء المؤقت لمدة 30 دقيقة أخرى
+                clearInterval(notificationInterval);
+                startNotificationTimer();
+            });
+            
+            // إغلاق النافذة عند النقر خارجها
+            notificationModal.addEventListener('click', function(e) {
+                if (e.target === notificationModal) {
+                    notificationModal.style.display = 'none';
+                    
+                    // إعادة بدء المؤقت لمدة 30 دقيقة أخرى
+                    clearInterval(notificationInterval);
+                    startNotificationTimer();
+                }
+            });
+        }
+        
+        // بدء مؤقت الإشعار
+        function startNotificationTimer() {
+            // عرض الإشعار كل 30 دقيقة (1800000 مللي ثانية)
+            // للاختبار: عرض كل 1 دقيقة (60000 مللي ثانية)
+            notificationInterval = setInterval(function() {
+                showNotification();
+            }, 60000); // غيّر إلى 1800000 للإنتاج
+        }
+        
+        // عرض إشعار التواصل
+        function showNotification() {
+            const notificationModal = document.getElementById('notification-modal');
+            notificationModal.style.display = 'flex';
+        }
+        
+        // إضافة منتجات افتراضية للعرض التوضيحي
+        function addSampleProducts() {
+            const sampleProducts = [
+                { 
+                    id: Date.now(), 
+                    code: 'DMSK-001', 
+                    barcode: '123456789012',
+                    price: 120, 
+                    image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNFNUYwRjYiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMzQzQTQwIiBmb250LXdlaWdodD0iYm9sZCI+UHJvZHVjdCBEZW1vPC90ZXh0Pjwvc3ZnPg==' 
+                },
+                { 
+                    id: Date.now() + 1, 
+                    code: 'DMSK-002', 
+                    barcode: '987654321098',
+                    price: 85.5, 
+                    image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGMEU4RkYiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMzQzQTQwIiBmb250LXdlaWdodD0iYm9sZCI+UHJvZHVjdCBTYW1wbGU8L3RleHQ+PC9zdmc+' 
+                },
+                { 
+                    id: Date.now() + 2, 
+                    code: 'DMSK-003', 
+                    barcode: '456123789012',
+                    price: 250, 
+                    image: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNFRkZCRkYiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMzQzQTQwIiBmb250LXdlaWdodD0iYm9sZCI+RGFtYXNraW5vIE1vbGw8L3RleHQ+PC9zdmc+' 
+                }
+            ];
+            
+            products.push(...sampleProducts);
+            localStorage.setItem('damaskino-products', JSON.stringify(products));
+        }
+        
+        // التنقل بين الأقسام
+        function setupNavigation() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    
+                    // إزالة النشاط من جميع الألسنة
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // إضافة النشاط للسان المحدد
+                    this.classList.add('active');
+                    
+                    // إخفاء جميع الأقسام
+                    document.querySelectorAll('.content-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // إظهار القسم المحدد
+                    document.getElementById(targetId).classList.add('active');
+                    
+                    // إغلاق الكاميرا إذا كانت مفتوحة
+                    stopCamera();
+                    
+                    // إيقاف مسح الباركود إذا كان يعمل
+                    stopBarcodeScanner();
+                });
+            });
+        }
+        
+        // قسم البحث عن المنتجات
+        function setupLookupSection() {
+            // تبويبات البحث
+            const searchTabs = document.querySelectorAll('.search-tab');
+            searchTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const searchType = this.getAttribute('data-search-type');
+                    
+                    // إزالة النشاط من جميع التبويبات
+                    searchTabs.forEach(t => t.classList.remove('active'));
+                    // إضافة النشاط للتبويب المحدد
+                    this.classList.add('active');
+                    
+                    // إخفاء جميع محتويات البحث
+                    document.querySelectorAll('.search-tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // إظهار محتوى البحث المحدد
+                    document.getElementById(`search-by-${searchType}`).classList.add('active');
+                    
+                    // إظهار أو إخفاء حقل نطاق السعر
+                    if (searchType === 'price') {
+                        const priceSearchType = document.getElementById('price-search-type').value;
+                        togglePriceRangeInputs(priceSearchType);
+                    }
+                });
+            });
+            
+            // تغيير نوع البحث بالسعر
+            document.getElementById('price-search-type').addEventListener('change', function() {
+                togglePriceRangeInputs(this.value);
+            });
+            
+            // البحث بالكود
+            document.getElementById('lookup-by-code-btn').addEventListener('click', lookupByCode);
+            document.getElementById('product-code-lookup').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    lookupByCode();
+                }
+            });
+            
+            // البحث بالسعر
+            document.getElementById('lookup-by-price-btn').addEventListener('click', lookupByPrice);
+            document.getElementById('product-price-lookup').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    lookupByPrice();
+                }
+            });
+        }
+        
+        // تبديل إظهار/إخفاء حقول نطاق السعر
+        function togglePriceRangeInputs(searchType) {
+            const priceRangeInputs = document.getElementById('price-range-inputs');
+            const priceLookupInput = document.getElementById('product-price-lookup');
+            
+            if (searchType === 'range') {
+                priceRangeInputs.style.display = 'block';
+                priceLookupInput.style.display = 'none';
+            } else {
+                priceRangeInputs.style.display = 'none';
+                priceLookupInput.style.display = 'block';
+            }
+        }
+        
+        // البحث عن منتج بالكود
+        function lookupByCode() {
+            const productCode = document.getElementById('product-code-lookup').value.trim();
+            const resultsContainer = document.getElementById('product-results-container');
+            const successAlert = document.getElementById('lookup-success');
+            const errorAlert = document.getElementById('lookup-error');
+            
+            // إخفاء جميع التنبيهات
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            
+            if (!productCode) {
+                errorAlert.textContent = 'يرجى إدخال كود المنتج للبحث';
+                errorAlert.style.display = 'block';
+                resultsContainer.innerHTML = '';
+                return;
+            }
+            
+            // البحث عن المنتج
+            const product = products.find(p => p.code === productCode);
+            
+            if (!product) {
+                errorAlert.textContent = 'لم يتم العثور على منتج بهذا الكود';
+                errorAlert.style.display = 'block';
+                resultsContainer.innerHTML = '';
+                return;
+            }
+            
+            // عرض تفاصيل المنتج
+            displayProductResult(product);
+            
+            successAlert.textContent = `تم العثور على المنتج: ${product.code}`;
+            successAlert.style.display = 'block';
+        }
+        
+        // البحث عن منتج بالسعر
+        function lookupByPrice() {
+            const searchType = document.getElementById('price-search-type').value;
+            const resultsContainer = document.getElementById('product-results-container');
+            const successAlert = document.getElementById('lookup-success');
+            const errorAlert = document.getElementById('lookup-error');
+            
+            // إخفاء جميع التنبيهات
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            
+            let foundProducts = [];
+            
+            if (searchType === 'exact') {
+                const productPrice = parseFloat(document.getElementById('product-price-lookup').value);
+                
+                if (!productPrice || isNaN(productPrice)) {
+                    errorAlert.textContent = 'يرجى إدخال سعر صحيح للبحث';
+                    errorAlert.style.display = 'block';
+                    resultsContainer.innerHTML = '';
+                    return;
+                }
+                
+                // البحث عن المنتجات بالسعر المطابق
+                foundProducts = products.filter(p => p.price === productPrice);
+                
+                if (foundProducts.length === 0) {
+                    errorAlert.textContent = 'لم يتم العثور على منتجات بهذا السعر';
+                    errorAlert.style.display = 'block';
+                    resultsContainer.innerHTML = '';
+                    return;
+                }
+            } else if (searchType === 'range') {
+                const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+                const maxPrice = parseFloat(document.getElementById('max-price').value) || Number.MAX_SAFE_INTEGER;
+                
+                if (minPrice > maxPrice) {
+                    errorAlert.textContent = 'الحد الأدنى يجب أن يكون أقل من الحد الأقصى';
+                    errorAlert.style.display = 'block';
+                    resultsContainer.innerHTML = '';
+                    return;
+                }
+                
+                // البحث عن المنتجات في نطاق السعر
+                foundProducts = products.filter(p => p.price >= minPrice && p.price <= maxPrice);
+                
+                if (foundProducts.length === 0) {
+                    errorAlert.textContent = 'لم يتم العثور على منتجات في هذا النطاق السعري';
+                    errorAlert.style.display = 'block';
+                    resultsContainer.innerHTML = '';
+                    return;
+                }
+            }
+            
+            // عرض تفاصيل المنتجات
+            displayProductResults(foundProducts);
+            
+            successAlert.textContent = `تم العثور على ${foundProducts.length} منتج`;
+            successAlert.style.display = 'block';
+        }
+        
+        // عرض نتيجة منتج واحد
+        function displayProductResult(product) {
+            const resultsContainer = document.getElementById('product-results-container');
+            
+            resultsContainer.innerHTML = `
+                <div class="product-display">
+                    <img src="${product.image}" class="product-image" alt="صورة المنتج">
+                    <div class="product-info">
+                        <div class="product-field">
+                            <span class="field-label">كود المنتج:</span>
+                            <span class="field-value">${product.code}</span>
+                        </div>
+                        ${product.barcode ? `
+                        <div class="product-field">
+                            <span class="field-label">كود الباركود:</span>
+                            <span class="field-value">${product.barcode}</span>
+                        </div>
+                        ` : ''}
+                        <div class="product-field">
+                            <span class="field-label">سعر المنتج:</span>
+                            <span class="field-value price-value">${product.price} ر.س</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // عرض نتائج متعددة لمنتجات
+        function displayProductResults(productsList) {
+            const resultsContainer = document.getElementById('product-results-container');
+            
+            if (productsList.length === 1) {
+                displayProductResult(productsList[0]);
+                return;
+            }
+            
+            let productsHTML = '<h3 style="margin-bottom: 20px; color: var(--primary);">المنتجات التي تم العثور عليها:</h3>';
+            productsHTML += '<div class="products-grid">';
+            
+            productsList.forEach(product => {
+                productsHTML += `
+                    <div class="product-card">
+                        <img src="${product.image}" alt="صورة ${product.code}" class="product-card-img">
+                        <div class="product-card-body">
+                            <h3 class="product-card-title">منتج ${product.code}</h3>
+                            ${product.barcode ? `<p class="product-card-code">الباركود: ${product.barcode}</p>` : ''}
+                            <p class="product-card-price">${product.price} ر.س</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            productsHTML += '</div>';
+            resultsContainer.innerHTML = productsHTML;
+        }
+        
+        // قسم مسح الباركود
+        function setupBarcodeSection() {
+            const startScanBtn = document.getElementById('start-scan-btn');
+            const stopScanBtn = document.getElementById('stop-scan-btn');
+            const resetScanBtn = document.getElementById('reset-scan-btn');
+            const manualBarcodeBtn = document.getElementById('lookup-barcode-btn');
+            const manualBarcodeInput = document.getElementById('manual-barcode');
+            
+            // بدء مسح الباركود
+            startScanBtn.addEventListener('click', startBarcodeScanner);
+            
+            // إيقاف مسح الباركود
+            stopScanBtn.addEventListener('click', stopBarcodeScanner);
+            
+            // إعادة تعيين المسح
+            resetScanBtn.addEventListener('click', resetBarcodeScanner);
+            
+            // البحث يدوياً بالباركود
+            manualBarcodeBtn.addEventListener('click', lookupByBarcode);
+            
+            // البحث عند الضغط على Enter
+            manualBarcodeInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    lookupByBarcode();
+                }
+            });
+        }
+        
+        // بدء مسح الباركود
+        async function startBarcodeScanner() {
+            const scannerFrame = document.getElementById('scanner-frame');
+            const barcodeView = document.getElementById('barcode-scanner-view');
+            const startScanBtn = document.getElementById('start-scan-btn');
+            const stopScanBtn = document.getElementById('stop-scan-btn');
+            const resetScanBtn = document.getElementById('reset-scan-btn');
+            const instructions = document.getElementById('barcode-instructions');
+            const infoAlert = document.getElementById('barcode-info');
+            const errorAlert = document.getElementById('barcode-error');
+            
+            // إخفاء التنبيهات
+            infoAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            
+            try {
+                // طلب الوصول إلى الكاميرا
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: { exact: "environment" } 
+                    } 
+                });
+                
+                currentStream = stream;
+                barcodeView.srcObject = stream;
+                scannerFrame.style.display = 'block';
+                startScanBtn.style.display = 'none';
+                stopScanBtn.style.display = 'block';
+                resetScanBtn.style.display = 'block';
+                instructions.style.display = 'none';
+                
+                // تهيئة قارئ الباركود
+                const codeReader = new ZXing.BrowserMultiFormatReader();
+                
+                // بدء مسح الباركود
+                codeReader.decodeFromVideoDevice(null, 'barcode-scanner-view', (result, err) => {
+                    if (result) {
+                        // تم العثور على باركود
+                        handleBarcodeResult(result.text);
+                        stopBarcodeScanner();
+                    }
+                    
+                    if (err && !(err instanceof ZXing.NotFoundException)) {
+                        console.error('خطأ في قراءة الباركود:', err);
+                    }
+                });
+                
+                barcodeScanner = codeReader;
+                isScanning = true;
+                
+                infoAlert.textContent = 'يتم الآن مسح الباركود. وجه الكاميرا نحو باركود المنتج.';
+                infoAlert.style.display = 'block';
+                
+            } catch (err) {
+                console.error('خطأ في الوصول إلى الكاميرا:', err);
+                
+                // محاولة استخدام أي كاميرا متاحة
+                try {
+                    const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    
+                    currentStream = fallbackStream;
+                    barcodeView.srcObject = fallbackStream;
+                    scannerFrame.style.display = 'block';
+                    startScanBtn.style.display = 'none';
+                    stopScanBtn.style.display = 'block';
+                    resetScanBtn.style.display = 'block';
+                    instructions.style.display = 'none';
+                    
+                    // تهيئة قارئ الباركود
+                    const codeReader = new ZXing.BrowserMultiFormatReader();
+                    
+                    // بدء مسح الباركود
+                    codeReader.decodeFromVideoDevice(null, 'barcode-scanner-view', (result, err) => {
+                        if (result) {
+                            // تم العثور على باركود
+                            handleBarcodeResult(result.text);
+                            stopBarcodeScanner();
+                        }
+                        
+                        if (err && !(err instanceof ZXing.NotFoundException)) {
+                            console.error('خطأ في قراءة الباركود:', err);
+                        }
+                    });
+                    
+                    barcodeScanner = codeReader;
+                    isScanning = true;
+                    
+                    infoAlert.textContent = 'يتم الآن مسح الباركود باستخدام الكاميرا المتاحة. وجه الكاميرا نحو باركود المنتج.';
+                    infoAlert.style.display = 'block';
+                    
+                } catch (fallbackErr) {
+                    console.error('خطأ في الوصول إلى أي كاميرا:', fallbackErr);
+                    errorAlert.textContent = 'تعذر الوصول إلى الكاميرا. يرجى التأكد من السماح للموقع باستخدام الكاميرا.';
+                    errorAlert.style.display = 'block';
+                }
+            }
+        }
+        
+        // إيقاف مسح الباركود
+        function stopBarcodeScanner() {
+            if (barcodeScanner && isScanning) {
+                barcodeScanner.reset();
+                barcodeScanner = null;
+                isScanning = false;
+            }
+            
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+            
+            const scannerFrame = document.getElementById('scanner-frame');
+            const startScanBtn = document.getElementById('start-scan-btn');
+            const stopScanBtn = document.getElementById('stop-scan-btn');
+            const resetScanBtn = document.getElementById('reset-scan-btn');
+            const instructions = document.getElementById('barcode-instructions');
+            const infoAlert = document.getElementById('barcode-info');
+            
+            scannerFrame.style.display = 'none';
+            startScanBtn.style.display = 'block';
+            stopScanBtn.style.display = 'none';
+            resetScanBtn.style.display = 'none';
+            instructions.style.display = 'block';
+            infoAlert.style.display = 'none';
+        }
+        
+        // إعادة تعيين مسح الباركود
+        function resetBarcodeScanner() {
+            stopBarcodeScanner();
+            
+            const barcodeResult = document.getElementById('barcode-result');
+            const successAlert = document.getElementById('barcode-success');
+            const errorAlert = document.getElementById('barcode-error');
+            const manualBarcodeInput = document.getElementById('manual-barcode');
+            
+            barcodeResult.style.display = 'none';
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            manualBarcodeInput.value = '';
+        }
+        
+        // معالجة نتيجة الباركود
+        function handleBarcodeResult(barcode) {
+            const manualBarcodeInput = document.getElementById('manual-barcode');
+            manualBarcodeInput.value = barcode;
+            
+            // البحث عن المنتج باستخدام الباركود
+            lookupByBarcode();
+        }
+        
+        // البحث عن منتج بالباركود
+        function lookupByBarcode() {
+            const barcode = document.getElementById('manual-barcode').value.trim();
+            const barcodeResult = document.getElementById('barcode-result');
+            const successAlert = document.getElementById('barcode-success');
+            const errorAlert = document.getElementById('barcode-error');
+            
+            // إخفاء جميع التنبيهات
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            
+            if (!barcode) {
+                errorAlert.textContent = 'يرجى إدخال كود الباركود للبحث';
+                errorAlert.style.display = 'block';
+                barcodeResult.style.display = 'none';
+                return;
+            }
+            
+            // البحث عن المنتج بالباركود أولاً
+            let product = products.find(p => p.barcode === barcode);
+            
+            // إذا لم يتم العثور بالباركود، حاول البحث بالكود
+            if (!product) {
+                product = products.find(p => p.code === barcode);
+            }
+            
+            if (!product) {
+                errorAlert.textContent = 'لم يتم العثور على منتج بهذا الباركود أو الكود';
+                errorAlert.style.display = 'block';
+                barcodeResult.style.display = 'none';
+                return;
+            }
+            
+            // عرض تفاصيل المنتج
+            document.getElementById('barcode-result-code').textContent = product.code;
+            document.getElementById('barcode-result-price').textContent = `${product.price} ر.س`;
+            document.getElementById('barcode-result-barcode').textContent = product.barcode || 'لا يوجد';
+            document.getElementById('barcode-result-image').src = product.image;
+            
+            successAlert.textContent = `تم العثور على المنتج: ${product.code}`;
+            successAlert.style.display = 'block';
+            barcodeResult.style.display = 'flex';
+        }
+        
+        // قسم إضافة منتج جديد
+        function setupAddSection() {
+            const openCameraBtn = document.getElementById('open-camera-btn');
+            const captureBtn = document.getElementById('capture-btn');
+            const uploadImageBtn = document.getElementById('upload-image-btn');
+            const resetCameraBtn = document.getElementById('reset-camera-btn');
+            const saveProductBtn = document.getElementById('save-product-btn');
+            const imageUploadInput = document.getElementById('image-upload');
+            
+            let capturedImageData = null;
+            
+            // فتح الكاميرا
+            openCameraBtn.addEventListener('click', function() {
+                startCamera();
+            });
+            
+            // التقاط صورة
+            captureBtn.addEventListener('click', function() {
+                captureImage();
+            });
+            
+            // رفع صورة
+            uploadImageBtn.addEventListener('click', function() {
+                imageUploadInput.click();
+            });
+            
+            // إعادة المحاولة (إعادة تعيين الكاميرا)
+            resetCameraBtn.addEventListener('click', function() {
+                resetCamera();
+            });
+            
+            // استقبال الصورة المرفوعة
+            imageUploadInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        capturedImageData = event.target.result;
+                        showCapturedImage(capturedImageData);
+                        
+                        // إخفاء الكاميرا وإظهار الصورة الملتقطة
+                        document.getElementById('camera-view').style.display = 'none';
+                        document.getElementById('capture-btn').style.display = 'none';
+                        document.getElementById('captured-image').style.display = 'block';
+                        document.getElementById('reset-camera-btn').style.display = 'block';
+                        document.getElementById('camera-instructions').style.display = 'none';
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // حفظ المنتج
+            saveProductBtn.addEventListener('click', function() {
+                saveProduct(capturedImageData);
+            });
+        }
+        
+        // تشغيل الكاميرا الخلفية
+        function startCamera() {
+            const cameraView = document.getElementById('camera-view');
+            const captureBtn = document.getElementById('capture-btn');
+            const openCameraBtn = document.getElementById('open-camera-btn');
+            const instructions = document.getElementById('camera-instructions');
+            
+            // طلب الوصول إلى الكاميرا الخلفية
+            const constraints = {
+                video: {
+                    facingMode: { exact: "environment" } // هذا يحدد الكاميرا الخلفية
+                }
+            };
+            
+            // محاولة فتح الكاميرا الخلفية أولاً
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(function(stream) {
+                    currentStream = stream;
+                    cameraView.srcObject = stream;
+                    cameraView.style.display = 'block';
+                    captureBtn.style.display = 'block';
+                    openCameraBtn.style.display = 'none';
+                    instructions.style.display = 'none';
+                })
+                .catch(function(err) {
+                    console.error('خطأ في الوصول إلى الكاميرا الخلفية:', err);
+                    
+                    // إذا فشل فتح الكاميرا الخلفية، نفتح أي كاميرا متاحة
+                    const fallbackConstraints = { video: true };
+                    
+                    navigator.mediaDevices.getUserMedia(fallbackConstraints)
+                        .then(function(stream) {
+                            currentStream = stream;
+                            cameraView.srcObject = stream;
+                            cameraView.style.display = 'block';
+                            captureBtn.style.display = 'block';
+                            openCameraBtn.style.display = 'none';
+                            instructions.style.display = 'none';
+                            
+                            // عرض رسالة للمستخدم
+                            alert('لم يتم العثور على كاميرا خلفية، تم استخدام الكاميرا المتاحة.');
+                        })
+                        .catch(function(fallbackErr) {
+                            console.error('خطأ في الوصول إلى الكاميرا:', fallbackErr);
+                            alert('تعذر الوصول إلى الكاميرا. يرجى التأكد من السماح للموقع باستخدام الكاميرا.');
+                        });
+                });
+        }
+        
+        // إيقاف الكاميرا
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+                
+                document.getElementById('camera-view').style.display = 'none';
+                document.getElementById('capture-btn').style.display = 'none';
+                document.getElementById('open-camera-btn').style.display = 'block';
+                document.getElementById('camera-instructions').style.display = 'block';
+                document.getElementById('captured-image').style.display = 'none';
+                document.getElementById('reset-camera-btn').style.display = 'none';
+            }
+        }
+        
+        // التقاط صورة من الكاميرا
+        function captureImage() {
+            const cameraView = document.getElementById('camera-view');
+            const canvas = document.createElement('canvas');
+            canvas.width = cameraView.videoWidth;
+            canvas.height = cameraView.videoHeight;
+            
+            const context = canvas.getContext('2d');
+            
+            // قلب الصورة لجعلها طبيعية بعد التقاطها
+            context.translate(canvas.width, 0);
+            context.scale(-1, 1);
+            
+            context.drawImage(cameraView, 0, 0, canvas.width, canvas.height);
+            
+            const imageData = canvas.toDataURL('image/png');
+            showCapturedImage(imageData);
+            
+            // إيقاف الكاميرا
+            stopCamera();
+            
+            // إظهار زر إعادة المحاولة
+            document.getElementById('reset-camera-btn').style.display = 'block';
+        }
+        
+        // عرض الصورة الملتقطة
+        function showCapturedImage(imageData) {
+            const capturedImage = document.getElementById('captured-image');
+            capturedImage.src = imageData;
+            capturedImage.style.display = 'block';
+        }
+        
+        // إعادة تعيين الكاميرا
+        function resetCamera() {
+            document.getElementById('captured-image').style.display = 'none';
+            document.getElementById('reset-camera-btn').style.display = 'none';
+            document.getElementById('camera-instructions').style.display = 'block';
+            startCamera();
+        }
+        
+        // حفظ المنتج الجديد
+        function saveProduct(imageData) {
+            const productCode = document.getElementById('product-code').value.trim();
+            const productBarcode = document.getElementById('product-barcode').value.trim();
+            const productPrice = document.getElementById('product-price').value.trim();
+            const successAlert = document.getElementById('add-success');
+            const errorAlert = document.getElementById('add-error');
+            
+            // إخفاء جميع التنبيهات
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            
+            // التحقق من البيانات المدخلة
+            if (!productCode) {
+                errorAlert.textContent = 'يرجى إدخال كود المنتج';
+                errorAlert.style.display = 'block';
+                return;
+            }
+            
+            if (!productPrice || isNaN(productPrice) || parseFloat(productPrice) <= 0) {
+                errorAlert.textContent = 'يرجى إدخال سعر صحيح للمنتج';
+                errorAlert.style.display = 'block';
+                return;
+            }
+            
+            if (!imageData) {
+                errorAlert.textContent = 'يرجى التقاط أو رفع صورة للمنتج';
+                errorAlert.style.display = 'block';
+                return;
+            }
+            
+            // التحقق من عدم تكرار الكود
+            const existingProduct = products.find(p => p.code === productCode);
+            if (existingProduct) {
+                errorAlert.textContent = 'كود المنتج موجود مسبقاً. يرجى استخدام كود مختلف.';
+                errorAlert.style.display = 'block';
+                return;
+            }
+            
+            // التحقق من عدم تكرار الباركود
+            if (productBarcode) {
+                const existingBarcode = products.find(p => p.barcode === productBarcode);
+                if (existingBarcode) {
+                    errorAlert.textContent = 'كود الباركود موجود مسبقاً. يرجى استخدام باركود مختلف.';
+                    errorAlert.style.display = 'block';
+                    return;
+                }
+            }
+            
+            // إنشاء المنتج الجديد
+            const newProduct = {
+                id: Date.now(),
+                code: productCode,
+                barcode: productBarcode || '',
+                price: parseFloat(productPrice),
+                image: imageData
+            };
+            
+            // إضافة المنتج إلى القائمة
+            products.push(newProduct);
+            localStorage.setItem('damaskino-products', JSON.stringify(products));
+            
+            // إظهار رسالة النجاح
+            successAlert.textContent = `تم حفظ المنتج "${productCode}" بنجاح`;
+            successAlert.style.display = 'block';
+            
+            // إعادة تعيين الحقول
+            document.getElementById('product-code').value = '';
+            document.getElementById('product-barcode').value = '';
+            document.getElementById('product-price').value = '';
+            document.getElementById('captured-image').style.display = 'none';
+            document.getElementById('reset-camera-btn').style.display = 'none';
+            document.getElementById('camera-instructions').style.display = 'block';
+            
+            // الانتقال إلى قسم المنتجات
+            document.querySelector('.nav-tab[data-target="products-section"]').click();
+        }
+        
+        // قسم المنتجات
+        function setupProductsSection() {
+            // تم تهيئة الأحداث في loadProducts
+        }
+        
+        // تحميل المنتجات وعرضها
+        function loadProducts() {
+            const productsList = document.getElementById('products-list');
+            const emptyState = document.getElementById('empty-products');
+            const loading = document.getElementById('products-loading');
+            
+            // إظهار مؤشر التحميل
+            loading.style.display = 'block';
+            productsList.innerHTML = '';
+            
+            // محاكاة وقت التحميل
+            setTimeout(() => {
+                loading.style.display = 'none';
+                
+                if (products.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+                
+                emptyState.style.display = 'none';
+                
+                // عرض كل المنتجات
+                products.forEach(product => {
+                    const productCard = createProductCard(product);
+                    productsList.appendChild(productCard);
+                });
+            }, 500);
+        }
+        
+        // إنشاء بطاقة منتج
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.dataset.id = product.id;
+            
+            card.innerHTML = `
+                <img src="${product.image}" alt="صورة ${product.code}" class="product-card-img">
+                <div class="product-card-body">
+                    <h3 class="product-card-title">منتج ${product.code}</h3>
+                    ${product.barcode ? `<p class="product-card-code">الباركود: ${product.barcode}</p>` : ''}
+                    <p class="product-card-price">${product.price} ر.س</p>
+                    <div class="product-card-actions">
+                        <button class="btn btn-primary edit-btn" style="flex: 1;">
+                            <i class="fas fa-edit"></i> تعديل
+                        </button>
+                        <button class="btn btn-secondary delete-btn" style="flex: 1;">
+                            <i class="fas fa-trash"></i> حذف
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // إضافة أحداث للأزرار
+            card.querySelector('.edit-btn').addEventListener('click', function() {
+                openEditModal(product.id);
+            });
+            
+            card.querySelector('.delete-btn').addEventListener('click', function() {
+                deleteProduct(product.id);
+            });
+            
+            return card;
+        }
+        
+        // فتح نافذة تعديل المنتج
+        function openEditModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            editingProductId = productId;
+            
+            // تعبئة الحقول ببيانات المنتج
+            document.getElementById('edit-product-code').value = product.code;
+            document.getElementById('edit-product-barcode').value = product.barcode || '';
+            document.getElementById('edit-product-price').value = product.price;
+            document.getElementById('edit-product-image').src = product.image;
+            
+            // إظهار النافذة
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+        
+        // تهيئة نافذة التعديل
+        function setupEditModal() {
+            const editModal = document.getElementById('edit-modal');
+            const closeBtn = document.getElementById('close-edit-modal-btn');
+            const updateBtn = document.getElementById('update-product-btn');
+            const changeImageBtn = document.getElementById('change-image-btn');
+            const editImageUpload = document.getElementById('edit-image-upload');
+            
+            let newImageData = null;
+            
+            // زر الإغلاق
+            closeBtn.addEventListener('click', function() {
+                editModal.style.display = 'none';
+                newImageData = null;
+            });
+            
+            // زر تغيير الصورة
+            changeImageBtn.addEventListener('click', function() {
+                editImageUpload.click();
+            });
+            
+            // استقبال الصورة الجديدة
+            editImageUpload.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        newImageData = event.target.result;
+                        document.getElementById('edit-product-image').src = newImageData;
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // تحديث المنتج
+            updateBtn.addEventListener('click', function() {
+                updateProduct();
+            });
+            
+            // إغلاق النافذة عند النقر خارجها
+            editModal.addEventListener('click', function(e) {
+                if (e.target === editModal) {
+                    editModal.style.display = 'none';
+                    newImageData = null;
+                }
+            });
+        }
+        
+        // تحديث بيانات المنتج
+        function updateProduct() {
+            const productCode = document.getElementById('edit-product-code').value.trim();
+            const productBarcode = document.getElementById('edit-product-barcode').value.trim();
+            const productPrice = document.getElementById('edit-product-price').value.trim();
+            const successAlert = document.getElementById('products-success');
+            const errorAlert = document.getElementById('products-error');
+            
+            // إخفاء جميع التنبيهات
+            successAlert.style.display = 'none';
+            errorAlert.style.display = 'none';
+            
+            // التحقق من البيانات المدخلة
+            if (!productCode) {
+                errorAlert.textContent = 'يرجى إدخال كود المنتج';
+                errorAlert.style.display = 'block';
+                return;
+            }
+            
+            if (!productPrice || isNaN(productPrice) || parseFloat(productPrice) <= 0) {
+                errorAlert.textContent = 'يرجى إدخال سعر صحيح للمنتج';
+                errorAlert.style.display = 'block';
+                return;
+            }
+            
+            // البحث عن المنتج للتعديل
+            const productIndex = products.findIndex(p => p.id === editingProductId);
+            if (productIndex === -1) {
+                errorAlert.textContent = 'المنتج غير موجود';
+                errorAlert.style.display = 'block';
+                return;
+            }
+            
+            // التحقق من عدم تكرار الكود (باستثناء المنتج الحالي)
+            const existingProduct = products.find(p => p.code === productCode && p.id !== editingProductId);
+            if (existingProduct) {
+                errorAlert.textContent = 'كود المنتج موجود مسبقاً. يرجى استخدام كود مختلف.';
+                errorAlert.style.display = 'block';
+                return;
+            }
+            
+            // التحقق من عدم تكرار الباركود (باستثناء المنتج الحالي)
+            if (productBarcode) {
+                const existingBarcode = products.find(p => p.barcode === productBarcode && p.id !== editingProductId);
+                if (existingBarcode) {
+                    errorAlert.textContent = 'كود الباركود موجود مسبقاً. يرجى استخدام باركود مختلف.';
+                    errorAlert.style.display = 'block';
+                    return;
+                }
+            }
+            
+            // تحديث بيانات المنتج
+            products[productIndex].code = productCode;
+            products[productIndex].barcode = productBarcode || '';
+            products[productIndex].price = parseFloat(productPrice);
+            
+            // تحديث الصورة إذا تم تغييرها
+            if (newImageData) {
+                products[productIndex].image = newImageData;
+            }
+            
+            // حفظ التعديلات
+            localStorage.setItem('damaskino-products', JSON.stringify(products));
+            
+            // إغلاق نافذة التعديل
+            document.getElementById('edit-modal').style.display = 'none';
+            newImageData = null;
+            
+            // إظهار رسالة النجاح
+            successAlert.textContent = `تم تحديث المنتج "${productCode}" بنجاح`;
+            successAlert.style.display = 'block';
+            
+            // إعادة تحميل المنتجات
+            loadProducts();
+        }
+        
+        // حذف منتج
+        function deleteProduct(productId) {
+            const confirmDelete = confirm('هل أنت متأكد من حذف هذا المنتج؟');
+            if (!confirmDelete) return;
+            
+            // البحث عن المنتج
+            const productIndex = products.findIndex(p => p.id === productId);
+            if (productIndex === -1) return;
+            
+            const productCode = products[productIndex].code;
+            
+            // حذف المنتج
+            products.splice(productIndex, 1);
+            localStorage.setItem('damaskino-products', JSON.stringify(products));
+            
+            // إظهار رسالة النجاح
+            const successAlert = document.getElementById('products-success');
+            successAlert.textContent = `تم حذف المنتج "${productCode}" بنجاح`;
+            successAlert.style.display = 'block';
+            
+            // إعادة تحميل المنتجات
+            loadProducts();
+        }
+    </script>
 </body>
 </html>
