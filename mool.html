@@ -730,111 +730,93 @@
             padding: 30px;
         }
         
-        /* Developer Badge - إشعار دائم في الزاوية اليمنى */
-        .developer-badge {
+        /* Floating Notification - إشعار متحرك يظهر ويختفي */
+        .floating-notification {
             position: fixed;
-            top: 100px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             z-index: 9999;
-            background: linear-gradient(135deg, var(--developer) 0%, #2C77D6 100%);
+            background: linear-gradient(135deg, #4A90E2 0%, #2C77D6 100%);
             color: white;
             padding: 15px;
             border-radius: 15px;
             box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4);
             border: 2px solid rgba(255, 255, 255, 0.2);
-            max-width: 200px;
+            max-width: 180px;
             animation: slideInRight 0.5s ease;
             backdrop-filter: blur(10px);
+            cursor: pointer;
             transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(100%);
         }
         
-        .developer-badge:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(74, 144, 226, 0.5);
+        .floating-notification.show {
+            opacity: 1;
+            transform: translateX(0);
+            animation: slideInRight 0.5s ease forwards;
+        }
+        
+        .floating-notification.hide {
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideOutRight 0.5s ease forwards;
         }
         
         @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from { 
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         
-        .badge-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+        @keyframes slideOutRight {
+            from { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to { 
+                opacity: 0;
+                transform: translateX(100%);
+            }
         }
         
-        .badge-icon {
-            width: 35px;
-            height: 35px;
+        .notification-content {
+            text-align: center;
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            margin: 0 auto 10px;
+            font-size: 18px;
         }
         
-        .badge-title {
+        .notification-title {
             font-size: 14px;
-            font-weight: 800;
-        }
-        
-        .developer-details {
-            text-align: center;
-        }
-        
-        .developer-name {
-            font-size: 15px;
             font-weight: 700;
             margin-bottom: 5px;
         }
         
-        .developer-phone {
+        .notification-name {
             font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .notification-phone {
+            font-size: 12px;
             color: rgba(255, 255, 255, 0.9);
             direction: ltr;
-        }
-        
-        .developer-message {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 8px;
-            font-weight: 500;
-        }
-        
-        /* Floating Developer Button - زر عائم للمبرمج */
-        .floating-developer-btn {
-            position: fixed;
-            bottom: 100px;
-            left: 15px;
-            z-index: 999;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--developer) 0%, #2C77D6 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            box-shadow: 0 5px 20px rgba(74, 144, 226, 0.4);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .floating-developer-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 25px rgba(74, 144, 226, 0.6);
         }
         
         /* Developer Info Modal */
@@ -1039,16 +1021,11 @@
                 height: 220px;
             }
             
-            .developer-badge {
-                top: 90px;
-                max-width: 180px;
+            .floating-notification {
+                top: 15px;
+                right: 15px;
+                max-width: 160px;
                 padding: 12px;
-            }
-            
-            .floating-developer-btn {
-                width: 55px;
-                height: 55px;
-                bottom: 90px;
             }
         }
         
@@ -1119,35 +1096,29 @@
                 font-size: 12px;
             }
             
-            .developer-badge {
-                top: 85px;
+            .floating-notification {
+                top: 10px;
                 right: 10px;
-                max-width: 160px;
+                max-width: 140px;
                 padding: 10px;
             }
             
-            .badge-title {
+            .notification-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+            
+            .notification-title {
                 font-size: 12px;
             }
             
-            .developer-name {
-                font-size: 13px;
+            .notification-name {
+                font-size: 11px;
             }
             
-            .developer-phone {
-                font-size: 12px;
-            }
-            
-            .developer-message {
+            .notification-phone {
                 font-size: 10px;
-            }
-            
-            .floating-developer-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-                bottom: 85px;
-                left: 10px;
             }
         }
         
@@ -1160,15 +1131,9 @@
                 font-size: 22px;
             }
             
-            .developer-badge {
-                max-width: 140px;
+            .floating-notification {
+                max-width: 130px;
                 padding: 8px;
-            }
-            
-            .badge-icon {
-                width: 30px;
-                height: 30px;
-                font-size: 14px;
             }
         }
         
@@ -1220,24 +1185,16 @@
             </div>
         </header>
         
-        <!-- إشعار دائم للمبرمج في الزاوية اليمنى -->
-        <div class="developer-badge" id="developer-badge">
-            <div class="badge-header">
-                <div class="badge-icon">
+        <!-- إشعار متحرك للمبرمج -->
+        <div class="floating-notification" id="floating-notification">
+            <div class="notification-content">
+                <div class="notification-icon">
                     <i class="fas fa-code"></i>
                 </div>
-                <div class="badge-title">المبرمج</div>
+                <div class="notification-title">المبرمج</div>
+                <div class="notification-name">يمان محمد الحسين</div>
+                <div class="notification-phone">0952725590</div>
             </div>
-            <div class="developer-details">
-                <div class="developer-name">يمان محمد الحسين</div>
-                <div class="developer-phone">0952725590</div>
-                <div class="developer-message">للدعم والتفعيل</div>
-            </div>
-        </div>
-        
-        <!-- زر عائم للمبرمج -->
-        <div class="floating-developer-btn" id="floating-developer-btn">
-            <i class="fas fa-user-tie"></i>
         </div>
         
         <!-- نافذة معلومات المبرمج -->
@@ -1565,6 +1522,8 @@
         let currentStream = null;
         let editingProductId = null;
         let isScanning = false;
+        let notificationTimer = null;
+        let isNotificationVisible = false;
         
         // تهيئة التطبيق عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
@@ -1597,9 +1556,8 @@
                 addSampleProducts();
             }
             
-            // إشعار التفعيل التلقائي
-            setTimeout(showActivationNotification, 10000); // بعد 10 ثوان
-            setInterval(showActivationNotification, 1800000); // كل 30 دقيقة
+            // بدء دورة الإشعارات
+            startNotificationCycle();
         });
         
         // بدء التطبيق
@@ -1617,20 +1575,13 @@
         
         // إعداد أحداث معلومات المبرمج
         function setupDeveloperInfo() {
-            const floatingBtn = document.getElementById('floating-developer-btn');
-            const developerBadge = document.getElementById('developer-badge');
+            const floatingNotification = document.getElementById('floating-notification');
             const developerModal = document.getElementById('developer-modal');
             const developerOverlay = document.getElementById('developer-modal-overlay');
             const closeDeveloperModal = document.getElementById('close-developer-modal');
             
-            // عند النقر على الزر العائم
-            floatingBtn.addEventListener('click', function() {
-                developerModal.classList.add('active');
-                developerOverlay.classList.add('active');
-            });
-            
-            // عند النقر على الإشعار الثابت
-            developerBadge.addEventListener('click', function() {
+            // عند النقر على الإشعار العائم
+            floatingNotification.addEventListener('click', function() {
                 developerModal.classList.add('active');
                 developerOverlay.classList.add('active');
             });
@@ -1719,8 +1670,50 @@
             }, 8000);
         }
         
-        // إشعار التفعيل
-        function showActivationNotification() {
+        // بدء دورة الإشعارات
+        function startNotificationCycle() {
+            // إظهار الإشعار لأول مرة بعد 3 ثوان
+            setTimeout(() => {
+                showFloatingNotification();
+            }, 3000);
+        }
+        
+        // إظهار الإشعار العائم
+        function showFloatingNotification() {
+            if (isNotificationVisible) return;
+            
+            const notification = document.getElementById('floating-notification');
+            
+            // إظهار الإشعار
+            notification.classList.remove('hide');
+            notification.classList.add('show');
+            isNotificationVisible = true;
+            
+            // إخفاء الإشعار بعد 5 ثوان
+            setTimeout(() => {
+                hideFloatingNotification();
+                
+                // إعادة إظهار الإشعار بعد 30 ثانية (يمكن تعديل الوقت)
+                setTimeout(() => {
+                    showFloatingNotification();
+                }, 30000); // 30 ثانية
+                
+            }, 5000); // 5 ثوان
+        }
+        
+        // إخفاء الإشعار العائم
+        function hideFloatingNotification() {
+            if (!isNotificationVisible) return;
+            
+            const notification = document.getElementById('floating-notification');
+            
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+            isNotificationVisible = false;
+        }
+        
+        // إشعار التفعيل الممتد
+        function showExtendedActivationNotification() {
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
@@ -1744,7 +1737,7 @@
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                     <i class="fas fa-exclamation-triangle" style="font-size: 22px;"></i>
                     <span style="flex-grow: 1; margin: 0 12px;">تنبيه: التطبيق يحتاج تفعيل</span>
-                    <button id="close-activation-notification" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">
+                    <button id="close-extended-notification" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -1769,7 +1762,7 @@
             document.body.appendChild(notification);
             
             // إضافة حدث لإغلاق الإشعار
-            notification.querySelector('#close-activation-notification').addEventListener('click', function() {
+            notification.querySelector('#close-extended-notification').addEventListener('click', function() {
                 notification.style.animation = 'slideUp 0.5s ease forwards';
                 setTimeout(() => {
                     if (notification.parentNode) {
@@ -1781,13 +1774,13 @@
             // إغلاق الإشعار تلقائياً بعد 15 ثانية
             setTimeout(() => {
                 if (notification.parentNode) {
-                    const closeBtn = notification.querySelector('#close-activation-notification');
+                    const closeBtn = notification.querySelector('#close-extended-notification');
                     if (closeBtn) closeBtn.click();
                 }
             }, 15000);
         }
         
-        // باقي الدوال الأساسية للتطبيق (نفس الكود السابق)
+        // باقي الدوال الأساسية للتطبيق
         function addSampleProducts() {
             const sampleProducts = [
                 { 
