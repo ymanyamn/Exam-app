@@ -2,288 +2,208 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>مول داماسكينو PRO - كاشير</title>
+<title>Damaskino POS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#0ea5e9">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Damaskino PRO">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-<style>
-/* ===== GLOBAL RESET & VARIABLES ===== */
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;-webkit-tap-highlight-color:transparent;}
-html,body{width:100%;height:100%;background:#0a0a0a;overflow:hidden;}
-body{display:flex;flex-direction:column;min-height:100dvh;}
-button{cursor:pointer;color:#fff;}
-.tab{display:none;}
-/* ===== LOGIN ===== */
-.login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px;background:linear-gradient(135deg,#0c4a6e,#4c1d95);}
-.login-card{width:100%;max-width:420px;padding:2.2rem;border-radius:22px;background:#0f172a;box-shadow:0 20px 50px rgba(0,0,0,.6);}
-.login-title{text-align:center;font-size:2rem;font-weight:900;color:#fff;}
-.login-input{width:100%;padding:1.2rem;border-radius:14px;border:none;margin-top:1.5rem;font-size:1.1rem;text-align:center;}
-.login-btn{margin-top:1.5rem;width:100%;padding:1.2rem;border-radius:14px;border:none;font-size:1.1rem;font-weight:700;background:linear-gradient(135deg,#0ea5e9,#8b5cf6);color:#fff;}
-/* ===== APP ===== */
-.app-container{display:none;flex:1;flex-direction:column;height:100dvh;overflow:hidden;}
-.header{flex-shrink:0;padding:12px 16px;background:#0f172a;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);}
-.header h1{font-size:1.1rem;color:#fff;}
-.nav-container{flex-shrink:0;background:#0f172a;border-bottom:1px solid rgba(255,255,255,.08);}
-.nav-scroll{display:flex;overflow-x:auto;gap:6px;padding:10px;}
-.nav-tab{flex:0 0 auto;padding:10px 14px;border-radius:14px;background:#1e293b;color:#e5e7eb;border:none;font-size:.9rem;white-space:nowrap;}
-.nav-tab.active{background:linear-gradient(135deg,#0ea5e9,#8b5cf6);color:#fff;}
-.main-content{flex:1;overflow-y:auto;padding:16px;}
-.card{background:#111827;border-radius:20px;padding:18px;margin-bottom:16px;color:#fff;}
-.form-control{width:100%;padding:14px;border-radius:14px;border:none;margin-top:8px;background:#1e293b;color:#fff;font-size:1rem;}
-.btn{width:100%;padding:14px;border-radius:14px;border:none;font-size:1rem;margin-top:12px;}
-.btn-primary{background:linear-gradient(135deg,#0ea5e9,#8b5cf6);color:#fff;}
-#camera-preview{width:100%;border-radius:14px;margin-top:10px;background:#000;}
-/* ===== MOBILE ===== */
-@media(max-width:768px){.login-title{font-size:1.8rem}.nav-tab{font-size:.85rem}.header h1{font-size:1rem}}
 
-/* ===== ADDITIONAL STYLES FOR NEW FEATURES ===== */
-.sale-toggle{display:flex;gap:10px;margin-top:1rem;}
-.toggle-btn{flex:1;padding:12px;border:2px solid;background:transparent;color:#fff;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.toggle-sold{border-color:#10b981;color:#10b981;}
-.toggle-sold.active{background:#10b981;color:#fff;}
-.toggle-unsold{border-color:#ef4444;color:#ef4444;}
-.toggle-unsold.active{background:#ef4444;color:#fff;}
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:'Cairo',sans-serif}
+body{
+  margin:0;background:#0b1220;color:#fff;
+  height:100vh;display:flex;flex-direction:column
+}
+.hidden{display:none}
+header{
+  background:#111827;padding:14px;
+  display:flex;justify-content:space-between;align-items:center
+}
+header h1{font-size:18px;margin:0}
+.status{
+  font-size:12px;padding:6px 10px;border-radius:20px
+}
+.status.active{background:#16a34a}
+.status.inactive{background:#dc2626}
+
+nav{
+  display:flex;gap:6px;overflow-x:auto;
+  padding:10px;background:#0f172a
+}
+nav button{
+  background:#1e293b;color:#fff;border:none;
+  padding:10px 14px;border-radius:14px;
+  white-space:nowrap
+}
+nav button.active{background:#0ea5e9}
+
+main{flex:1;overflow:auto;padding:12px}
+
+.card{
+  background:#111827;padding:16px;
+  border-radius:16px;margin-bottom:14px
+}
+input,select,button{
+  width:100%;padding:12px;margin-top:8px;
+  border-radius:12px;border:none;font-size:14px
+}
+input,select{background:#1e293b;color:#fff}
+.btn{background:#0ea5e9;color:#fff;font-weight:bold}
+.btn.red{background:#dc2626}
+.btn.green{background:#16a34a}
+
+.notice{
+  background:#fde68a;color:#000;
+  padding:10px;border-radius:12px;
+  margin-bottom:10px;font-size:13px
+}
+
+footer{
+  padding:8px;text-align:center;
+  font-size:12px;color:#94a3b8
+}
 </style>
 </head>
+
 <body>
 
-<!-- LOGIN -->
-<div class="login-screen" id="login-screen">
-  <div class="login-card">
-    <h1 class="login-title">مول داماسكينو PRO</h1>
-    <input class="login-input" id="password-input" type="password" placeholder="كلمة المرور">
-    <button class="login-btn" onclick="login()">دخول</button>
-  </div>
-</div>
+<header>
+  <h1>🧾 Damaskino POS</h1>
+  <div id="activationStatus" class="status inactive">غير مفعل</div>
+</header>
 
-<!-- APP -->
-<div class="app-container" id="app-container">
-
-<header class="header"><h1>كاشير داماسكينو</h1></header>
-
-<nav class="nav-container">
-  <div class="nav-scroll">
-    <button class="nav-tab active" onclick="showTab('add')">إضافة</button>
-    <button class="nav-tab" onclick="showTab('search')">بحث</button>
-    <button class="nav-tab" onclick="showTab('all')">جميع المواد</button>
-    <button class="nav-tab" onclick="showTab('daily')">المبيع اليومي</button>
-    <button class="nav-tab" onclick="showTab('invoice')">فاتورة</button>
-  </div>
+<nav>
+  <button class="active" onclick="showTab('add',this)">إضافة</button>
+  <button onclick="showTab('search',this)">بحث</button>
+  <button onclick="showTab('products',this)">المواد</button>
+  <button onclick="showTab('daily',this)">اليومي</button>
+  <button onclick="showTab('invoice',this)">فاتورة</button>
 </nav>
 
-<main class="main-content">
-  <!-- ADD PRODUCT -->
-  <div class="card tab" id="add">
-    <h3>إضافة منتج</h3>
-    <input class="form-control" placeholder="اسم المنتج" id="add-name">
-    <input class="form-control" placeholder="كود المنتج" id="add-code">
-    <input class="form-control" placeholder="السعر" type="number" id="add-price">
-    <div>
-      <video id="camera-preview" autoplay playsinline></video>
-      <button class="btn btn-primary" onclick="toggleCamera()">تبديل الكاميرا</button>
-    </div>
-    <button class="btn btn-primary" onclick="addProduct()">إضافة المنتج</button>
-    <div style="margin-top:10px;">
-      <button class="btn" onclick="markSold(true)">✅ تم بيعه</button>
-      <button class="btn" onclick="markSold(false)">❌ لم يتم بيعه</button>
-    </div>
-  </div>
+<main>
 
-  <!-- SEARCH -->
-  <div class="card tab" id="search">
-    <h3>استعلام عن منتج</h3>
-    <input class="form-control" placeholder="بحث بالكود" id="search-code">
-    <input class="form-control" placeholder="بحث بالسعر" type="number" id="search-price">
-    <button class="btn btn-primary" onclick="searchProduct()">بحث</button>
-    <div id="search-results" style="margin-top:10px;"></div>
-  </div>
-
-  <!-- ALL PRODUCTS -->
-  <div class="card tab" id="all">
-    <h3>جميع المواد</h3>
-    <div id="all-products"></div>
-  </div>
-
-  <!-- DAILY SALES -->
-  <div class="card tab" id="daily">
-    <h3>المبيع اليومي</h3>
-    <div id="daily-sales"></div>
-  </div>
-
-  <!-- INVOICE -->
-  <div class="card tab" id="invoice">
-    <h3>فاتورة</h3>
-    <select id="invoice-product" class="form-control"></select>
-    <input class="form-control" placeholder="العدد المباع" type="number" id="invoice-qty">
-    <input class="form-control" placeholder="خصم %" type="number" id="invoice-discount">
-    <button class="btn btn-primary" onclick="generateInvoice()">حساب الفاتورة</button>
-    <div id="invoice-result" style="margin-top:10px;"></div>
-  </div>
-</main>
+<!-- ADD -->
+<div id="add" class="card">
+  <h3>➕ إضافة منتج</h3>
+  <input id="pName" placeholder="اسم المادة">
+  <input id="pCode" placeholder="كود المادة">
+  <input id="pPrice" type="number" placeholder="السعر">
+  <button class="btn" onclick="addProduct()">حفظ</button>
 </div>
 
+<!-- SEARCH -->
+<div id="search" class="card hidden">
+  <div class="notice" id="searchNotice">الميزة تتطلب تفعيل</div>
+  <input id="sCode" placeholder="بحث بالكود">
+  <input id="sPrice" type="number" placeholder="بحث بالسعر">
+  <button class="btn" onclick="searchProduct()">بحث</button>
+  <div id="searchResult"></div>
+</div>
+
+<!-- PRODUCTS -->
+<div id="products" class="card hidden">
+  <h3>📦 جميع المواد</h3>
+  <div id="productList"></div>
+</div>
+
+<!-- DAILY -->
+<div id="daily" class="card hidden">
+  <h3>📊 المبيع اليومي</h3>
+  <div id="dailyList"></div>
+</div>
+
+<!-- INVOICE -->
+<div id="invoice" class="card hidden">
+  <div class="notice" id="invoiceNotice">الميزة تتطلب تفعيل</div>
+  <select id="iProduct"></select>
+  <input id="iQty" type="number" placeholder="الكمية">
+  <input id="iDiscount" type="number" placeholder="خصم %">
+  <button class="btn green" onclick="calcInvoice()">حساب</button>
+  <div id="invoiceResult"></div>
+</div>
+
+</main>
+
+<footer>
+  <button onclick="activate()" class="btn">🔐 تفعيل البرنامج</button>
+</footer>
+
 <script>
-/* ================= LOGIN ================= */
-function login(){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('app-container').style.display='flex';
+const ACTIVATION_CODE="0952725590";
+let activated = localStorage.getItem("activated")==="true";
+
+let products = JSON.parse(localStorage.getItem("products")||"[]");
+let sales = JSON.parse(localStorage.getItem("sales")||"[]");
+
+function refreshUI(){
+  document.getElementById("activationStatus").textContent =
+    activated ? "مفعل ✔️" : "غير مفعل";
+  document.getElementById("activationStatus").className =
+    "status " + (activated?"active":"inactive");
+
+  document.getElementById("searchNotice").style.display =
+    activated?"none":"block";
+  document.getElementById("invoiceNotice").style.display =
+    activated?"none":"block";
+}
+refreshUI();
+
+function activate(){
+  let c = prompt("ادخل كود التفعيل");
+  if(c===ACTIVATION_CODE){
+    activated=true;
+    localStorage.setItem("activated","true");
+    alert("تم التفعيل بنجاح ✔️");
+    refreshUI();
+  }else{
+    alert("كود غير صحيح");
+  }
 }
 
-/* ================= TABS ================= */
-function showTab(tabId){
-  document.querySelectorAll('.tab').forEach(t=>t.style.display='none');
-  document.getElementById(tabId).style.display='block';
-  document.querySelectorAll('.nav-tab').forEach(btn=>btn.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+function showTab(id,btn){
+  document.querySelectorAll("main .card").forEach(d=>d.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
 }
 
-/* ================= ACTIVATION ================= */
-const ACTIVATION_CODE='0952725590';
-let activated=localStorage.getItem('activated')==='true';
-function requireActivation(){if(!activated){alert('التطبيق بحاجة لتفعيل للمتابعة بالميزات!');}}
-
-/* ================= PRODUCTS STORAGE ================= */
-let products=JSON.parse(localStorage.getItem('products')||'[]');
-let dailySales=JSON.parse(localStorage.getItem('dailySales')||'[]');
-let salesBackup=JSON.parse(localStorage.getItem('salesBackup')||'[]');
-let cameraFacing='environment';
-let videoStream;
-
-function refreshAllProducts(){
-  let container=document.getElementById('all-products');
-  container.innerHTML='';
-  products.forEach((p,i)=>{
-    container.innerHTML+=`<div style="border:1px solid #555;padding:10px;margin-bottom:5px;border-radius:10px;">
-      <strong>${p.name}</strong> | ${p.code} | ${p.price} | ${p.sold?'✅':'❌'}
-      <button onclick="editProduct(${i})">✏️ تعديل</button>
-      <button onclick="deleteProduct(${i})">🗑️ حذف</button>
-    </div>`;
-  });
-  refreshInvoiceSelect();
-}
-
-function refreshInvoiceSelect(){
-  let select=document.getElementById('invoice-product');
-  select.innerHTML='';
-  products.forEach((p,i)=>{select.innerHTML+=`<option value="${i}">${p.name} - ${p.price}</option>`});
-}
-
-/* ================= ADD PRODUCT ================= */
 function addProduct(){
-  requireActivation();
-  let name=document.getElementById('add-name').value;
-  let code=document.getElementById('add-code').value;
-  let price=parseFloat(document.getElementById('add-price').value);
-  if(!name||!code||isNaN(price)){alert('املأ البيانات بشكل صحيح');return;}
-  products.push({name,code,price,sold:false});
-  localStorage.setItem('products',JSON.stringify(products));
-  refreshAllProducts();
-  document.getElementById('add-name').value='';
-  document.getElementById('add-code').value='';
-  document.getElementById('add-price').value='';
+  products.push({
+    name:pName.value,
+    code:pCode.value,
+    price:+pPrice.value
+  });
+  localStorage.setItem("products",JSON.stringify(products));
+  alert("تم الحفظ");
+  renderProducts();
 }
 
-/* ================= MARK SOLD ================= */
-function markSold(flag){
-  let last=products[products.length-1];
-  if(last){last.sold=flag;localStorage.setItem('products',JSON.stringify(products));refreshDailySales();}
+function renderProducts(){
+  productList.innerHTML="";
+  iProduct.innerHTML="";
+  products.forEach((p,i)=>{
+    productList.innerHTML+=`<div>${p.name} - ${p.price}</div>`;
+    iProduct.innerHTML+=`<option value="${i}">${p.name}</option>`;
+  });
 }
+renderProducts();
 
-/* ================= SEARCH ================= */
 function searchProduct(){
-  requireActivation();
-  let code=document.getElementById('search-code').value;
-  let price=document.getElementById('search-price').value;
-  let results=products.filter(p=>(code?p.code.includes(code):true) && (price?p.price==price:true));
-  let container=document.getElementById('search-results');
-  if(results.length===0){container.innerHTML='لا يوجد نتائج'; return;}
-  container.innerHTML='';
-  results.forEach(p=>{container.innerHTML+=`<div>${p.name} | ${p.code} | ${p.price} | ${p.sold?'✅':'❌'}</div>`});
+  if(!activated){alert("يلزم التفعيل");return;}
+  let r=products.filter(p=>
+    (!sCode.value||p.code.includes(sCode.value)) &&
+    (!sPrice.value||p.price==sPrice.value)
+  );
+  searchResult.innerHTML=r.map(p=>`${p.name} - ${p.price}`).join("<br>");
 }
 
-/* ================= EDIT / DELETE ================= */
-function editProduct(i){
-  let newName=prompt('اسم جديد',products[i].name);
-  let newCode=prompt('كود جديد',products[i].code);
-  let newPrice=parseFloat(prompt('السعر الجديد',products[i].price));
-  if(newName && newCode && !isNaN(newPrice)){
-    products[i]={...products[i],name:newName,code:newCode,price:newPrice};
-    localStorage.setItem('products',JSON.stringify(products));
-    refreshAllProducts();
-  }
+function calcInvoice(){
+  if(!activated){alert("يلزم التفعيل");return;}
+  let p=products[iProduct.value];
+  let total=p.price*iQty.value*(1-(iDiscount.value||0)/100);
+  invoiceResult.innerHTML=`المجموع: ${total}`;
 }
-function deleteProduct(i){
-  if(confirm('هل تريد حذف المنتج؟')){
-    let removed=products.splice(i,1)[0];
-    if(removed.sold){
-      salesBackup.push({code:removed.code,date:new Date().toISOString().slice(0,10),qty:1});
-      localStorage.setItem('salesBackup',JSON.stringify(salesBackup));
-    }
-    localStorage.setItem('products',JSON.stringify(products));
-    refreshAllProducts();
-    refreshDailySales();
-  }
-}
-
-/* ================= DAILY SALES ================= */
-function refreshDailySales(){
-  let today=new Date().toISOString().slice(0,10);
-  dailySales=products.filter(p=>p.sold).map(p=>({...p,date:today}));
-  localStorage.setItem('dailySales',JSON.stringify(dailySales));
-  let container=document.getElementById('daily-sales');
-  container.innerHTML='';
-  dailySales.forEach(p=>{container.innerHTML+=`<div>${p.name} | ${p.code} | ${p.price}</div>`});
-}
-
-/* ================= INVOICE ================= */
-function generateInvoice(){
-  requireActivation();
-  let index=document.getElementById('invoice-product').value;
-  let qty=parseInt(document.getElementById('invoice-qty').value);
-  let discount=parseFloat(document.getElementById('invoice-discount').value)||0;
-  if(isNaN(qty)||qty<=0){alert('أدخل عدد صحيح'); return;}
-  let product=products[index];
-  let total=product.price*qty*(1-discount/100);
-  document.getElementById('invoice-result').innerHTML=`
-    <div>
-      اسم المادة: ${product.name}<br>
-      كود المادة: ${product.code}<br>
-      العدد: ${qty}<br>
-      الخصم: ${discount}%<br>
-      السعر النهائي: ${total.toFixed(2)}<br>
-      <button onclick="window.print()">طباعة الفاتورة</button>
-    </div>`;
-}
-
-/* ================= CAMERA ================= */
-async function toggleCamera(){
-  cameraFacing=cameraFacing==='environment'?'user':'environment';
-  if(videoStream){videoStream.getTracks().forEach(t=>t.stop());}
-  try{
-    videoStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:cameraFacing}});
-    document.getElementById('camera-preview').srcObject=videoStream;
-  }catch(err){alert('تواصل مع للمطور للتفعيل ');}
-}
-(async()=>{await toggleCamera();})();
-
-/* ================= ACTIVATION PROMPT ================= */
-function activateProgram(){
-  let code=prompt('ادخل كود التفعيل:');
-  if(code===ACTIVATION_CODE){activated=true; localStorage.setItem('activated','true'); alert('تم التفعيل بنجاح');}
-  else{alert('كود غير صحيح');}
-}
-
-/* ================= INIT ================= */
-refreshAllProducts();
-refreshDailySales();
 </script>
-
-<button style="position:fixed;bottom:10px;right:10px;padding:10px;background:#0ea5e9;border:none;border-radius:10px;" onclick="activateProgram()">تفعيل البرنامج</button>
 
 </body>
 </html>
