@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <title>POS Cashier</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#020617">
 
 <style>
 :root{
-  --bg:#0f172a;
+  --bg:#020617;
   --card:#111827;
   --primary:#22c55e;
   --danger:#ef4444;
@@ -17,149 +17,92 @@
 }
 *{box-sizing:border-box;font-family:system-ui}
 html,body{
-  margin:0;
-  padding:0;
-  height:100dvh;
-  background:var(--bg);
-  color:var(--text);
-  overflow:hidden;
+  margin:0;height:100dvh;background:var(--bg);
+  color:var(--text);overflow:hidden;
 }
-header{
-  height:56px;
-  background:#020617;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+header,nav{
+  height:56px;background:#020617;
+  display:flex;align-items:center;justify-content:space-between;
   padding:0 12px;
 }
-header b{font-size:15px}
-#actStatus{
-  font-size:12px;
-  padding:4px 10px;
-  border-radius:20px;
-  background:#7f1d1d;
-}
-#actStatus.active{background:#166534}
-
+nav{justify-content:space-around}
 main{
   height:calc(100dvh - 112px);
-  overflow:auto;
-  padding:10px;
+  overflow:auto;padding:10px;
 }
-
-nav{
-  height:56px;
-  display:flex;
-  background:#020617;
+button,input{
+  width:100%;padding:12px;margin-top:6px;
+  border:none;border-radius:12px;
 }
-nav button{
-  flex:1;
-  border:none;
-  background:none;
-  color:#94a3b8;
-  font-size:12px;
-}
-nav button.active{
-  color:var(--accent);
-}
-
-.card{
-  background:var(--card);
-  border-radius:16px;
-  padding:12px;
-  margin-bottom:10px;
-}
-input,select,button{
-  width:100%;
-  margin-top:6px;
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  font-size:14px;
-}
-input,select{background:#1e293b;color:#fff}
+input{background:#1e293b;color:#fff}
 button.primary{background:var(--accent)}
 button.success{background:var(--primary)}
 button.danger{background:var(--danger)}
-
+.card{
+  background:var(--card);
+  border-radius:16px;padding:12px;margin-bottom:10px;
+}
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
   gap:10px;
 }
 .product{
-  background:#020617;
-  border-radius:14px;
-  padding:8px;
-  text-align:center;
+  background:#020617;border-radius:14px;
+  padding:8px;text-align:center;
 }
 .product img{
-  width:100%;
-  height:90px;
-  object-fit:cover;
-  border-radius:10px;
-}
-.product small{color:#94a3b8}
-.actions{
-  display:flex;
-  gap:6px;
-  margin-top:6px;
-}
-.actions button{padding:8px;font-size:12px}
-
-.notice{
-  background:#fde68a;
-  color:#000;
-  padding:8px;
-  border-radius:12px;
-  margin-bottom:8px;
-  font-size:13px;
+  width:100%;height:90px;
+  object-fit:cover;border-radius:10px;
 }
 .hidden{display:none}
+.notice{
+  background:#fde68a;color:#000;
+  padding:8px;border-radius:12px;margin-bottom:6px;
+}
+#status{font-size:12px;padding:4px 10px;border-radius:20px}
+.active{background:#166534}
 </style>
 </head>
 
 <body>
 
 <header>
-  <b>🧾 نظام كاشير</b>
-  <div id="actStatus">غير مفعل</div>
+  <b>🧾 كاشير</b>
+  <div id="status">غير مفعل</div>
 </header>
 
 <main>
 
-<!-- إضافة منتج -->
-<div id="tabAdd" class="card">
+<div id="add" class="card">
   <b>➕ إضافة مادة</b>
-  <video id="cam" autoplay playsinline class="hidden"></video>
-  <canvas id="snap" class="hidden"></canvas>
-  <button onclick="openCam()">📷 فتح الكاميرا</button>
-  <button onclick="switchCam()">🔁 تبديل الكاميرا</button>
-  <button onclick="takePhoto()">📸 التقاط</button>
 
-  <input id="pName" placeholder="اسم المادة">
-  <input id="pCode" placeholder="كود المادة">
-  <input id="pPrice" type="number" placeholder="السعر">
-  <button class="primary" onclick="saveProduct()">حفظ المادة</button>
+  <video id="video" playsinline muted class="hidden"></video>
+  <canvas id="canvas" class="hidden"></canvas>
+
+  <button onclick="startCamera()">📷 فتح الكاميرا</button>
+  <button onclick="switchCamera()">🔁 تبديل الكاميرا</button>
+  <button onclick="capture()">📸 التقاط صورة</button>
+
+  <input id="name" placeholder="اسم المادة">
+  <input id="code" placeholder="كود المادة">
+  <input id="price" type="number" placeholder="السعر">
+
+  <button class="primary" onclick="saveProduct()">حفظ</button>
 </div>
 
-<!-- المنتجات -->
-<div id="tabProducts" class="card hidden">
+<div id="products" class="card hidden">
   <b>📦 المواد</b>
-  <div class="grid" id="productsGrid"></div>
+  <div class="grid" id="list"></div>
 </div>
 
-<!-- الفاتورة -->
-<div id="tabInvoice" class="card hidden">
-  <div id="invoiceNotice" class="notice">الميزة تحتاج تفعيل</div>
+<div id="invoice" class="card hidden">
+  <div id="actNotice" class="notice">الميزة تحتاج تفعيل</div>
   <b>🧾 الفاتورة</b>
   <div id="invoiceList"></div>
-  <input id="discount" type="number" placeholder="خصم %">
-  <button class="success" onclick="printInvoice()">🖨️ طباعة</button>
 </div>
 
-<!-- اليومي -->
-<div id="tabDaily" class="card hidden">
+<div id="daily" class="card hidden">
   <b>📊 المبيع اليومي</b>
   <div id="dailyList"></div>
 </div>
@@ -167,139 +110,144 @@ button.danger{background:var(--danger)}
 </main>
 
 <nav>
-  <button class="active" onclick="showTab('Add',this)">➕</button>
-  <button onclick="showTab('Products',this)">📦</button>
-  <button onclick="showTab('Invoice',this)">🧾</button>
-  <button onclick="showTab('Daily',this)">📊</button>
+  <button onclick="tab('add')">➕</button>
+  <button onclick="tab('products')">📦</button>
+  <button onclick="tab('invoice')">🧾</button>
+  <button onclick="tab('daily')">📊</button>
 </nav>
 
+<!-- 🔊 صوت الكاشير -->
+<audio id="beep">
+<source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YRAAAAAA/////w==" type="audio/wav">
+</audio>
+
 <script>
-/* ====== تفعيل ====== */
-const ACT_CODE="0952725590";
-let activated=localStorage.getItem("activated")==="true";
-const actStatus=document.getElementById("actStatus");
-function refreshAct(){
-  actStatus.textContent=activated?"مفعل ✔":"غير مفعل";
-  actStatus.className=activated?"active":"";
-  document.getElementById("invoiceNotice").style.display=activated?"none":"block";
+/* ===== تفعيل ===== */
+const CODE="0952725590";
+let activated=localStorage.getItem("act")==="1";
+const status=document.getElementById("status");
+function refresh(){
+  status.textContent=activated?"مفعل ✔":"غير مفعل";
+  status.className=activated?"active":"";
+  actNotice.style.display=activated?"none":"block";
 }
-refreshAct();
-actStatus.onclick=()=>{
+status.onclick=()=>{
   if(activated) return;
-  let c=prompt("ادخل كود التفعيل");
-  if(c===ACT_CODE){
+  let c=prompt("كود التفعيل");
+  if(c===CODE){
     activated=true;
-    localStorage.setItem("activated","true");
-    refreshAct();
-    alert("تم التفعيل");
+    localStorage.setItem("act","1");
+    refresh();
   }
 };
+refresh();
 
-/* ====== البيانات ====== */
+/* ===== بيانات ===== */
 let products=JSON.parse(localStorage.getItem("products")||"[]");
 let invoice=[];
 let daily=JSON.parse(localStorage.getItem("daily")||"{}");
 
-/* ====== الكاميرا ====== */
-let camStream=null,camFacing="environment";
-function openCam(){
-  navigator.mediaDevices.getUserMedia({video:{facingMode:camFacing}})
-  .then(s=>{
-    camStream=s;
-    cam.srcObject=s;
-    cam.classList.remove("hidden");
-  });
-}
-function switchCam(){
-  camFacing=camFacing==="environment"?"user":"environment";
-  if(camStream) camStream.getTracks().forEach(t=>t.stop());
+/* ===== كاميرا (متوافق APK) ===== */
+let video=document.getElementById("video");
+let canvas=document.getElementById("canvas");
+let devices=[],currentCam=0,stream;
+
+async function startCamera(){
+  devices=(await navigator.mediaDevices.enumerateDevices())
+    .filter(d=>d.kind==="videoinput");
   openCam();
 }
-function takePhoto(){
-  snap.width=cam.videoWidth;
-  snap.height=cam.videoHeight;
-  snap.getContext("2d").drawImage(cam,0,0);
+function openCam(){
+  if(stream) stream.getTracks().forEach(t=>t.stop());
+  navigator.mediaDevices.getUserMedia({
+    video:{deviceId:devices[currentCam]?.deviceId}
+  }).then(s=>{
+    stream=s;
+    video.srcObject=s;
+    video.classList.remove("hidden");
+  }).catch(()=>alert("لا يمكن فتح الكاميرا"));
+}
+function switchCamera(){
+  if(devices.length<2) return;
+  currentCam=(currentCam+1)%devices.length;
+  openCam();
+}
+function capture(){
+  canvas.width=video.videoWidth;
+  canvas.height=video.videoHeight;
+  canvas.getContext("2d").drawImage(video,0,0);
 }
 
-/* ====== المنتجات ====== */
+/* ===== منتجات ===== */
 function saveProduct(){
-  let img=snap.toDataURL("image/png");
   products.push({
-    name:pName.value,
-    code:pCode.value,
-    price:+pPrice.value,
-    img
+    name:name.value,
+    code:code.value,
+    price:+price.value,
+    img:canvas.toDataURL()
   });
   localStorage.setItem("products",JSON.stringify(products));
-  alert("تم الحفظ");
-  renderProducts();
+  render();
 }
-function renderProducts(){
-  productsGrid.innerHTML="";
+function render(){
+  list.innerHTML="";
   products.forEach((p,i)=>{
-    productsGrid.innerHTML+=`
+    list.innerHTML+=`
     <div class="product">
       <img src="${p.img}">
-      <b>${p.name}</b>
+      <b>${p.name}</b><br>
       <small>${p.price}</small>
-      <div class="actions">
+      <div style="display:flex;gap:6px;margin-top:6px">
         <button class="success" onclick="sell(${i})">✅</button>
         <button class="danger">❌</button>
       </div>
     </div>`;
   });
 }
-renderProducts();
+render();
 
-/* ====== بيع ====== */
+/* ===== بيع + صوت ===== */
 function sell(i){
+  document.getElementById("beep").play();
   let p=products[i];
   invoice.push(p);
   let d=new Date().toLocaleDateString();
   daily[d]=daily[d]||{};
   daily[d][p.code]=(daily[d][p.code]||0)+1;
   localStorage.setItem("daily",JSON.stringify(daily));
-  renderInvoice();
-  renderDaily();
+  showInvoice();
 }
 
-/* ====== فاتورة ====== */
-function renderInvoice(){
+/* ===== فاتورة ===== */
+function showInvoice(){
   invoiceList.innerHTML="";
   let total=0;
   invoice.forEach(p=>{
     total+=p.price;
     invoiceList.innerHTML+=`<div>${p.name} - ${p.price}</div>`;
   });
-  let disc=+discount.value||0;
-  total=total*(1-disc/100);
   invoiceList.innerHTML+=`<hr><b>المجموع: ${total}</b>`;
 }
-discount.oninput=renderInvoice;
-function printInvoice(){
-  if(!activated){alert("يلزم التفعيل");return;}
-  window.print();
-}
 
-/* ====== يومي ====== */
-function renderDaily(){
+/* ===== يومي ===== */
+function showDaily(){
   dailyList.innerHTML="";
   Object.keys(daily).forEach(d=>{
     dailyList.innerHTML+=`<b>${d}</b><br>`;
     Object.keys(daily[d]).forEach(c=>{
-      dailyList.innerHTML+=`كود ${c} → ${daily[d][c]}<br>`;
+      dailyList.innerHTML+=`كود ${c}: ${daily[d][c]}<br>`;
     });
     dailyList.innerHTML+="<hr>";
   });
 }
-renderDaily();
 
-/* ====== تبويبات ====== */
-function showTab(t,btn){
-  document.querySelectorAll("main .card").forEach(c=>c.classList.add("hidden"));
-  document.getElementById("tab"+t).classList.remove("hidden");
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
+/* ===== تبويبات ===== */
+function tab(t){
+  ["add","products","invoice","daily"].forEach(x=>{
+    document.getElementById(x).classList.add("hidden");
+  });
+  document.getElementById(t).classList.remove("hidden");
+  if(t==="daily") showDaily();
 }
 </script>
 
