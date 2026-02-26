@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>نظام الاستعلام الذكي - غرفة الدردشة</title>
+    <style>
+        :root {
+            --bg-color: #0f0f0f;
+            --chat-bg: #1a1a1a;
+            --my-msg-bg: #ff6b00; /* برتقالي */
+            --other-msg-bg: #2d2d2d;
+            --text-color: #ffffff;
+            --text-muted: #b0b0b0;
+            --border-color: #444;
+            --input-bg: #000;
+            --success-color: #00e676;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Arial Black', sans-serif; /* خط عريض */
+            font-weight: 700;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- الترويسة --- */
+        header {
+            background-color: var(--chat-bg);
+            padding: 10px 15px;
+            border-bottom: 2px solid var(--my-msg-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dev-info-btn {
+            background: transparent;
+            border: 1px solid var(--my-msg-bg);
+            color: var(--my-msg-bg);
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .dev-info-btn:hover { background: var(--my-msg-bg); color: white; }
+
+        .clock {
+            font-family: 'Courier New', monospace;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: #000;
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .app-title {
+            color: var(--my-msg-bg);
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px rgba(255, 107, 0, 0.4);
+        }
+
+        /* --- نافذة المبرمج --- */
+        .dev-modal {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 10px;
+            background: var(--chat-bg);
+            border: 2px solid var(--my-msg-bg);
+            padding: 15px;
+            border-radius: 8px;
+            width: 240px;
+            z-index: 100;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+        .dev-modal.show { display: block; animation: popIn 0.3s ease; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* --- المتصلون --- */
+        .online-bar {
+            background: #151515;
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            color: var(--success-color);
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+            overflow-x: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .online-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success-color);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 5px var(--success-color);
+        }
+
+        /* --- منطقة الدردشة --- */
+        #chat-container {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            position: relative;
+            word-wrap: break-word;
+            animation: slideUp 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .msg-sender {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            opacity: 0.8;
+            display: block;
+        }
+
+        .msg-cashier {
+            align-self: flex-end; /* يمين */
+            background: var(--my-msg-bg);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg-staff {
+            align-self: flex-start; /* يسار */
+            background: var(--other-msg-bg);
+            color: white;
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg-img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            border: 1px solid #555;
+            display: block;
+        }
+
+        .reply-data {
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 0.95rem;
+        }
+        .reply-data span { color: var(--success-color); }
+
+        /* --- منطقة التحكم السفلية --- */
+        .input-area {
+            background: var(--chat-bg);
+            padding: 10px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .btn:active { transform: scale(0.95); }
+        .btn-primary { background: var(--my-msg-bg); box-shadow: 0 0 10px rgba(255, 107, 0, 0.3); }
+        .btn-secondary { background: #333; }
+        
+        /* --- شاشات تسجيل الدخول --- */
+        #login-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-color);
+            z-index: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--chat-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid var(--my-msg-bg);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .role-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: #000;
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        .role-tab {
+            flex: 1;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+        .role-tab.active { background: var(--my-msg-bg); color: white; }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .form-input:focus { outline: none; border-color: var(--my-msg-bg); }
+
+        /* --- الكاميرا والمودال --- */
+        .camera-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 40;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .camera-overlay.active { display: flex; }
+        
+        video { width: 100%; max-height: 70vh; object-fit: contain; }
+
+        .reply-modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--chat-bg);
+            border: 2px solid var(--my-msg-bg);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 60;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+        .reply-modal.active { display: block; }
+
+    </style>
+</head>
+<body>
+
+    <!-- شاشة تسجيل الدخول -->
+    <div id="login-screen">
+        <div class="login-card">
+            <h2 style="color: var(--my-msg-bg); margin-bottom: 20px;">تسجيل الدخول</h2>
+            <div class="role-tabs">
+                <div class="role-tab active" id="tab-cashier" onclick="switchLoginRole('cashier')">كاشير</div>
+                <div class="role-tab" id="tab-staff" onclick="switchLoginRole('staff')">موظف مبيعات</div>
+            </div>
+
+            <!-- نموذج الكاشير -->
+            <div id="form-cashier">
+                <input type="password" id="cashier-pass" class="form-input" placeholder="ادخل كلمة مرور الكاشير">
+                <button class="btn btn-primary" style="width:100%" onclick="loginCashier()">دخول</button>
+            </div>
+
+            <!-- نموذج الموظف -->
+            <div id="form-staff" style="display:none;">
+                <label style="display:block; margin-bottom:10px; color:var(--text-muted);">أدخل اسمك</label>
+                <input type="text" id="staff-name-input" class="form-input" placeholder="اسم موظف المبيعات" autocomplete="off">
+                <button class="btn btn-primary" style="width:100%" onclick="loginStaff()">دخول</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- واجهة التطبيق الرئيسية -->
+    <header>
+        <div class="header-left">
+            <button class="dev-info-btn" onclick="toggleDevInfo()">i</button>
+            <div class="app-title">نظام الاستعلام</div>
+        </div>
+        <div class="clock" id="clock">--:--:--</div>
+        
+        <!-- نافذة معلومات المبرمج -->
+        <div id="dev-modal" class="dev-modal">
+            <h3 style="color: var(--my-msg-bg);">معلومات المبرمج</h3>
+            <p style="margin: 10px 0;">يمان محمد حسين</p>
+            <p style="direction: ltr; font-family: monospace; margin-bottom: 10px;">0952725590</p>
+            <button class="btn btn-secondary" style="width:100%; font-size:0.8rem;" onclick="toggleDevInfo()">إغلاق</button>
+        </div>
+    </header>
+
+    <div class="online-bar">
+        <span class="online-dot"></span>
+        <span id="online-users-text">جاري تحميل المتصلين...</span>
+    </div>
+
+    <div id="chat-container">
+        <!-- الرسائل ستظهر هنا -->
+        <div style="text-align: center; color: #555; margin-top: 50px;">أهلاً بك في غرفة الاستعلام</div>
+    </div>
+
+    <!-- أدوات الكاشير (أسفل) -->
+    <div class="input-area" id="cashier-tools" style="display:none;">
+        <button class="btn btn-secondary" style="flex:1;" onclick="openCamera()">📷 تصوير منتج</button>
+    </div>
+
+    <!-- كاميرا الكاشير -->
+    <div class="camera-overlay" id="camera-ui">
+        <video id="video-feed" autoplay playsinline></video>
+        <div style="padding: 20px; display: flex; gap: 10px; width: 100%; justify-content: center;">
+            <button class="btn btn-secondary" onclick="closeCamera()">إلغاء</button>
+            <button class="btn btn-primary" onclick="captureAndSend()">إرسال استعلام</button>
+        </div>
+        <canvas id="canvas-feed" style="display:none;"></canvas>
+    </div>
+
+    <!-- مودال الرد للموظف -->
+    <div class="reply-modal" id="reply-modal">
+        <h3 style="color: var(--my-msg-bg); margin-bottom: 15px;">رد على الاستعلام</h3>
+        <input type="text" id="reply-code" class="form-input" placeholder="كود المنتج">
+        <input type="text" id="reply-price" class="form-input" placeholder="السعر">
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button class="btn btn-secondary" style="flex:1;" onclick="closeReplyModal()">إلغاء</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="sendReply()">إرسال</button>
+        </div>
+    </div>
+
+    <script>
+        // --- المتغيرات العامة ---
+        let currentUser = null;
+        let userRole = null; // 'cashier' or 'staff'
+        let stream = null;
+        let replyingToMsgId = null;
+        
+        // لم تعد هناك قائمة أسماء محظورة، أي اسم مقبول
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // --- الساعة ---
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- إدارة المبرمج ---
+        function toggleDevInfo() {
+            document.getElementById('dev-modal').classList.toggle('show');
+        }
+        window.onclick = function(e) {
+            const modal = document.getElementById('dev-modal');
+            const btn = document.querySelector('.dev-info-btn');
+            if (e.target != modal && e.target != btn && !modal.contains(e.target)) {
+                modal.classList.remove('show');
+            }
+        }
+
+        // --- تسجيل الدخول ---
+        function switchLoginRole(role) {
+            document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${role}`).classList.add('active');
+            
+            if (role === 'cashier') {
+                document.getElementById('form-cashier').style.display = 'block';
+                document.getElementById('form-staff').style.display = 'none';
+            } else {
+                document.getElementById('form-cashier').style.display = 'none';
+                document.getElementById('form-staff').style.display = 'block';
+            }
+        }
+
+        function loginCashier() {
+            const pass = document.getElementById('cashier-pass').value;
+            if (pass === '1992') {
+                userRole = 'cashier';
+                currentUser = 'الكاشير';
+                enterApp();
+            } else {
+                alert('كلمة المرور غير صحيحة');
+            }
+        }
+
+        function loginStaff() {
+            const nameInput = document.getElementById('staff-name-input');
+            const name = nameInput.value.trim();
+
+            // التحقق فقط من عدم فراغ الحقل
+            if (name === "") {
+                alert('الرجاء إدخال اسمك');
+                return;
+            }
+
+            // قبول أي اسم بدون قيود
+            userRole = 'staff';
+            currentUser = name;
+            enterApp();
+        }
+
+        function enterApp() {
+            document.getElementById('login-screen').style.display = 'none';
+            if (userRole === 'cashier') {
+                document.getElementById('cashier-tools').style.display = 'flex';
+            }
+            loadMessages();
+            startPresence();
+        }
+
+        // --- نظام الوجود (Presence) ---
+        function startPresence() {
+            // تحديث حالتي كل ثانيتين
+            setInterval(() => {
+                localStorage.setItem(`presence_${currentUser}`, Date.now());
+            }, 2000);
+
+            // فحص المتصلين كل 3 ثواني
+            setInterval(checkOnlineUsers, 3000);
+            checkOnlineUsers();
+        }
+
+        function checkOnlineUsers() {
+            const now = Date.now();
+            const online = [];
+            // فحص جميع المفاتيح في localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('presence_')) {
+                    const lastSeen = parseInt(localStorage.getItem(key));
+                    const name = key.replace('presence_', '');
+                    // نعتبره متصلاً إذا نشط خلال آخر 10 ثواني
+                    if (now - lastSeen < 10000) {
+                        if (name !== currentUser) online.push(name);
+                    }
+                }
+            }
+            
+            const textEl = document.getElementById('online-users-text');
+            if (online.length > 0) {
+                textEl.textContent = `المتصلون الآن: ${online.join('، ')}`;
+            } else {
+                textEl.textContent = `لا يوجد موظفين آخرين متصلين حالياً`;
+            }
+        }
+
+        // --- إدارة الرسائل (Chat) ---
+        // المفتاح الرئيسي للتخزين
+        const STORAGE_KEY = 'huzuri_chat_v1';
+
+        function getMessages() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        }
+
+        function saveMessages(msgs) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(msgs));
+        }
+
+        function renderMessages() {
+            const msgs = getMessages();
+            const container = document.getElementById('chat-container');
+            container.innerHTML = '';
+
+            if (msgs.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #555; margin-top: 50px;">لا توجد رسائل بعد</div>';
+                return;
+            }
+
+            msgs.forEach(msg => {
+                const div = document.createElement('div');
+                const isMe = msg.sender === currentUser;
+                
+                div.className = `message ${isMe ? 'msg-cashier' : 'msg-staff'}`;
+                
+                let contentHtml = '';
+                
+                if (msg.type === 'inquiry') {
+                    contentHtml = `<img src="${msg.image}" class="msg-img">`;
+                    // إذا كنت موظف، أضف زر رد
+                    if (userRole === 'staff' && !msg.replied) {
+                        contentHtml += `<button onclick="openReplyModal(${msg.id})" style="margin-top:5px; padding:5px 10px; background:var(--my-msg-bg); border:none; color:white; border-radius:4px; cursor:pointer;">رد على هذا الاستعلام</button>`;
+                    }
+                } else if (msg.type === 'reply') {
+                    contentHtml = `<div style="margin-bottom:5px; color:#aaa;">رد على استعلام سابق</div>`;
+                    contentHtml += `
+                        <div class="reply-data">
+                            الكود: <span>${msg.code}</span><br>
+                            السعر: <span>${msg.price}</span>
+                        </div>
+                    `;
+                }
+
+                div.innerHTML = `
+                    <span class="msg-sender">${msg.sender} • ${msg.time}</span>
+                    ${contentHtml}
+                `;
+                container.appendChild(div);
+            });
+
+            // سكرول لأسفل
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function loadMessages() {
+            renderMessages();
+            // الاستماع للتغييرات من التبويبات الأخرى
+            window.addEventListener('storage', (e) => {
+                if (e.key === STORAGE_KEY) {
+                    const oldMsgs = JSON.parse(e.oldValue || '[]');
+                    const newMsgs = JSON.parse(e.newValue || '[]');
+                    
+                    // إذا كانت الرسالة الجديدة ليست مني، اشتغل صوت
+                    if (newMsgs.length > oldMsgs.length) {
+                        const lastMsg = newMsgs[newMsgs.length - 1];
+                        if (lastMsg.sender !== currentUser) {
+                            playBeep();
+                            // إشعار بسيط
+                            if(lastMsg.type === 'reply') {
+                                alert(`وصل رد من ${lastMsg.sender}\nالكود: ${lastMsg.code}\nالسعر: ${lastMsg.price}`);
+                            }
+                        }
+                    }
+                    renderMessages();
+                }
+            });
+        }
+
+        // --- وظائف الكاشير (الكاميرا) ---
+        async function openCamera() {
+            try {
+                const video = document.getElementById('video-feed');
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                video.srcObject = stream;
+                document.getElementById('camera-ui').classList.add('active');
+            } catch (err) {
+                alert('تعذر الوصول للكاميرا: ' + err.message);
+            }
+        }
+
+        function closeCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            document.getElementById('camera-ui').classList.remove('active');
+        }
+
+        function captureAndSend() {
+            const video = document.getElementById('video-feed');
+            const canvas = document.getElementById('canvas-feed');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const imageData = canvas.toDataURL('image/jpeg');
+            
+            const msgs = getMessages();
+            msgs.push({
+                id: Date.now(),
+                type: 'inquiry',
+                sender: currentUser,
+                image: imageData,
+                time: new Date().toLocaleTimeString('ar-EG'),
+                replied: false
+            });
+            
+            saveMessages(msgs);
+            closeCamera();
+            renderMessages();
+            playBeep(); // صوت للكاشير ليؤكد الإرسال
+        }
+
+        // --- وظائف الموظف (الرد) ---
+        function openReplyModal(msgId) {
+            replyingToMsgId = msgId;
+            document.getElementById('reply-modal').classList.add('active');
+            // تنظيف الحقول
+            document.getElementById('reply-code').value = '';
+            document.getElementById('reply-price').value = '';
+        }
+
+        function closeReplyModal() {
+            document.getElementById('reply-modal').classList.remove('active');
+            replyingToMsgId = null;
+        }
+
+        function sendReply() {
+            const code = document.getElementById('reply-code').value;
+            const price = document.getElementById('reply-price').value;
+
+            if (!code || !price) {
+                alert('الرجاء إدخال الكود والسعر');
+                return;
+            }
+
+            // 1. تحديث حالة رسالة الاستعلام الأصلية لتصبح "مردود عليها"
+            let msgs = getMessages();
+            const originalInquiry = msgs.find(m => m.id === replyingToMsgId);
+            if (originalInquiry) originalInquiry.replied = true;
+
+            // 2. إرسال رسالة الرد كرسالة جديدة في الدردشة
+            msgs.push({
+                id: Date.now(),
+                type: 'reply',
+                sender: currentUser, // اسم الموظف
+                code: code,
+                price: price,
+                time: new Date().toLocaleTimeString('ar-EG'),
+                repliedTo: replyingToMsgId
+            });
+
+            saveMessages(msgs);
+            closeReplyModal();
+            renderMessages();
+            alert('تم إرسال الرد للكاشير');
+        }
+
+        // --- الصوت ---
+        function playBeep() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = 1200;
+            gain.gain.value = 0.1;
+            osc.start();
+            setTimeout(() => osc.stop(), 200);
+        }
+
+    </script>
+</body>
+</html>
