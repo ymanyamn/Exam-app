@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>نظام الاستعلام الذكي - غرفة الدردشة</title>
     <style>
         :root {
@@ -23,12 +23,14 @@
             padding: 0;
             font-family: 'Segoe UI', 'Arial Black', sans-serif; /* خط عريض */
             font-weight: 700;
+            -webkit-tap-highlight-color: transparent; /* إزالة لون النقر الأزرق في الموبايل */
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            height: 100vh;
+            height: 100vh; /* ملء الشاشة بالكامل */
+            height: 100dvh; /* للتعامل مع شريط العناوين في الموبايل الحديث */
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -44,6 +46,7 @@
             align-items: center;
             z-index: 10;
             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            flex-shrink: 0; /* منع الترويسة من الانكماش */
         }
 
         .header-left {
@@ -110,6 +113,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-shrink: 0;
         }
         .online-dot {
             width: 8px;
@@ -122,17 +126,18 @@
 
         /* --- منطقة الدردشة --- */
         #chat-container {
-            flex: 1;
+            flex: 1; /* تأخذ كامل المساحة المتاحة */
             padding: 15px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 15px;
             scroll-behavior: smooth;
+            min-height: 0; /* مهم جداً للفليكس بوكس */
         }
 
         .message {
-            max-width: 80%;
+            max-width: 85%;
             padding: 10px 15px;
             border-radius: 15px;
             position: relative;
@@ -167,10 +172,26 @@
         .msg-img {
             max-width: 100%;
             border-radius: 8px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             border: 1px solid #555;
             display: block;
         }
+
+        /* زر الرد داخل الدردشة (تم تحجيمه) */
+        .reply-btn-inline {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--my-msg-bg);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: center;
+        }
+        .reply-btn-inline:active { background: var(--my-msg-bg); }
 
         .reply-data {
             background: rgba(0,0,0,0.2);
@@ -184,11 +205,12 @@
         /* --- منطقة التحكم السفلية --- */
         .input-area {
             background: var(--chat-bg);
-            padding: 10px;
+            padding: 15px;
             border-top: 1px solid var(--border-color);
             display: flex;
             gap: 10px;
             align-items: center;
+            flex-shrink: 0; /* ثابت في الأسفل */
         }
 
         .btn {
@@ -199,6 +221,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: 0.2s;
+            font-size: 1rem; /* تكبير الخط */
             flex-shrink: 0;
         }
         .btn:active { transform: scale(0.95); }
@@ -258,20 +281,49 @@
         }
         .form-input:focus { outline: none; border-color: var(--my-msg-bg); }
 
-        /* --- الكاميرا والمودال --- */
+        /* --- الكاميرا والمودال (تعديل الحجم) --- */
         .camera-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
             z-index: 40;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column; /* عمودي */
+            justify-content: space-between; /* الفيديو يأخذ مساحته، الأزرار في الأسفل */
         }
         .camera-overlay.active { display: flex; }
         
-        video { width: 100%; max-height: 70vh; object-fit: contain; }
+        .video-wrapper {
+            flex: 1; /* يأخذ المساحة المتبقية */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; /* لضمان ظهور الكامل دون قص */
+            max-height: 100%;
+        }
+
+        .camera-controls {
+            padding: 20px;
+            background: rgba(0,0,0,0.8); /* خلفية داكنة للأزرار */
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            position: relative;
+            z-index: 45;
+            gap: 15px;
+        }
+
+        .camera-controls .btn {
+            flex: 1; /* الأزرار تأخذ عرض متساو */
+            font-size: 1.1rem;
+        }
 
         .reply-modal {
             display: none;
@@ -304,14 +356,14 @@
 
             <!-- نموذج الكاشير -->
             <div id="form-cashier">
-                <input type="password" id="cashier-pass" class="form-input" placeholder="ادخل كلمة مرور الكاشير">
+                <input type="password" id="cashier-pass" class="form-input" placeholder="ادخل  كلمة المرور">
                 <button class="btn btn-primary" style="width:100%" onclick="loginCashier()">دخول</button>
             </div>
 
             <!-- نموذج الموظف -->
             <div id="form-staff" style="display:none;">
                 <label style="display:block; margin-bottom:10px; color:var(--text-muted);">أدخل اسمك</label>
-                <input type="text" id="staff-name-input" class="form-input" placeholder="اسم موظف المبيعات" autocomplete="off">
+                <input type="text" id="staff-name-input" class="form-input" placeholder="اكتب أي اسم هنا" autocomplete="off">
                 <button class="btn btn-primary" style="width:100%" onclick="loginStaff()">دخول</button>
             </div>
         </div>
@@ -346,13 +398,15 @@
 
     <!-- أدوات الكاشير (أسفل) -->
     <div class="input-area" id="cashier-tools" style="display:none;">
-        <button class="btn btn-secondary" style="flex:1;" onclick="openCamera()">📷 تصوير منتج</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="openCamera()">📷 تصوير منتج</button>
     </div>
 
     <!-- كاميرا الكاشير -->
     <div class="camera-overlay" id="camera-ui">
-        <video id="video-feed" autoplay playsinline></video>
-        <div style="padding: 20px; display: flex; gap: 10px; width: 100%; justify-content: center;">
+        <div class="video-wrapper">
+            <video id="video-feed" autoplay playsinline></video>
+        </div>
+        <div class="camera-controls">
             <button class="btn btn-secondary" onclick="closeCamera()">إلغاء</button>
             <button class="btn btn-primary" onclick="captureAndSend()">إرسال استعلام</button>
         </div>
@@ -377,8 +431,6 @@
         let stream = null;
         let replyingToMsgId = null;
         
-        // لم تعد هناك قائمة أسماء محظورة، أي اسم مقبول
-
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         // --- الساعة ---
@@ -430,13 +482,11 @@
             const nameInput = document.getElementById('staff-name-input');
             const name = nameInput.value.trim();
 
-            // التحقق فقط من عدم فراغ الحقل
             if (name === "") {
                 alert('الرجاء إدخال اسمك');
                 return;
             }
 
-            // قبول أي اسم بدون قيود
             userRole = 'staff';
             currentUser = name;
             enterApp();
@@ -453,12 +503,10 @@
 
         // --- نظام الوجود (Presence) ---
         function startPresence() {
-            // تحديث حالتي كل ثانيتين
             setInterval(() => {
                 localStorage.setItem(`presence_${currentUser}`, Date.now());
             }, 2000);
 
-            // فحص المتصلين كل 3 ثواني
             setInterval(checkOnlineUsers, 3000);
             checkOnlineUsers();
         }
@@ -466,13 +514,11 @@
         function checkOnlineUsers() {
             const now = Date.now();
             const online = [];
-            // فحص جميع المفاتيح في localStorage
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 if (key.startsWith('presence_')) {
                     const lastSeen = parseInt(localStorage.getItem(key));
                     const name = key.replace('presence_', '');
-                    // نعتبره متصلاً إذا نشط خلال آخر 10 ثواني
                     if (now - lastSeen < 10000) {
                         if (name !== currentUser) online.push(name);
                     }
@@ -488,7 +534,6 @@
         }
 
         // --- إدارة الرسائل (Chat) ---
-        // المفتاح الرئيسي للتخزين
         const STORAGE_KEY = 'huzuri_chat_v1';
 
         function getMessages() {
@@ -519,9 +564,8 @@
                 
                 if (msg.type === 'inquiry') {
                     contentHtml = `<img src="${msg.image}" class="msg-img">`;
-                    // إذا كنت موظف، أضف زر رد
                     if (userRole === 'staff' && !msg.replied) {
-                        contentHtml += `<button onclick="openReplyModal(${msg.id})" style="margin-top:5px; padding:5px 10px; background:var(--my-msg-bg); border:none; color:white; border-radius:4px; cursor:pointer;">رد على هذا الاستعلام</button>`;
+                        contentHtml += `<button class="reply-btn-inline" onclick="openReplyModal(${msg.id})">رد على هذا الاستعلام</button>`;
                     }
                 } else if (msg.type === 'reply') {
                     contentHtml = `<div style="margin-bottom:5px; color:#aaa;">رد على استعلام سابق</div>`;
@@ -540,24 +584,20 @@
                 container.appendChild(div);
             });
 
-            // سكرول لأسفل
             container.scrollTop = container.scrollHeight;
         }
 
         function loadMessages() {
             renderMessages();
-            // الاستماع للتغييرات من التبويبات الأخرى
             window.addEventListener('storage', (e) => {
                 if (e.key === STORAGE_KEY) {
                     const oldMsgs = JSON.parse(e.oldValue || '[]');
                     const newMsgs = JSON.parse(e.newValue || '[]');
                     
-                    // إذا كانت الرسالة الجديدة ليست مني، اشتغل صوت
                     if (newMsgs.length > oldMsgs.length) {
                         const lastMsg = newMsgs[newMsgs.length - 1];
                         if (lastMsg.sender !== currentUser) {
                             playBeep();
-                            // إشعار بسيط
                             if(lastMsg.type === 'reply') {
                                 alert(`وصل رد من ${lastMsg.sender}\nالكود: ${lastMsg.code}\nالسعر: ${lastMsg.price}`);
                             }
@@ -611,14 +651,13 @@
             saveMessages(msgs);
             closeCamera();
             renderMessages();
-            playBeep(); // صوت للكاشير ليؤكد الإرسال
+            playBeep();
         }
 
         // --- وظائف الموظف (الرد) ---
         function openReplyModal(msgId) {
             replyingToMsgId = msgId;
             document.getElementById('reply-modal').classList.add('active');
-            // تنظيف الحقول
             document.getElementById('reply-code').value = '';
             document.getElementById('reply-price').value = '';
         }
@@ -637,16 +676,14 @@
                 return;
             }
 
-            // 1. تحديث حالة رسالة الاستعلام الأصلية لتصبح "مردود عليها"
             let msgs = getMessages();
             const originalInquiry = msgs.find(m => m.id === replyingToMsgId);
             if (originalInquiry) originalInquiry.replied = true;
 
-            // 2. إرسال رسالة الرد كرسالة جديدة في الدردشة
             msgs.push({
                 id: Date.now(),
                 type: 'reply',
-                sender: currentUser, // اسم الموظف
+                sender: currentUser,
                 code: code,
                 price: price,
                 time: new Date().toLocaleTimeString('ar-EG'),
