@@ -2,670 +2,736 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نظام الكاشير والموظفين</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الكاشير والموظفين - يمان محمد حسين</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            /* الألوان الجديدة: خلفية داكنة جداً وبرتقالي حاد */
+            --bg-color: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --text-color: #ffffff;
+            --text-muted: #b0b0b0;
+            --primary-color: #ff6b00; /* برتقالي */
+            --primary-hover: #e65100;
+            --secondary-bg: #2d2d2d;
+            --border-color: #444;
+            --success-color: #00e676;
+            --danger-color: #ff1744;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Arial Black', sans-serif; /* خط عريض */
+            font-weight: 700; /* جعل النصوص عريضة افتراضياً */
+        }
+
         body {
-            font-family: 'Cairo', sans-serif;
-            background: #000;
-            color: #fff;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
-        #login-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
+
+        /* --- الترويسة والساعة --- */
+        header {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.2);
+            position: relative;
+            z-index: 20;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            z-index: 9999;
         }
-        .login-card {
-            background: #1a1a1a;
-            padding: 30px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 350px;
-            text-align: center;
-            border: 1px solid #333;
-        }
-        .app-container {
-            display: none;
-            height: 100%;
-            flex-direction: column;
-        }
-        .header {
-            background: #1a1a1a;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 15px;
-            border-bottom: 1px solid #333;
-        }
-        .view {
-            display: none;
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-        }
-        .view.active { display: block; }
-        .card {
-            background: #1a1a1a;
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #333;
-        }
-        .btn {
-            background: #ff9500;
-            color: #000;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            width: 100%;
-            font-size: 1rem;
-            font-weight: 600;
+
+        /* زر معلومات المبرمج في الزاوية اليسرى العليا */
+        .dev-info-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.3s;
+            z-index: 30;
+        }
+
+        .dev-info-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        /* نافذة منبثقة للمبرمج */
+        .dev-modal {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 8px;
+            width: 250px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            z-index: 40;
+            text-align: center;
+        }
+        
+        .dev-modal.show {
+            display: block;
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 5px rgba(255, 107, 0, 0.5);
+            margin-bottom: 5px;
+        }
+
+        #clock {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-family: 'Courier New', monospace; /* خط رقمي للوقت */
+            letter-spacing: 1px;
+            background: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            margin-top: 5px;
+        }
+
+        main {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* --- الصفحات والبطاقات --- */
+        .page {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- عناصر التحكم --- */
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-bottom: 10px;
         }
-        .btn-secondary { background: #2c2c2c; color: #fff; }
-        .btn-danger { background: #ff3b30; color: #fff; }
-        .btn-success { background: #34c759; color: #fff; }
-        input, textarea {
+
+        .btn:active { transform: scale(0.98); }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.6);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover { background-color: #3d3d3d; }
+
+        .btn-danger { background-color: var(--danger-color); color: white; }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .form-control {
             width: 100%;
-            padding: 14px;
-            background: #2c2c2c;
-            border: 1px solid #444;
-            color: #fff;
+            padding: 15px;
+            background: #000;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            text-align: center;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.2);
+        }
+
+        /* --- الكاميرا --- */
+        .camera-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            background: #000;
             border-radius: 12px;
-            font-size: 1rem;
-            font-family: 'Cairo', sans-serif;
-            margin-bottom: 10px;
+            overflow: hidden;
+            border: 2px solid var(--primary-color);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
-        .online-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #666;
-            display: inline-block;
-            margin-left: 5px;
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        .online-indicator.online { background: #34c759; }
-        .staff-info {
+
+        .overlay-scan {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid rgba(255, 107, 0, 0.3);
             display: flex;
             align-items: center;
-            gap: 5px;
-            background: #2c2c2c;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            justify-content: center;
+            pointer-events: none;
         }
-        #toast {
+
+        .scan-line {
+            width: 90%;
+            height: 4px;
+            background: var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+            animation: scanAnim 2s infinite linear;
+        }
+
+        @keyframes scanAnim {
+            0% { transform: translateY(-120px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(120px); opacity: 0; }
+        }
+
+        /* --- القوائم والبطاقات --- */
+        .card {
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #000;
+        }
+        .status-pending { background: var(--danger-color); color: white; }
+        .status-done { background: var(--success-color); color: black; }
+
+        /* --- التبويبات --- */
+        .tab-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+        }
+
+        /* --- التنبيهات --- */
+        #toast-container {
             position: fixed;
             top: 80px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0,0,0,0.9);
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 30px;
-            z-index: 5000;
-            display: none;
-            border: 1px solid #ff9500;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             width: 90%;
-            max-width: 300px;
-            text-align: center;
+            max-width: 400px;
         }
-        .product-item {
-            background: #2c2c2c;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 8px;
+
+        .toast {
+            background: #222;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-right: 5px solid var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            font-size: 1rem;
+            animation: slideDown 0.3s ease-out;
         }
-        .badge {
-            background: #ff9500;
-            color: #000;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        .toast.success { border-right-color: var(--success-color); }
+        .toast.error { border-right-color: var(--danger-color); }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
-        #camera-preview {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
+
+        .role-btn {
+            background: var(--secondary-bg);
+            border: 2px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-color);
+        }
+
+        .role-btn:hover {
+            border-color: var(--primary-color);
+            background: #222;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.2);
+        }
+
+        .role-btn svg {
+            width: 50px;
+            height: 50px;
             margin-bottom: 10px;
-            background: #000;
+            fill: var(--primary-color);
         }
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #333;
-        }
-        .request-card {
-            border: 2px solid #ff9500;
-        }
-        .received-img {
-            width: 100%;
-            border-radius: 10px;
-            margin: 10px 0;
-        }
+        
+        .hidden { display: none !important; }
+
     </style>
 </head>
 <body>
-    <!-- شاشة الدخول -->
-    <div id="login-screen">
-        <div class="login-card">
-            <i class="fa-solid fa-store fa-3x" style="color: #ff9500; margin-bottom: 20px;"></i>
-            <h2 style="margin-bottom: 20px;">تسجيل الدخول</h2>
-            <input type="number" id="login-pass" placeholder="كلمة المرور">
-            <button class="btn" onclick="login()">دخول</button>
-            <div style="margin-top: 15px;">
-                <span class="badge">كاشير: 1992</span>
-                <span class="badge" style="margin-right: 10px;">موظف: 1990</span>
-            </div>
-        </div>
-    </div>
 
-    <!-- التطبيق الرئيسي -->
-    <div class="app-container" id="app-container">
-        <div class="header">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <i class="fa-solid fa-cash-register" id="header-icon"></i>
-                <span id="header-title">النظام</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="staff-info" id="connection-status">
-                    <span class="online-indicator online"></span>
-                    <span>متصل</span>
-                </div>
-                <button class="btn" style="width: auto; padding: 8px 15px; margin: 0; background: #ff3b30;" onclick="logout()">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                </button>
-            </div>
+    <header>
+        <!-- زر معلومات المبرمج -->
+        <button class="dev-info-btn" onclick="toggleDevInfo()">i</button>
+        
+        <!-- نافذة معلومات المبرمج -->
+        <div id="dev-modal" class="dev-modal">
+            <h3 style="color: var(--primary-color); margin-bottom: 10px;">معلومات المبرمج</h3>
+            <p style="margin-bottom: 5px;">يمان محمد حسين</p>
+            <p style="margin-bottom: 10px; direction: ltr; font-family: monospace;">0952725590</p>
+            <button class="btn btn-secondary" style="padding: 5px; font-size: 0.8rem;" onclick="toggleDevInfo()">إغلاق</button>
         </div>
 
-        <!-- الإشعارات -->
-        <div id="toast"></div>
+        <h1>نظام الكاشير والموظفين</h1>
+        <div id="clock">جاري تحميل الوقت...</div>
+    </header>
 
-        <!-- صفحة الكاشير -->
-        <div id="view-cashier" class="view">
-            <div class="card">
-                <h4 style="margin-bottom: 10px;">➕ إضافة منتج</h4>
-                <input type="text" id="product-code" placeholder="أدخل كود المنتج" onkeypress="if(event.key==='Enter') addProduct()">
-                <button class="btn btn-secondary" onclick="addProduct()">
-                    <i class="fa-solid fa-plus"></i> إضافة
-                </button>
-            </div>
+    <div id="toast-container"></div>
 
-            <div class="card">
-                <h4 style="margin-bottom: 10px; color: #ff9500;">🆘 استعلام للموظفين</h4>
-                <button class="btn btn-secondary" onclick="openCamera()" id="camera-btn">
-                    <i class="fa-solid fa-camera"></i> تصوير كود وإرسال استعلام
-                </button>
-                
-                <div id="camera-section" style="display: none;">
-                    <video id="camera-preview" autoplay playsinline></video>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-success" style="flex: 1;" onclick="capturePhoto()">
-                            <i class="fa-solid fa-camera"></i> تصوير
-                        </button>
-                        <button class="btn btn-danger" style="flex: 1;" onclick="stopCamera()">
-                            <i class="fa-solid fa-times"></i> إلغاء
-                        </button>
-                    </div>
+    <main>
+        <!-- صفحة البداية -->
+        <div id="page-home" class="page active">
+            <h2 style="text-align: center; margin-bottom: 1.5rem;">اختر الواجهة</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="role-btn" onclick="navTo('cashier-login')">
+                    <svg viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm0 10c-2.76 0-5-2.24-5-5h2c0 1.66 1.34 3 3 3s3-1.34 3-3h2c0 2.76-2.24 5-5 5z"/></svg>
+                    <span>كاشير</span>
                 </div>
-                
-                <input type="text" id="manual-query" placeholder="أو أدخل كود يدوي" style="margin-top: 10px;">
-                <button class="btn btn-secondary" onclick="sendManualQuery()">
-                    <i class="fa-regular fa-paper-plane"></i> إرسال استعلام
-                </button>
-                
-                <div id="reply-area" style="margin-top: 15px; padding: 15px; background: #0d3b1f; border-radius: 12px; display: none;">
-                    <strong style="color: #34c759;">💬 رد من الموظف:</strong>
-                    <p id="reply-text" style="margin-top: 10px; font-size: 1.2rem;"></p>
+                <div class="role-btn" onclick="navTo('employee-login')">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <span>موظفين</span>
                 </div>
-            </div>
-
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h4>🛒 السلة</h4>
-                    <button class="btn btn-danger" style="width: auto; padding: 8px 15px; margin: 0;" onclick="clearCart()">
-                        <i class="fa-solid fa-trash"></i> تفريغ
-                    </button>
-                </div>
-                <div id="cart-list" style="max-height: 300px; overflow-y: auto;"></div>
-                <div style="display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 2px solid #333;">
-                    <strong>المجموع:</strong>
-                    <strong style="color: #ff9500; font-size: 1.3rem;" id="cart-total">0</strong>
-                </div>
-                <button class="btn btn-success" style="margin-top: 15px;" onclick="checkout()">
-                    <i class="fa-solid fa-check"></i> إتمام البيع
-                </button>
             </div>
         </div>
 
-        <!-- صفحة الموظف -->
-        <div id="view-staff" class="view">
-            <div id="no-requests" class="card" style="text-align: center; padding: 50px;">
-                <i class="fa-solid fa-inbox fa-4x" style="color: #444; margin-bottom: 20px;"></i>
-                <h3 style="color: #888;">لا توجد طلبات</h3>
+        <!-- تسجيل دخول الكاشير -->
+        <div id="page-cashier-login" class="page">
+            <h2 style="text-align: center; color: var(--primary-color);">دخول الكاشير</h2>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="cashier-pass" class="form-control" placeholder="1992">
+            </div>
+            <button class="btn btn-primary" onclick="loginCashier()">دخول</button>
+            <button class="btn btn-secondary" onclick="navTo('home')">رجوع</button>
+        </div>
+
+        <!-- لوحة الكاشير -->
+        <div id="page-cashier-dashboard" class="page">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="color: var(--primary-color);">الكاشير</h2>
+                <button class="btn btn-danger" style="width: auto; padding: 5px 15px; font-size: 0.9rem;" onclick="logout()">خروج</button>
+            </div>
+            
+            <div class="tab-group">
+                <button class="tab-btn active" id="tab-scan" onclick="switchCashierTab('scan')">قارئ الباركود</button>
+                <button class="tab-btn" id="tab-inquiry" onclick="switchCashierTab('inquiry')">استعلام بصورة</button>
             </div>
 
-            <div id="request-active" style="display: none;">
-                <div class="card request-card">
-                    <h3 style="color: #ff9500;">🔔 طلب استعلام جديد</h3>
-                    <p style="margin: 15px 0;">من: <span id="request-cashier">كاشير</span></p>
-                    
-                    <div id="request-image-container" style="display: none;">
-                        <img id="request-image" class="received-img">
-                    </div>
-                    
-                    <div style="background: #2c2c2c; padding: 15px; border-radius: 10px; margin: 15px 0;">
-                        <p style="direction: ltr; font-size: 1.2rem;" id="request-code">---</p>
-                    </div>
-                    
-                    <textarea id="reply-input" placeholder="اكتب ردك هنا..." rows="3"></textarea>
-                    
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn" style="flex: 2;" onclick="sendReply()">
-                            <i class="fa-regular fa-paper-plane"></i> إرسال الرد
-                        </button>
-                        <button class="btn btn-danger" style="flex: 1;" onclick="ignoreRequest()">
-                            <i class="fa-solid fa-times"></i> تجاهل
-                        </button>
+            <!-- قارئ الباركود -->
+            <div id="view-scan" class="cashier-view">
+                <div class="camera-container">
+                    <video id="scanner-video" autoplay playsinline muted></video>
+                    <div class="overlay-scan">
+                        <div class="scan-line"></div>
                     </div>
                 </div>
+                <div style="text-align: center; margin-bottom: 1rem; background: #000; padding: 10px; border-radius: 8px; border: 1px solid var(--primary-color);">
+                    <span style="color: var(--text-muted); display: block; font-size: 0.9rem;">نتيجة القراءة:</span>
+                    <p id="scan-result" style="font-size: 1.5rem; color: var(--primary-color); font-weight: 900;">بانتظار المسح...</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn btn-primary" onclick="simulateScan()">محاكاة مسح</button>
+                    <button class="btn btn-secondary" onclick="stopCamera('scanner-video')">إيقاف الكاميرا</button>
+                </div>
+            </div>
 
-                <div class="card">
-                    <h4 style="margin-bottom: 15px;">📋 آخر الردود</h4>
-                    <div id="replies-history"></div>
+            <!-- الاستعلام -->
+            <div id="view-inquiry" class="cashier-view hidden">
+                <div class="camera-container">
+                    <video id="inquiry-video" autoplay playsinline muted></video>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <button class="btn btn-primary" onclick="captureInquiry()">تصوير وإرسال</button>
+                    <button class="btn btn-secondary" onclick="stopCamera('inquiry-video')">إلغاء</button>
+                </div>
+                <canvas id="inquiry-canvas" class="hidden"></canvas>
+            </div>
+
+            <!-- ردود الموظفين -->
+            <div style="margin-top: 1rem;">
+                <h3 style="color: var(--text-muted); font-size: 1rem; margin-bottom: 0.5rem;">الردود الواردة:</h3>
+                <div id="cashier-replies-list" style="max-height: 150px; overflow-y: auto; background: #000; padding: 10px; border-radius: 8px;">
+                    <p style="color: #555; text-align: center;">لا توجد ردود</p>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- تسجيل دخول الموظف -->
+        <div id="page-employee-login" class="page">
+            <h2 style="text-align: center; color: var(--primary-color);">دخول الموظفين</h2>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" id="employee-pass" class="form-control" placeholder="1234">
+            </div>
+            <button class="btn btn-primary" onclick="loginEmployee()">دخول</button>
+            <button class="btn btn-secondary" onclick="navTo('home')">رجوع</button>
+        </div>
+
+        <!-- لوحة الموظف -->
+        <div id="page-employee-dashboard" class="page">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="color: var(--primary-color);">الموظفين</h2>
+                <button class="btn btn-danger" style="width: auto; padding: 5px 15px; font-size: 0.9rem;" onclick="logout()">خروج</button>
+            </div>
+            
+            <div style="flex: 1; overflow-y: auto; margin-bottom: 10px;">
+                <h3 style="color: var(--text-muted); font-size: 1rem; margin-bottom: 0.5rem;">طلبات الاستعلام:</h3>
+                <div id="employee-inquiries-list">
+                    <p style="color: #555; text-align: center;">لا توجد طلبات</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
-        // =============== البيانات والمتغيرات ===============
-        let currentUser = null;
-        let cart = [];
-        let currentRequest = null;
-        let cameraStream = null;
-        let capturedImage = null;
+        /* --- الساعة والتاريخ --- */
+        function updateClock() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('ar-EG', options);
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: false }); // وقت 24 ساعة
+            document.getElementById('clock').textContent = `${dateStr} | ${timeStr}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-        // قاعدة بيانات المنتجات التجريبية
-        const products = {
-            '111': { name: 'منتج 1', price: 50 },
-            '222': { name: 'منتج 2', price: 100 },
-            '333': { name: 'منتج 3', price: 150 },
-            '444': { name: 'منتج 4', price: 75 }
-        };
-
-        // الطلبات المعلقة (للتخزين المحلي)
-        let pendingRequests = JSON.parse(localStorage.getItem('pendingRequests')) || [];
-        let repliesHistory = JSON.parse(localStorage.getItem('repliesHistory')) || [];
-
-        // =============== دوال مساعدة ===============
-        function showToast(msg, type = 'info') {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.style.display = 'block';
-            toast.style.background = type === 'success' ? '#0d3b1f' : '#2c2c2c';
-            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        /* --- زر معلومات المبرمج --- */
+        function toggleDevInfo() {
+            const modal = document.getElementById('dev-modal');
+            modal.classList.toggle('show');
         }
 
-        // تحديث السلة
-        function updateCart() {
-            const cartList = document.getElementById('cart-list');
-            const cartTotal = document.getElementById('cart-total');
-            
-            if (cart.length === 0) {
-                cartList.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">السلة فارغة</div>';
-                cartTotal.textContent = '0';
-                return;
+        // إغلاق النافذة عند النقر خارجها
+        window.onclick = function(event) {
+            const modal = document.getElementById('dev-modal');
+            const btn = document.querySelector('.dev-info-btn');
+            if (event.target != modal && event.target != btn && !modal.contains(event.target) && !btn.contains(event.target)) {
+                modal.classList.remove('show');
             }
-
-            let total = 0;
-            cartList.innerHTML = '';
-            cart.forEach((item, index) => {
-                total += item.price;
-                cartList.innerHTML += `
-                    <div class="cart-item">
-                        <div>
-                            <strong>${item.name}</strong>
-                            <div style="color: #888; font-size: 0.8rem;">${item.code}</div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <span style="color: #ff9500;">${item.price} ر.س</span>
-                            <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ff3b30;">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-            cartTotal.textContent = total;
         }
 
-        // =============== تسجيل الدخول ===============
-        function login() {
-            const pass = document.getElementById('login-pass').value;
-            
+        /* --- منطق النظام (نفس المنطق السابق مع تعديلات بسيطة للتنسيق) --- */
+        const PAGES = ['home', 'cashier-login', 'cashier-dashboard', 'employee-login', 'employee-dashboard'];
+        let currentRole = null;
+        let stream = null;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 1200;
+            gainNode.gain.value = 0.1;
+            oscillator.start();
+            setTimeout(() => oscillator.stop(), 150);
+        }
+
+        function navTo(pageId) {
+            PAGES.forEach(p => document.getElementById(`page-${p}`).classList.remove('active'));
+            document.getElementById(`page-${pageId}`).classList.add('active');
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        /* --- المصادقة --- */
+        function loginCashier() {
+            const pass = document.getElementById('cashier-pass').value;
             if (pass === '1992') {
-                currentUser = { role: 'cashier', id: Date.now() };
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app-container').style.display = 'flex';
-                document.getElementById('header-icon').className = 'fa-solid fa-cash-register';
-                document.getElementById('header-title').textContent = 'الكاشير';
-                document.getElementById('view-cashier').classList.add('active');
-                
-                // تحميل السلة المحفوظة
-                const savedCart = localStorage.getItem('cart');
-                if (savedCart) {
-                    cart = JSON.parse(savedCart);
-                    updateCart();
-                }
-                
-                showToast('مرحباً بكاشير', 'success');
-            }
-            else if (pass === '1990') {
-                currentUser = { role: 'staff', id: Date.now() };
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app-container').style.display = 'flex';
-                document.getElementById('header-icon').className = 'fa-solid fa-users';
-                document.getElementById('header-title').textContent = 'الموظفين';
-                document.getElementById('view-staff').classList.add('active');
-                
-                // تحديث واجهة الموظف
-                checkPendingRequests();
-                updateRepliesHistory();
-                
-                showToast('مرحباً بالموظف', 'success');
-            }
-            else {
-                showToast('كلمة مرور خاطئة', 'error');
-            }
-        }
-
-        // =============== وظائف الكاشير ===============
-        function addProduct() {
-            const code = document.getElementById('product-code').value.trim();
-            if (!code) {
-                showToast('أدخل كود المنتج');
-                return;
-            }
-
-            if (products[code]) {
-                cart.push({
-                    ...products[code],
-                    code: code
-                });
-                updateCart();
-                localStorage.setItem('cart', JSON.stringify(cart));
-                document.getElementById('product-code').value = '';
-                showToast('تمت الإضافة', 'success');
+                currentRole = 'cashier';
+                navTo('cashier-dashboard');
+                startCamera('scanner-video');
+                listenForReplies();
+                document.getElementById('cashier-pass').value = '';
             } else {
-                if (confirm('المنتج غير موجود. هل تريد إرسال استعلام للموظفين؟')) {
-                    sendQuery(code, null);
-                }
+                showToast('كلمة المرور غير صحيحة', 'error');
             }
         }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCart();
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        function clearCart() {
-            if (cart.length > 0 && confirm('تفريغ السلة؟')) {
-                cart = [];
-                updateCart();
-                localStorage.setItem('cart', JSON.stringify(cart));
+        function loginEmployee() {
+            const pass = document.getElementById('employee-pass').value;
+            if (pass === '1234') {
+                currentRole = 'employee';
+                navTo('employee-dashboard');
+                loadInquiries();
+                listenForNewInquiries();
+                document.getElementById('employee-pass').value = '';
+            } else {
+                showToast('كلمة المرور غير صحيحة', 'error');
             }
         }
 
-        function checkout() {
-            if (cart.length === 0) {
-                showToast('السلة فارغة');
-                return;
-            }
-            alert(`تم البيع\nالمجموع: ${cart.reduce((s,i) => s + i.price, 0)} ر.س`);
-            cart = [];
-            updateCart();
-            localStorage.setItem('cart', JSON.stringify(cart));
+        function logout() {
+            stopCamera('scanner-video');
+            stopCamera('inquiry-video');
+            currentRole = null;
+            navTo('home');
         }
 
-        // الكاميرا
-        async function openCamera() {
+        /* --- وظائف الكاشير --- */
+        function switchCashierTab(tab) {
+            document.querySelectorAll('.cashier-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            
+            if(tab === 'scan') {
+                document.getElementById('tab-scan').classList.add('active');
+                document.getElementById('tab-inquiry').classList.remove('active');
+                startCamera('scanner-video');
+            } else {
+                document.getElementById('tab-scan').classList.remove('active');
+                document.getElementById('tab-inquiry').classList.add('active');
+                stopCamera('scanner-video');
+                startCamera('inquiry-video');
+            }
+        }
+
+        async function startCamera(videoId) {
             try {
-                cameraStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'environment' } 
-                });
-                document.getElementById('camera-btn').style.display = 'none';
-                document.getElementById('camera-section').style.display = 'block';
-                document.getElementById('camera-preview').srcObject = cameraStream;
+                const video = document.getElementById(videoId);
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                    video.srcObject = stream;
+                }
             } catch (err) {
-                showToast('لا يمكن الوصول للكاميرا');
-                sendManualQuery(); // بديل: إدخال يدوي
+                console.error("Camera Error:", err);
             }
         }
 
-        function stopCamera() {
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(t => t.stop());
-                cameraStream = null;
+        function stopCamera(videoId) {
+            const video = document.getElementById(videoId);
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
             }
-            document.getElementById('camera-section').style.display = 'none';
-            document.getElementById('camera-btn').style.display = 'block';
         }
 
-        function capturePhoto() {
-            const video = document.getElementById('camera-preview');
-            const canvas = document.createElement('canvas');
+        function simulateScan() {
+            playBeep();
+            const codes = ["B - 22 - 32", "260308", "350", "890123456789"];
+            const randomCode = codes[Math.floor(Math.random() * codes.length)];
+            const resultEl = document.getElementById('scan-result');
+            resultEl.textContent = randomCode;
+            resultEl.style.color = 'var(--success-color)';
+            showToast(`تم قراءة: ${randomCode}`, 'success');
+            setTimeout(() => {
+                resultEl.textContent = "بانتظار المسح...";
+                resultEl.style.color = 'var(--primary-color)';
+            }, 3000);
+        }
+
+        function captureInquiry() {
+            const video = document.getElementById('inquiry-video');
+            const canvas = document.getElementById('inquiry-canvas');
+            if (!video.srcObject) return;
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            capturedImage = canvas.toDataURL('image/jpeg');
-            stopCamera();
-            sendQuery(null, capturedImage);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/jpeg');
+            const inquiryData = { id: Date.now(), image: imageData, timestamp: new Date().toLocaleTimeString('ar-EG'), status: 'pending' };
+            let inquiries = JSON.parse(localStorage.getItem('inquiries_list') || '[]');
+            inquiries.push(inquiryData);
+            localStorage.setItem('inquiries_list', JSON.stringify(inquiries));
+            localStorage.setItem('new_inquiry_trigger', Date.now());
+            showToast('تم إرسال الصورة للموظفين', 'success');
+            switchCashierTab('scan');
         }
 
-        // إرسال استعلام
-        function sendQuery(code, image) {
-            const request = {
-                id: Date.now(),
-                cashierId: currentUser.id,
-                code: code || 'صورة',
-                image: image,
-                time: new Date().toLocaleString(),
-                status: 'pending'
-            };
-            
-            pendingRequests.push(request);
-            localStorage.setItem('pendingRequests', JSON.stringify(pendingRequests));
-            
-            showToast('تم إرسال الاستعلام', 'success');
-            
-            // محاكاة استلام الموظف
-            setTimeout(() => {
-                if (currentUser?.role === 'staff') {
-                    checkPendingRequests();
+        /* --- وظائف الموظف --- */
+        function loadInquiries() {
+            const list = document.getElementById('employee-inquiries-list');
+            const inquiries = JSON.parse(localStorage.getItem('inquiries_list') || '[]');
+            list.innerHTML = '';
+            if (inquiries.length === 0) { list.innerHTML = '<p style="color: #555; text-align: center;">لا توجد طلبات</p>'; return; }
+            [...inquiries].reverse().forEach(item => {
+                const isReplied = item.status === 'replied';
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <small style="color:var(--text-muted)">${item.timestamp}</small>
+                        <span class="status-badge ${isReplied ? 'status-done' : 'status-pending'}">${isReplied ? 'تم الرد' : 'جديد'}</span>
+                    </div>
+                    <img src="${item.image}" alt="Product" style="width:100%; border-radius:5px; border:1px solid #444;">
+                    ${!isReplied ? `
+                    <div style="margin-top:10px; display:flex; gap:5px;">
+                        <input type="text" id="code-${item.id}" class="form-control" placeholder="كود المنتج">
+                        <button class="btn btn-primary" style="width:auto;" onclick="sendReply(${item.id})">إرسال</button>
+                    </div>` : `<div style="margin-top:5px; color:var(--success-color);">تم الرد بكود: ${item.replyCode}</div>`}
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function sendReply(id) {
+            const input = document.getElementById(`code-${id}`);
+            const code = input.value.trim();
+            if (!code) return;
+            let inquiries = JSON.parse(localStorage.getItem('inquiries_list') || '[]');
+            const index = inquiries.findIndex(i => i.id === id);
+            if (index !== -1) {
+                inquiries[index].status = 'replied';
+                inquiries[index].replyCode = code;
+                localStorage.setItem('inquiries_list', JSON.stringify(inquiries));
+                localStorage.setItem('new_reply_trigger', JSON.stringify({ id, code }));
+                showToast('تم الرد', 'success');
+                loadInquiries();
+            }
+        }
+
+        function listenForNewInquiries() {
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'new_inquiry_trigger' || e.key === 'inquiries_list') {
+                    loadInquiries();
+                    showToast('طلب جديد!', 'info');
                 }
-            }, 1000);
+            });
         }
 
-        function sendManualQuery() {
-            const code = document.getElementById('manual-query').value.trim();
-            if (code) {
-                sendQuery(code, null);
-                document.getElementById('manual-query').value = '';
-            } else {
-                showToast('أدخل كود');
-            }
-        }
-
-        // استقبال رد
-        function receiveReply(reply) {
-            const replyArea = document.getElementById('reply-area');
-            const replyText = document.getElementById('reply-text');
-            replyText.textContent = reply.text;
-            replyArea.style.display = 'block';
-            showToast('رد من الموظف', 'success');
-            
-            // إضافة للسلة إذا كان رداً برقم
-            const price = parseFloat(reply.text);
-            if (!isNaN(price) && price > 0) {
-                cart.push({
-                    name: 'منتج من موظف',
-                    price: price,
-                    code: reply.requestId
-                });
-                updateCart();
-                localStorage.setItem('cart', JSON.stringify(cart));
-            }
-        }
-
-        // =============== وظائف الموظف ===============
-        function checkPendingRequests() {
-            if (pendingRequests.length > 0 && !currentRequest) {
-                showNewRequest(pendingRequests[0]);
-            } else if (pendingRequests.length === 0) {
-                document.getElementById('no-requests').style.display = 'block';
-                document.getElementById('request-active').style.display = 'none';
-            }
-        }
-
-        function showNewRequest(request) {
-            currentRequest = request;
-            document.getElementById('no-requests').style.display = 'none';
-            document.getElementById('request-active').style.display = 'block';
-            
-            document.getElementById('request-cashier').textContent = 'كاشير ' + request.cashierId.toString().slice(-4);
-            document.getElementById('request-code').textContent = request.code;
-            
-            if (request.image) {
-                document.getElementById('request-image').src = request.image;
-                document.getElementById('request-image-container').style.display = 'block';
-            } else {
-                document.getElementById('request-image-container').style.display = 'none';
-            }
-            
-            document.getElementById('reply-input').value = '';
-        }
-
-        function sendReply() {
-            const replyText = document.getElementById('reply-input').value.trim();
-            if (!replyText) {
-                showToast('اكتب الرد');
-                return;
-            }
-            if (!currentRequest) return;
-
-            const reply = {
-                requestId: currentRequest.id,
-                cashierId: currentRequest.cashierId,
-                staffId: currentUser.id,
-                text: replyText,
-                time: new Date().toLocaleString()
-            };
-
-            // حفظ في التاريخ
-            repliesHistory.unshift(reply);
-            localStorage.setItem('repliesHistory', JSON.stringify(repliesHistory));
-            
-            // إزالة من الطلبات المعلقة
-            pendingRequests = pendingRequests.filter(r => r.id !== currentRequest.id);
-            localStorage.setItem('pendingRequests', JSON.stringify(pendingRequests));
-            
-            // إرسال الرد للكاشير
-            if (currentUser?.role === 'cashier') {
-                receiveReply(reply);
-            }
-            
-            updateRepliesHistory();
-            showToast('تم إرسال الرد', 'success');
-            
-            currentRequest = null;
-            checkPendingRequests();
-        }
-
-        function ignoreRequest() {
-            if (currentRequest) {
-                pendingRequests = pendingRequests.filter(r => r.id !== currentRequest.id);
-                localStorage.setItem('pendingRequests', JSON.stringify(pendingRequests));
-                currentRequest = null;
-                checkPendingRequests();
-            }
-        }
-
-        function updateRepliesHistory() {
-            const historyDiv = document.getElementById('replies-history');
-            if (repliesHistory.length === 0) {
-                historyDiv.innerHTML = '<div style="color: #666;">لا يوجد ردود سابقة</div>';
-                return;
-            }
-            
-            historyDiv.innerHTML = repliesHistory.map(r => `
-                <div style="background: #2c2c2c; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
-                    <div style="color: #34c759;">${r.text}</div>
-                    <div style="color: #666; font-size: 0.8rem; margin-top: 5px;">${r.time}</div>
-                </div>
-            `).join('');
-        }
-
-        // =============== تسجيل الخروج ===============
-        function logout() {
-            if (cameraStream) stopCamera();
-            currentUser = null;
-            cart = [];
-            document.getElementById('app-container').style.display = 'none';
-            document.getElementById('login-screen').style.display = 'flex';
-            document.getElementById('login-pass').value = '';
-            document.getElementById('view-cashier').classList.remove('active');
-            document.getElementById('view-staff').classList.remove('active');
-        }
-
-        // التحقق من الطلبات كل 3 ثواني (للموظف)
-        setInterval(() => {
-            if (currentUser?.role === 'staff') {
-                const saved = localStorage.getItem('pendingRequests');
-                if (saved) {
-                    pendingRequests = JSON.parse(saved);
-                    checkPendingRequests();
+        function listenForReplies() {
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'new_reply_trigger') {
+                    const reply = JSON.parse(e.newValue);
+                    displayReply(reply);
+                    playBeep();
+                    showToast(`كود المنتج: ${reply.code}`, 'success');
                 }
-            }
-        }, 3000);
+            });
+        }
 
-        // التحقق من الردود (للكاشير)
-        setInterval(() => {
-            if (currentUser?.role === 'cashier') {
-                const saved = localStorage.getItem('repliesHistory');
-                if (saved) {
-                    const newReplies = JSON.parse(saved).filter(r => 
-                        r.cashierId === currentUser.id && 
-                        !document.getElementById('reply-area').style.display === 'block'
-                    );
-                    if (newReplies.length > 0) {
-                        receiveReply(newReplies[0]);
-                    }
-                }
-            }
-        }, 3000);
+        function displayReply(reply) {
+            const list = document.getElementById('cashier-replies-list');
+            if (list.querySelector('p')) list.innerHTML = '';
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.style.border = '1px solid var(--success-color)';
+            div.innerHTML = `<span style="color:var(--text-color)">كود المنتج: </span><strong style="color:var(--success-color); font-size:1.2rem;">${reply.code}</strong>`;
+            list.prepend(div);
+        }
     </script>
 </body>
 </html>
