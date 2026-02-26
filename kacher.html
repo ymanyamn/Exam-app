@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>نظام الكاشير والموظفين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #login-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999;
+        }
+        .login-card {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        .app-container {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+        }
+        .header {
+            background: #1a1a1a;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            border-bottom: 1px solid #333;
+        }
+        .view {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .view.active { display: block; }
+        .card {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+        }
+        .btn {
+            background: #ff9500;
+            color: #000;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .btn-secondary { background: #2c2c2c; color: #fff; }
+        .btn-danger { background: #ff3b30; color: #fff; }
+        .btn-success { background: #34c759; color: #fff; }
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            background: #2c2c2c;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Cairo', sans-serif;
+            margin-bottom: 10px;
+        }
+        .online-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #666;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        .online-indicator.online { background: #34c759; }
+        .staff-info {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #2c2c2c;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        #toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 30px;
+            z-index: 5000;
+            display: none;
+            border: 1px solid #ff9500;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
+        }
+        .product-item {
+            background: #2c2c2c;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .badge {
+            background: #ff9500;
+            color: #000;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        #camera-preview {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            background: #000;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+        .request-card {
+            border: 2px solid #ff9500;
+        }
+        .received-img {
+            width: 100%;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- شاشة الدخول -->
+    <div id="login-screen">
+        <div class="login-card">
+            <i class="fa-solid fa-store fa-3x" style="color: #ff9500; margin-bottom: 20px;"></i>
+            <h2 style="margin-bottom: 20px;">تسجيل الدخول</h2>
+            <input type="number" id="login-pass" placeholder="كلمة المرور">
+            <button class="btn" onclick="login()">دخول</button>
+            <div style="margin-top: 15px;">
+                <span class="badge">كاشير: 1992</span>
+                <span class="badge" style="margin-right: 10px;">موظف: 1990</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- التطبيق الرئيسي -->
+    <div class="app-container" id="app-container">
+        <div class="header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-cash-register" id="header-icon"></i>
+                <span id="header-title">النظام</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div class="staff-info" id="connection-status">
+                    <span class="online-indicator online"></span>
+                    <span>متصل</span>
+                </div>
+                <button class="btn" style="width: auto; padding: 8px 15px; margin: 0; background: #ff3b30;" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- الإشعارات -->
+        <div id="toast"></div>
+
+        <!-- صفحة الكاشير -->
+        <div id="view-cashier" class="view">
+            <div class="card">
+                <h4 style="margin-bottom: 10px;">➕ إضافة منتج</h4>
+                <input type="text" id="product-code" placeholder="أدخل كود المنتج" onkeypress="if(event.key==='Enter') addProduct()">
+                <button class="btn btn-secondary" onclick="addProduct()">
+                    <i class="fa-solid fa-plus"></i> إضافة
+                </button>
+            </div>
+
+            <div class="card">
+                <h4 style="margin-bottom: 10px; color: #ff9500;">🆘 استعلام للموظفين</h4>
+                <button class="btn btn-secondary" onclick="openCamera()" id="camera-btn">
+                    <i class="fa-solid fa-camera"></i> تصوير كود وإرسال استعلام
+                </button>
+                
+                <div id="camera-section" style="display: none;">
+                    <video id="camera-preview" autoplay playsinline></video>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-success" style="flex: 1;" onclick="capturePhoto()">
+                            <i class="fa-solid fa-camera"></i> تصوير
+                        </button>
+                        <button class="btn btn-danger" style="flex: 1;" onclick="stopCamera()">
+                            <i class="fa-solid fa-times"></i> إلغاء
+                        </button>
+                    </div>
+                </div>
+                
+                <input type="text" id="manual-query" placeholder="أو أدخل كود يدوي" style="margin-top: 10px;">
+                <button class="btn btn-secondary" onclick="sendManualQuery()">
+                    <i class="fa-regular fa-paper-plane"></i> إرسال استعلام
+                </button>
+                
+                <div id="reply-area" style="margin-top: 15px; padding: 15px; background: #0d3b1f; border-radius: 12px; display: none;">
+                    <strong style="color: #34c759;">💬 رد من الموظف:</strong>
+                    <p id="reply-text" style="margin-top: 10px; font-size: 1.2rem;"></p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4>🛒 السلة</h4>
+                    <button class="btn btn-danger" style="width: auto; padding: 8px 15px; margin: 0;" onclick="clearCart()">
+                        <i class="fa-solid fa-trash"></i> تفريغ
+                    </button>
+                </div>
+                <div id="cart-list" style="max-height: 300px; overflow-y: auto;"></div>
+                <div style="display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 2px solid #333;">
+                    <strong>المجموع:</strong>
+                    <strong style="color: #ff9500; font-size: 1.3rem;" id="cart-total">0</strong>
+                </div>
+                <button class="btn btn-success" style="margin-top: 15px;" onclick="checkout()">
+                    <i class="fa-solid fa-check"></i> إتمام البيع
+                </button>
+            </div>
+        </div>
+
+        <!-- صفحة الموظف -->
+        <div id="view-staff" class="view">
+            <div id="no-requests" class="card" style="text-align: center; padding: 50px;">
+                <i class="fa-solid fa-inbox fa-4x" style="color: #444; margin-bottom: 20px;"></i>
+                <h3 style="color: #888;">لا توجد طلبات</h3>
+            </div>
+
+            <div id="request-active" style="display: none;">
+                <div class="card request-card">
+                    <h3 style="color: #ff9500;">🔔 طلب استعلام جديد</h3>
+                    <p style="margin: 15px 0;">من: <span id="request-cashier">كاشير</span></p>
+                    
+                    <div id="request-image-container" style="display: none;">
+                        <img id="request-image" class="received-img">
+                    </div>
+                    
+                    <div style="background: #2c2c2c; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <p style="direction: ltr; font-size: 1.2rem;" id="request-code">---</p>
+                    </div>
+                    
+                    <textarea id="reply-input" placeholder="اكتب ردك هنا..." rows="3"></textarea>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn" style="flex: 2;" onclick="sendReply()">
+                            <i class="fa-regular fa-paper-plane"></i> إرسال الرد
+                        </button>
+                        <button class="btn btn-danger" style="flex: 1;" onclick="ignoreRequest()">
+                            <i class="fa-solid fa-times"></i> تجاهل
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h4 style="margin-bottom: 15px;">📋 آخر الردود</h4>
+                    <div id="replies-history"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =============== البيانات والمتغيرات ===============
+        let currentUser = null;
+        let cart = [];
+        let currentRequest = null;
+        let cameraStream = null;
+        let capturedImage = null;
+
+        // قاعدة بيانات المنتجات التجريبية
+        const products = {
+            '111': { name: 'منتج 1', price: 50 },
+            '222': { name: 'منتج 2', price: 100 },
+            '333': { name: 'منتج 3', price: 150 },
+            '444': { name: 'منتج 4', price: 75 }
+        };
+
+        // الطلبات المعلقة (للتخزين المحلي)
+        let pendingRequests = JSON.parse(localStorage.getItem('pendingRequests')) || [];
+        let repliesHistory = JSON.parse(localStorage.getItem('repliesHistory')) || [];
+
+        // =============== دوال مساعدة ===============
+        function showToast(msg, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            toast.style.background = type === 'success' ? '#0d3b1f' : '#2c2c2c';
+            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        }
+
+        // تحديث السلة
+        function updateCart() {
+            const cartList = document.getElementById('cart-list');
+            const cartTotal = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                cartList.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">السلة فارغة</div>';
+                cartTotal.textContent = '0';
+                return;
+            }
+
+            let total = 0;
+            cartList.innerHTML = '';
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartList.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.name}</strong>
+                            <div style="color: #888; font-size: 0.8rem;">${item.code}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span style="color: #ff9500;">${item.price} ر.س</span>
+                            <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ff3b30;">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            cartTotal.textContent = total;
+        }
+
+        // =============== تسجيل الدخول ===============
+        function login() {
+            const pass = document.getElementById('login-pass').value;
+            
+            if (pass === '1992') {
+                currentUser = { role: 'cashier', id: Date.now() };
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                document.getElementById('header-icon').className = 'fa-solid fa-cash-register';
+                document.getElementById('header-title').textContent = 'الكاشير';
+                document.getElementById('view-cashier').classList.add('active');
+                
+                // تحميل السلة المحفوظة
+                const savedCart = localStorage.getItem('cart');
+                if (savedCart) {
+                    cart = JSON.parse(savedCart);
+                    updateCart();
+                }
+                
+                showToast('مرحباً بكاشير', 'success');
+            }
+            else if (pass === '1990') {
+                currentUser = { role: 'staff', id: Date.now() };
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                document.getElementById('header-icon').className = 'fa-solid fa-users';
+                document.getElementById('header-title').textContent = 'الموظفين';
+                document.getElementById('view-staff').classList.add('active');
+                
+                // تحديث واجهة الموظف
+                checkPendingRequests();
+                updateRepliesHistory();
+                
+                showToast('مرحباً بالموظف', 'success');
+            }
+            else {
+                showToast('كلمة مرور خاطئة', 'error');
+            }
+        }
+
+        // =============== وظائف الكاشير ===============
+        function addProduct() {
+            const code = document.getElementById('product-code').value.trim();
+            if (!code) {
+                showToast('أدخل كود المنتج');
+                return;
+            }
+
+            if (products[code]) {
+                cart.push({
+                    ...products[code],
+                    code: code
+                });
+                updateCart();
+                localStorage.setItem('cart', JSON.stringify(cart));
+                document.getElementById('product-code').value = '';
+                showToast('تمت الإضافة', 'success');
+            } else {
+                if (confirm('المنتج غير موجود. هل تريد إرسال استعلام للموظفين؟')) {
+                    sendQuery(code, null);
+                }
+            }
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function clearCart() {
+            if (cart.length > 0 && confirm('تفريغ السلة؟')) {
+                cart = [];
+                updateCart();
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('السلة فارغة');
+                return;
+            }
+            alert(`تم البيع\nالمجموع: ${cart.reduce((s,i) => s + i.price, 0)} ر.س`);
+            cart = [];
+            updateCart();
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // الكاميرا
+        async function openCamera() {
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' } 
+                });
+                document.getElementById('camera-btn').style.display = 'none';
+                document.getElementById('camera-section').style.display = 'block';
+                document.getElementById('camera-preview').srcObject = cameraStream;
+            } catch (err) {
+                showToast('لا يمكن الوصول للكاميرا');
+                sendManualQuery(); // بديل: إدخال يدوي
+            }
+        }
+
+        function stopCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(t => t.stop());
+                cameraStream = null;
+            }
+            document.getElementById('camera-section').style.display = 'none';
+            document.getElementById('camera-btn').style.display = 'block';
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('camera-preview');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            capturedImage = canvas.toDataURL('image/jpeg');
+            stopCamera();
+            sendQuery(null, capturedImage);
+        }
+
+        // إرسال استعلام
+        function sendQuery(code, image) {
+            const request = {
+                id: Date.now(),
+                cashierId: currentUser.id,
+                code: code || 'صورة',
+                image: image,
+                time: new Date().toLocaleString(),
+                status: 'pending'
+            };
+            
+            pendingRequests.push(request);
+            localStorage.setItem('pendingRequests', JSON.stringify(pendingRequests));
+            
+            showToast('تم إرسال الاستعلام', 'success');
+            
+            // محاكاة استلام الموظف
+            setTimeout(() => {
+                if (currentUser?.role === 'staff') {
+                    checkPendingRequests();
+                }
+            }, 1000);
+        }
+
+        function sendManualQuery() {
+            const code = document.getElementById('manual-query').value.trim();
+            if (code) {
+                sendQuery(code, null);
+                document.getElementById('manual-query').value = '';
+            } else {
+                showToast('أدخل كود');
+            }
+        }
+
+        // استقبال رد
+        function receiveReply(reply) {
+            const replyArea = document.getElementById('reply-area');
+            const replyText = document.getElementById('reply-text');
+            replyText.textContent = reply.text;
+            replyArea.style.display = 'block';
+            showToast('رد من الموظف', 'success');
+            
+            // إضافة للسلة إذا كان رداً برقم
+            const price = parseFloat(reply.text);
+            if (!isNaN(price) && price > 0) {
+                cart.push({
+                    name: 'منتج من موظف',
+                    price: price,
+                    code: reply.requestId
+                });
+                updateCart();
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        }
+
+        // =============== وظائف الموظف ===============
+        function checkPendingRequests() {
+            if (pendingRequests.length > 0 && !currentRequest) {
+                showNewRequest(pendingRequests[0]);
+            } else if (pendingRequests.length === 0) {
+                document.getElementById('no-requests').style.display = 'block';
+                document.getElementById('request-active').style.display = 'none';
+            }
+        }
+
+        function showNewRequest(request) {
+            currentRequest = request;
+            document.getElementById('no-requests').style.display = 'none';
+            document.getElementById('request-active').style.display = 'block';
+            
+            document.getElementById('request-cashier').textContent = 'كاشير ' + request.cashierId.toString().slice(-4);
+            document.getElementById('request-code').textContent = request.code;
+            
+            if (request.image) {
+                document.getElementById('request-image').src = request.image;
+                document.getElementById('request-image-container').style.display = 'block';
+            } else {
+                document.getElementById('request-image-container').style.display = 'none';
+            }
+            
+            document.getElementById('reply-input').value = '';
+        }
+
+        function sendReply() {
+            const replyText = document.getElementById('reply-input').value.trim();
+            if (!replyText) {
+                showToast('اكتب الرد');
+                return;
+            }
+            if (!currentRequest) return;
+
+            const reply = {
+                requestId: currentRequest.id,
+                cashierId: currentRequest.cashierId,
+                staffId: currentUser.id,
+                text: replyText,
+                time: new Date().toLocaleString()
+            };
+
+            // حفظ في التاريخ
+            repliesHistory.unshift(reply);
+            localStorage.setItem('repliesHistory', JSON.stringify(repliesHistory));
+            
+            // إزالة من الطلبات المعلقة
+            pendingRequests = pendingRequests.filter(r => r.id !== currentRequest.id);
+            localStorage.setItem('pendingRequests', JSON.stringify(pendingRequests));
+            
+            // إرسال الرد للكاشير
+            if (currentUser?.role === 'cashier') {
+                receiveReply(reply);
+            }
+            
+            updateRepliesHistory();
+            showToast('تم إرسال الرد', 'success');
+            
+            currentRequest = null;
+            checkPendingRequests();
+        }
+
+        function ignoreRequest() {
+            if (currentRequest) {
+                pendingRequests = pendingRequests.filter(r => r.id !== currentRequest.id);
+                localStorage.setItem('pendingRequests', JSON.stringify(pendingRequests));
+                currentRequest = null;
+                checkPendingRequests();
+            }
+        }
+
+        function updateRepliesHistory() {
+            const historyDiv = document.getElementById('replies-history');
+            if (repliesHistory.length === 0) {
+                historyDiv.innerHTML = '<div style="color: #666;">لا يوجد ردود سابقة</div>';
+                return;
+            }
+            
+            historyDiv.innerHTML = repliesHistory.map(r => `
+                <div style="background: #2c2c2c; padding: 10px; border-radius: 8px; margin-bottom: 8px;">
+                    <div style="color: #34c759;">${r.text}</div>
+                    <div style="color: #666; font-size: 0.8rem; margin-top: 5px;">${r.time}</div>
+                </div>
+            `).join('');
+        }
+
+        // =============== تسجيل الخروج ===============
+        function logout() {
+            if (cameraStream) stopCamera();
+            currentUser = null;
+            cart = [];
+            document.getElementById('app-container').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('login-pass').value = '';
+            document.getElementById('view-cashier').classList.remove('active');
+            document.getElementById('view-staff').classList.remove('active');
+        }
+
+        // التحقق من الطلبات كل 3 ثواني (للموظف)
+        setInterval(() => {
+            if (currentUser?.role === 'staff') {
+                const saved = localStorage.getItem('pendingRequests');
+                if (saved) {
+                    pendingRequests = JSON.parse(saved);
+                    checkPendingRequests();
+                }
+            }
+        }, 3000);
+
+        // التحقق من الردود (للكاشير)
+        setInterval(() => {
+            if (currentUser?.role === 'cashier') {
+                const saved = localStorage.getItem('repliesHistory');
+                if (saved) {
+                    const newReplies = JSON.parse(saved).filter(r => 
+                        r.cashierId === currentUser.id && 
+                        !document.getElementById('reply-area').style.display === 'block'
+                    );
+                    if (newReplies.length > 0) {
+                        receiveReply(newReplies[0]);
+                    }
+                }
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
