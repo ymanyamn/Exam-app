@@ -45,7 +45,7 @@
             overflow: hidden;
         }
 
-        /* Layout Structure */
+        /* Layout Structure - هيكل مرن للتمرير */
         .app-container {
             display: flex;
             flex-direction: column;
@@ -71,16 +71,17 @@
             z-index: 0;
         }
 
-        /* Header */
+        /* Header - ثابت في الأعلى */
         .header {
-            padding: 20px;
+            padding: 16px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             z-index: 10;
             position: relative;
             border-bottom: 1px solid var(--border);
-            background: linear-gradient(to bottom, var(--bg-main), transparent);
+            background: var(--bg-main);
+            flex-shrink: 0;
         }
 
         .brand {
@@ -90,32 +91,32 @@
         }
 
         .brand-icon {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             background: var(--accent);
-            border-radius: 14px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 25px -5px var(--accent-glow);
+            box-shadow: 0 8px 20px -5px var(--accent-glow);
         }
 
         .brand-icon svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             color: #000;
         }
 
         .brand-name {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 900;
             color: var(--text-main);
         }
 
         .icon-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             background: var(--bg-card);
             border: 1px solid var(--border);
             display: flex;
@@ -132,28 +133,36 @@
         }
 
         .icon-btn svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             color: var(--text-sec);
         }
 
-        /* Main Scrollable Content */
-        .main-content {
+        /* منطقة التمرير الرئيسية */
+        .scrollable-content {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 24px 20px;
-            padding-bottom: 120px; /* زيادة المسافة للشاشات الصغيرة */
+            padding: 20px 20px 100px; /* مساحة كبيرة في الأسفل للتمرير */
             z-index: 1;
             position: relative;
+            -webkit-overflow-scrolling: touch; /* تمرير سلس في iOS */
         }
 
-        .main-content::-webkit-scrollbar { width: 0; }
+        /* إخفاء شريط التمرير مع الحفاظ على الوظيفة */
+        .scrollable-content::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
 
         /* Sections */
         .section {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             animation: fadeUp 0.5s ease backwards;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
         }
 
         .section:nth-child(1) { animation-delay: 0.05s; }
@@ -169,37 +178,37 @@
         /* Time Widget */
         .time-widget {
             text-align: center;
-            padding: 32px 0;
+            padding: 20px 0 30px;
             position: relative;
         }
 
         .live-time {
-            font-size: 64px;
+            font-size: 56px;
             font-weight: 900;
             color: var(--text-main);
             letter-spacing: -2px;
             font-variant-numeric: tabular-nums;
             line-height: 1;
-            margin-bottom: 8px;
-            text-shadow: 0 0 40px var(--accent-glow);
+            margin-bottom: 6px;
+            text-shadow: 0 0 30px var(--accent-glow);
         }
 
         .live-date {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-sec);
             font-weight: 500;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .credit-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 16px;
+            padding: 6px 14px;
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 30px;
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-sec);
         }
 
@@ -212,28 +221,28 @@
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 18px;
+            padding: 18px;
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 16px;
-            font-size: 15px;
+            gap: 8px;
+            margin-bottom: 14px;
+            font-size: 14px;
             font-weight: 700;
         }
 
         .card-header svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             color: var(--accent);
         }
 
         /* Form Elements */
         .field-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .field-group:last-child {
@@ -242,21 +251,21 @@
 
         .field-label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .field-input {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: var(--bg-input);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--text-main);
             font-family: inherit;
@@ -276,61 +285,64 @@
         .field-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         .field-hint {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 12px;
+            padding: 6px 10px;
             background: var(--accent-soft);
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--accent);
             font-weight: 600;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
-        /* Fixed Bottom Bar - محسن للشاشات الصغيرة */
-        .bottom-action-bar {
+        /* الشريط السفلي الثابت */
+        .fixed-bottom-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, var(--bg-main) 90%, transparent);
-            padding: 12px 16px 20px;
+            background: linear-gradient(to top, var(--bg-main) 95%, transparent);
+            padding: 12px 20px 20px;
             z-index: 20;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            pointer-events: none; /* للسماح بالتمرير من خلاله */
+        }
+        
+        .fixed-bottom-bar > * {
+            pointer-events: auto; /* الأزرار فقط قابلة للنقر */
         }
         
         @media (min-width: 501px) {
-            .bottom-action-bar {
+            .fixed-bottom-bar {
                 max-width: 500px;
                 left: 50%;
                 transform: translateX(-50%);
-                padding: 16px 20px 28px;
             }
         }
 
-        /* حاوية الأزرار الثلاثة - محسنة */
+        /* حاوية الأزرار الثلاثة */
         .three-buttons-container {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 6px;
             width: 100%;
-            margin-bottom: 8px;
         }
 
         /* تنسيق الأزرار الثلاثة */
         .nav-btn {
-            padding: 12px 6px;
+            padding: 12px 4px;
             background: var(--bg-card);
             color: var(--text-main);
             border: 1px solid var(--border);
-            border-radius: 40px; /* شكل دائري */
+            border-radius: 30px;
             font-size: 13px;
             font-weight: 700;
             font-family: inherit;
@@ -340,7 +352,7 @@
             gap: 4px;
             cursor: pointer;
             transition: all 0.2s;
-            min-width: 0; /* مهم لمنع تجاوز النص */
+            min-width: 0;
             white-space: nowrap;
             flex: 1;
         }
@@ -372,13 +384,14 @@
             background: #16a34a;
         }
 
+        /* زر بدء التسجيل */
         .btn-main {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             background: var(--accent);
             color: #000;
             border: none;
-            border-radius: 40px;
+            border-radius: 30px;
             font-size: 15px;
             font-weight: 800;
             font-family: inherit;
@@ -401,33 +414,32 @@
             flex-shrink: 0;
         }
 
-        /* زر حساب الراتب المحسن والمرتفع */
+        /* زر حساب الراتب */
         .btn-salary {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             background: linear-gradient(145deg, var(--salary-primary-dark), var(--salary-primary));
             color: white;
             border: none;
-            border-radius: 40px;
+            border-radius: 30px;
             font-size: 16px;
             font-weight: 900;
             font-family: inherit;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 12px 25px -5px var(--salary-glow);
+            transition: all 0.2s;
+            box-shadow: 0 10px 20px -5px var(--salary-glow);
             border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
             overflow: hidden;
-            margin-top: 4px;
         }
 
         .btn-salary svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
             flex-shrink: 0;
         }
@@ -456,32 +468,32 @@
         .week-header {
             background: linear-gradient(135deg, var(--accent-soft), transparent);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 20px;
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .week-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             color: var(--accent);
         }
 
         .week-range {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
-            margin-top: 4px;
+            margin-top: 3px;
         }
 
         .week-stat {
-            padding: 6px 12px;
+            padding: 5px 10px;
             background: var(--accent);
             color: #000;
             border-radius: 30px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
             white-space: nowrap;
         }
@@ -489,9 +501,9 @@
         .day-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 12px;
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 10px;
             transition: all 0.2s;
         }
 
@@ -504,14 +516,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
         .day-name {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .day-card.weekend .day-name {
@@ -519,23 +531,23 @@
         }
 
         .day-date {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-muted);
             background: var(--bg-input);
-            padding: 4px 8px;
+            padding: 3px 8px;
             border-radius: 20px;
         }
 
         .inputs-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
         }
 
         .input-box {
             background: var(--bg-input);
-            border-radius: 16px;
-            padding: 10px 12px;
+            border-radius: 14px;
+            padding: 8px 10px;
             border: 1px solid transparent;
             transition: all 0.2s;
         }
@@ -545,10 +557,10 @@
         }
 
         .input-label-sm {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-muted);
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             display: block;
         }
 
@@ -556,7 +568,7 @@
             width: 100%;
             background: none;
             border: none;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--text-main);
             font-family: inherit;
@@ -565,15 +577,15 @@
 
         .status-tags {
             display: flex;
-            gap: 6px;
-            margin-top: 12px;
+            gap: 5px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
 
         .tag {
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 20px;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
         }
 
@@ -610,9 +622,9 @@
         .modal-box {
             background: var(--bg-main);
             border: 1px solid var(--border);
-            border-radius: 28px;
+            border-radius: 24px;
             width: 100%;
-            max-width: 360px;
+            max-width: 340px;
             overflow: hidden;
             animation: modalIn 0.3s ease;
         }
@@ -623,126 +635,115 @@
         }
 
         .modal-head {
-            padding: 20px;
+            padding: 18px;
             text-align: center;
             border-bottom: 1px solid var(--border);
         }
 
         .modal-head h2 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             color: var(--accent);
         }
 
         .modal-content {
-            padding: 20px;
+            padding: 18px;
             max-height: 50vh;
             overflow-y: auto;
         }
 
-        .modal-footer {
-            padding: 20px;
-            background: var(--bg-card);
-            display: flex;
-            justify-content: space-between;
-        }
-
         .modal-close-foot {
-            padding: 16px 20px;
+            padding: 14px 18px;
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--border);
         }
 
         .summary-row:last-child { border: none; }
 
-        .summary-lbl { color: var(--text-muted); font-size: 12px; font-weight: 600; }
-        .summary-val { font-weight: 800; font-size: 14px; }
+        .summary-lbl { color: var(--text-muted); font-size: 11px; font-weight: 600; }
+        .summary-val { font-weight: 800; font-size: 13px; }
         .summary-val.neg { color: var(--danger); }
         .summary-val.pos { color: var(--success); }
 
         .total-strip {
             background: var(--accent-soft);
-            padding: 16px 20px;
+            padding: 14px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .total-strip span:first-child { font-weight: 600; color: var(--text-sec); }
-        .total-strip span:last-child { font-weight: 900; font-size: 18px; color: var(--accent); }
+        .total-strip span:first-child { font-weight: 600; color: var(--text-sec); font-size: 12px; }
+        .total-strip span:last-child { font-weight: 900; font-size: 17px; color: var(--accent); }
 
         /* Activation */
         .act-icon-box {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             background: var(--accent);
-            border-radius: 16px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 16px;
+            margin: 0 auto 14px;
             box-shadow: 0 8px 20px var(--accent-glow);
         }
 
-        .act-icon-box svg { width: 24px; height: 24px; color: #000; }
+        .act-icon-box svg { width: 22px; height: 22px; color: #000; }
 
-        .act-text { text-align: center; color: var(--text-sec); margin-bottom: 16px; font-size: 13px; }
+        .act-text { text-align: center; color: var(--text-sec); margin-bottom: 14px; font-size: 12px; }
 
         .act-input {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: var(--bg-input);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 14px;
             color: var(--text-main);
             text-align: center;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
             letter-spacing: 2px;
             outline: none;
         }
 
-        .act-err { color: var(--danger); font-size: 11px; text-align: center; margin-top: 8px; height: 12px; }
+        .act-err { color: var(--danger); font-size: 10px; text-align: center; margin-top: 6px; height: 12px; }
 
         /* Backup */
         .backup-textarea {
             width: 100%;
-            height: 100px;
+            height: 90px;
             background: var(--bg-input);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 14px;
             color: var(--text-main);
-            padding: 12px;
+            padding: 10px;
             font-family: monospace;
-            font-size: 10px;
+            font-size: 9px;
             resize: none;
             outline: none;
             direction: ltr;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
-        /* Dev Badge */
+        /* Dev Badge - متحرك مع المحتوى */
         .dev-badge {
-            position: fixed;
-            bottom: 100px;
-            left: 16px;
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 10px 14px;
-            font-size: 11px;
-            z-index: 5;
-            opacity: 0.8;
-            pointer-events: none;
+            border-radius: 14px;
+            padding: 8px 12px;
+            font-size: 10px;
+            display: inline-block;
+            margin: 10px 0;
         }
 
         .dev-badge div:first-child { color: var(--accent); font-weight: 700; }
-        .dev-badge div:last-child { color: var(--text-muted); font-family: monospace; font-size: 10px; }
+        .dev-badge div:last-child { color: var(--text-muted); font-family: monospace; font-size: 9px; }
 
         /* Toast */
         .toast-msg {
@@ -752,7 +753,7 @@
             transform: translateX(-50%) translateY(-100px);
             background: var(--success);
             color: white;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 40px;
             font-weight: 700;
             z-index: 150;
@@ -760,6 +761,7 @@
             transition: all 0.3s;
             box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
             white-space: nowrap;
+            font-size: 13px;
         }
 
         .toast-msg.show {
@@ -767,7 +769,7 @@
             opacity: 1;
         }
 
-        /* Responsive Adjustments - محسنة */
+        /* Responsive Adjustments */
         @media (max-width: 480px) {
             .live-time { font-size: 48px; }
             .field-row { grid-template-columns: 1fr; }
@@ -778,9 +780,8 @@
             }
             
             .nav-btn {
-                padding: 10px 4px;
+                padding: 10px 3px;
                 font-size: 12px;
-                border-radius: 30px;
             }
             
             .nav-btn svg {
@@ -789,23 +790,18 @@
             }
             
             .btn-salary {
-                padding: 14px;
+                padding: 13px;
                 font-size: 15px;
             }
             
-            .btn-salary svg {
-                width: 18px;
-                height: 18px;
-            }
-            
-            .main-content {
-                padding-bottom: 130px;
+            .scrollable-content {
+                padding-bottom: 120px;
             }
         }
 
         @media (max-width: 360px) {
             .nav-btn {
-                padding: 8px 3px;
+                padding: 8px 2px;
                 font-size: 11px;
             }
             
@@ -818,13 +814,16 @@
                 font-size: 14px;
             }
             
-            .week-title {
-                font-size: 16px;
+            .live-time {
+                font-size: 42px;
             }
             
-            .week-stat {
-                padding: 4px 8px;
-                font-size: 10px;
+            .brand-name {
+                font-size: 20px;
+            }
+            
+            .week-title {
+                font-size: 15px;
             }
         }
     </style>
@@ -834,16 +833,11 @@
 <div class="app-container">
     <div class="ambient-light"></div>
     
-    <!-- DEV BADGE -->
-    <div class="dev-badge">
-        <div>يمان محمد حسين</div>
-        <div>0952725590</div>
-    </div>
-
     <div class="toast-msg" id="toast">تم الحفظ</div>
 
     <!-- SETUP SCREEN -->
-    <div class="screen active" id="setupScreen">
+    <div class="screen active" id="setupScreen" style="height:100%; display:flex; flex-direction:column;">
+        <!-- Header ثابت -->
         <div class="header">
             <div class="brand">
                 <div class="brand-icon">
@@ -856,7 +850,8 @@
             </button>
         </div>
 
-        <div class="main-content">
+        <!-- محتوى قابل للتمرير -->
+        <div class="scrollable-content">
             <div class="section">
                 <div class="time-widget">
                     <div class="live-time" id="clockTime">00:00</div>
@@ -912,18 +907,26 @@
                     </div>
                 </div>
             </div>
+
+            <!-- شارة المبرمج داخل المحتوى -->
+            <div class="dev-badge">
+                <div>يمان محمد حسين</div>
+                <div>0952725590</div>
+            </div>
         </div>
 
-        <div class="bottom-action-bar">
+        <!-- شريط سفلي ثابت -->
+        <div class="fixed-bottom-bar">
             <button class="btn-main" onclick="startApp()">
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                 بدء التسجيل
             </button>
         </div>
     </div>
 
     <!-- WEEKLY SCREEN -->
-    <div class="screen" id="weeklyScreen">
+    <div class="screen" id="weeklyScreen" style="height:100%; display:none; flex-direction:column;">
+        <!-- Header ثابت -->
         <div class="header">
             <div class="brand">
                 <div class="brand-icon">
@@ -936,7 +939,8 @@
             </button>
         </div>
 
-        <div class="main-content">
+        <!-- محتوى قابل للتمرير -->
+        <div class="scrollable-content">
             <div class="week-header">
                 <div>
                     <div class="week-title" id="weekTitle">الأسبوع الأول</div>
@@ -945,28 +949,33 @@
                 <div class="week-stat">7 أيام</div>
             </div>
             <div id="daysContainer"></div>
+            
+            <!-- شارة المبرمج داخل المحتوى -->
+            <div class="dev-badge">
+                <div>يمان محمد حسين</div>
+                <div>0952725590</div>
+            </div>
         </div>
 
-        <div class="bottom-action-bar">
-            <!-- الأزرار الثلاثة في حاوية منفصلة مع تنسيق محسن -->
+        <!-- شريط سفلي ثابت مع الأزرار -->
+        <div class="fixed-bottom-bar">
             <div class="three-buttons-container">
                 <button class="nav-btn" onclick="prevWeek()">
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     <span>السابق</span>
                 </button>
                 <button class="nav-btn save-btn" onclick="saveData()">
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                     <span>حفظ</span>
                 </button>
                 <button class="nav-btn" onclick="nextWeek()">
                     <span>التالي</span>
-                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                 </button>
             </div>
             
-            <!-- زر حساب الراتب -->
             <button class="btn-salary" onclick="openSalary()">
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
                 <span>حساب الراتب</span>
@@ -1010,12 +1019,12 @@
     <div class="modal-box">
         <div class="modal-head"><h2>نسخ احتياطي</h2></div>
         <div class="modal-content">
-            <div class="three-buttons-container" style="margin-bottom:16px">
+            <div class="three-buttons-container" style="margin-bottom:14px">
                 <button class="nav-btn save-btn" onclick="exportData()">تصدير</button>
                 <button class="nav-btn" onclick="importData()">استيراد</button>
             </div>
             <textarea class="backup-textarea" id="backupArea" placeholder="كود النسخة سيظهر هنا..."></textarea>
-            <p style="font-size:11px; color:var(--text-muted); text-align:center">انسخ الكود واحفظه بأمان</p>
+            <p style="font-size:10px; color:var(--text-muted); text-align:center">انسخ الكود واحفظه بأمان</p>
         </div>
         <div class="modal-close-foot">
             <button class="nav-btn" style="width:100%" onclick="closeModal('backupModal')">إغلاق</button>
@@ -1171,8 +1180,8 @@
                 if(p.salary && p.weeks && p.weeks.length > 0) {
                     Object.assign(state, p);
                     if(state.activated) {
-                        document.getElementById('setupScreen').classList.remove('active');
-                        document.getElementById('weeklyScreen').classList.add('active');
+                        document.getElementById('setupScreen').style.display = 'none';
+                        document.getElementById('weeklyScreen').style.display = 'flex';
                         renderW();
                     }
                 }
@@ -1258,8 +1267,8 @@
                 toast('تم الاستعادة');
                 closeModal('backupModal');
                 if(state.activated) {
-                    document.getElementById('setupScreen').classList.remove('active');
-                    document.getElementById('weeklyScreen').classList.add('active');
+                    document.getElementById('setupScreen').style.display = 'none';
+                    document.getElementById('weeklyScreen').style.display = 'flex';
                     renderW();
                 }
             } else { toast('كود غير صالح'); }
@@ -1290,8 +1299,8 @@
             return;
         }
 
-        document.getElementById('setupScreen').classList.remove('active');
-        document.getElementById('weeklyScreen').classList.add('active');
+        document.getElementById('setupScreen').style.display = 'none';
+        document.getElementById('weeklyScreen').style.display = 'flex';
         renderW();
         save();
     }
@@ -1303,8 +1312,8 @@
             state.activated = true;
             save();
             closeModal('activationModal');
-            document.getElementById('setupScreen').classList.remove('active');
-            document.getElementById('weeklyScreen').classList.add('active');
+            document.getElementById('setupScreen').style.display = 'none';
+            document.getElementById('weeklyScreen').style.display = 'flex';
             renderW();
             toast('تم التفعيل');
         } else {
