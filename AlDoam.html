@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>حظوري - نظام الرواتب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-body: #000000;
+            --bg-main: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --bg-input: #262626;
+            --accent: #f97316;
+            --accent-hover: #fb923c;
+            --accent-glow: rgba(249, 115, 22, 0.4);
+            --accent-soft: rgba(249, 115, 22, 0.1);
+            --success: #22c55e;
+            --success-soft: rgba(34, 197, 94, 0.15);
+            --danger: #ef4444;
+            --danger-soft: rgba(239, 68, 68, 0.15);
+            --text-main: #ffffff;
+            --text-sec: #a3a3a3;
+            --text-muted: #525252;
+            --border: #2a2a2a;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--bg-main);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ambient-light {
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(to bottom, var(--bg-main), transparent);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px -5px var(--accent-glow);
+        }
+
+        .brand-icon svg {
+            width: 22px;
+            height: 22px;
+            color: #000;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:active {
+            transform: scale(0.94);
+            border-color: var(--accent);
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-sec);
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px 20px 200px;
+            position: relative;
+            z-index: 1;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .main-content::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+
+        .buttons-container {
+            background: linear-gradient(to top, var(--bg-main) 90%, transparent);
+            padding: 16px 20px 25px;
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            bottom: 0;
+            z-index: 20;
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 18px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 10px 30px -5px var(--accent-glow);
+        }
+
+        .btn-main:active {
+            transform: scale(0.98);
+        }
+
+        .btn-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-row.cols-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .btn-outline {
+            padding: 14px;
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:active {
+            background: var(--bg-input);
+            border-color: var(--text-muted);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border-color: transparent;
+        }
+
+        .time-widget {
+            text-align: center;
+            padding: 20px 0 30px;
+            position: relative;
+        }
+
+        .live-time {
+            font-size: min(64px, 15vw);
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: -2px;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px var(--accent-glow);
+        }
+
+        .live-date {
+            font-size: clamp(14px, 4vw, 16px);
+            color: var(--text-sec);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .credit-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            font-size: clamp(12px, 3.5vw, 13px);
+            color: var(--text-sec);
+        }
+
+        .credit-badge span {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .card-header svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
+        }
+
+        .field-group {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .field-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* تلميح المبلغ - كتابة المبلغ بالكلمات */
+        .amount-hint {
+            margin-top: 8px;
+            padding: 10px 16px;
+            background: var(--accent-soft);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .amount-hint svg {
+            width: 18px;
+            height: 18px;
+            color: var(--accent);
+        }
+
+        .amount-hint span {
+            font-weight: 600;
+        }
+
+        /* Week Styles */
+        .week-header {
+            background: linear-gradient(135deg, var(--accent-soft), transparent);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .week-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .week-range {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .week-stat {
+            padding: 6px 12px;
+            background: var(--accent);
+            color: #000;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .day-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .day-card.weekend {
+            background: linear-gradient(135deg, var(--accent-soft), var(--bg-card));
+            border-color: rgba(249, 115, 22, 0.3);
+        }
+
+        .day-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .day-name {
+            font-weight: 700;
+            font-size: clamp(14px, 4vw, 16px);
+        }
+
+        .day-card.weekend .day-name {
+            color: var(--accent);
+        }
+
+        .day-date {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .inputs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .input-box {
+            background: var(--bg-input);
+            border-radius: 10px;
+            padding: 10px 12px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .input-box:focus-within {
+            border-color: var(--accent);
+        }
+
+        .input-label-sm {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .input-time {
+            width: 100%;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            font-family: inherit;
+            outline: none;
+        }
+
+        .status-tags {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .tag-late {
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+
+        .tag-extra {
+            background: var(--success-soft);
+            color: var(--success);
+        }
+
+        .tag-ok {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        /* Modal Styles */
+        .modal-layer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-layer.active { display: flex; }
+
+        .modal-box {
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow: hidden;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-head {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-head h2 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .modal-content {
+            padding: 20px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            background: var(--bg-card);
+            display: flex;
+            gap: 10px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .summary-row:last-child { border: none; }
+
+        .summary-lbl { color: var(--text-muted); font-size: 13px; font-weight: 600; }
+        .summary-val { font-weight: 800; font-size: 14px; }
+        .summary-val.neg { color: var(--danger); }
+        .summary-val.pos { color: var(--success); }
+
+        .total-strip {
+            background: var(--accent-soft);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .total-strip span:first-child { font-weight: 600; color: var(--text-sec); }
+        .total-strip span:last-child { font-weight: 900; font-size: 20px; color: var(--accent); }
+
+        .verification-result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .verification-result.success {
+            background: var(--success-soft);
+            color: var(--success);
+        }
+
+        .verification-result.error {
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+
+        .verification-amount {
+            font-size: 36px;
+            font-weight: 900;
+            margin: 10px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .toast-msg {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--success);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            z-index: 2000;
+            opacity: 0;
+            transition: all 0.3s;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast-msg.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .screen {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* زر الإعدادات السريعة */
+        .quick-settings {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            margin-bottom: 16px;
+        }
+
+        .quick-settings button {
+            flex: 1;
+            padding: 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-settings button:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .quick-settings button svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="ambient-light"></div>
+    
+    <div class="toast-msg" id="toast"></div>
+
+    <!-- شاشة الإعدادات -->
+    <div class="screen active" id="setupScreen">
+        <div class="header">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <span class="brand-name">حظوري</span>
+            </div>
+            <button class="icon-btn" onclick="openBackupModal()">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="main-content">
+            <div class="time-widget">
+                <div class="live-time" id="clockTime">00:00:00</div>
+                <div class="live-date" id="clockDate">التاريخ</div>
+                <div class="credit-badge">برمجة <span>يمان محمد حسين</span></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    الراتب الشهري
+                </div>
+                <div class="field-group">
+                    <input type="number" class="field-input" id="salaryInput" placeholder="أدخل الراتب الشهري" value="300000" oninput="updateSalaryHint()">
+                    <!-- تلميح المبلغ بالكلمات -->
+                    <div class="amount-hint" id="salaryHint">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span id="hintText">أدخل المبلغ لتحويله إلى كلمات</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    إعدادات العمل
+                </div>
+                
+                <!-- أزرار الإعدادات السريعة -->
+                <div class="quick-settings">
+                    <button onclick="setWorkHours(6)">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        6 ساعات
+                    </button>
+                    <button onclick="setWorkHours(8)">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        8 ساعات
+                    </button>
+                    <button onclick="setWorkHours(9)">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        9 ساعات
+                    </button>
+                </div>
+                
+                <div class="field-group">
+                    <label class="field-label">عدد الساعات اليومية</label>
+                    <input type="number" class="field-input" id="workHoursInput" placeholder="عدد الساعات" value="8" min="1" max="24" onchange="updateWorkHoursHint()">
+                </div>
+                
+                <!-- تلميح ساعات العمل -->
+                <div class="amount-hint" id="workHoursHint" style="margin-top: 0;">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>ساعات العمل اليومية: 8 ساعات</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    أوقات الدوام
+                </div>
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="field-label">البداية</label>
+                        <input type="time" class="field-input" id="startTimeInput" value="08:00">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">النهاية</label>
+                        <input type="time" class="field-input" id="endTimeInput" value="17:00">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons-container">
+            <button class="btn-main" onclick="startApp()">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+                بدء التسجيل
+            </button>
+        </div>
+    </div>
+
+    <!-- شاشة الأسبوع -->
+    <div class="screen" id="weeklyScreen">
+        <div class="header">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <span class="brand-name">حظوري</span>
+            </div>
+            <button class="icon-btn" onclick="openBackupModal()">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="main-content">
+            <div class="week-header">
+                <div>
+                    <div class="week-title" id="weekTitle">الأسبوع الأول</div>
+                    <div class="week-range" id="weekDates">جاري التحميل...</div>
+                </div>
+                <div class="week-stat" id="weekDaysCount">7 أيام</div>
+            </div>
+            
+            <!-- زر تعديل الإعدادات من شاشة الأسبوع -->
+            <div class="quick-settings" style="margin-bottom: 16px;">
+                <button onclick="showEditSettings()" style="background: var(--accent-soft); border-color: var(--accent);">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    تعديل الإعدادات
+                </button>
+            </div>
+            
+            <div id="daysContainer"></div>
+            
+            <!-- قسم الأسبوع الماضي -->
+            <div class="card" style="margin-top: 20px; background: linear-gradient(135deg, var(--accent-soft), var(--bg-card));">
+                <div class="card-header">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    الأسبوع الماضي
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <div>
+                        <div style="font-size: 14px; color: var(--text-sec);">إجمالي الراتب</div>
+                        <div style="font-size: 24px; font-weight: 900; color: var(--accent);" id="prevWeekTotal">0 ل.س</div>
+                    </div>
+                    <button class="btn-outline" style="width: auto; padding: 10px 16px;" onclick="showPrevWeekDetails()">
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                        التفاصيل
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons-container">
+            <div class="btn-row cols-3" style="margin-bottom: 10px;">
+                <button class="btn-outline" onclick="prevWeek()">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                    السابق
+                </button>
+                <button class="btn-outline btn-success" onclick="saveData()">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    حفظ
+                </button>
+                <button class="btn-outline" onclick="nextWeek()">
+                    التالي
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+            <button class="btn-main" onclick="openSalaryModal()">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v3m-3-3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                حساب الراتب
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- مودال تعديل الإعدادات -->
+<div class="modal-layer" id="editSettingsModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h2>تعديل الإعدادات</h2>
+        </div>
+        <div class="modal-content">
+            <div class="card" style="margin-bottom: 0;">
+                <div class="field-group">
+                    <label class="field-label">الراتب الشهري</label>
+                    <input type="number" class="field-input" id="editSalaryInput" value="300000" oninput="updateEditSalaryHint()">
+                    <div class="amount-hint" id="editSalaryHint">
+                        <span id="editHintText">أدخل المبلغ</span>
+                    </div>
+                </div>
+                
+                <div class="quick-settings">
+                    <button onclick="setEditWorkHours(6)">6 ساعات</button>
+                    <button onclick="setEditWorkHours(8)">8 ساعات</button>
+                    <button onclick="setEditWorkHours(9)">9 ساعات</button>
+                </div>
+                
+                <div class="field-group">
+                    <label class="field-label">ساعات العمل اليومية</label>
+                    <input type="number" class="field-input" id="editWorkHoursInput" value="8" min="1" max="24">
+                </div>
+                
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="field-label">وقت البدء</label>
+                        <input type="time" class="field-input" id="editStartTimeInput" value="08:00">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">وقت الانتهاء</label>
+                        <input type="time" class="field-input" id="editEndTimeInput" value="17:00">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-outline btn-success" style="flex: 1;" onclick="saveSettings()">حفظ</button>
+            <button class="btn-outline" style="flex: 1;" onclick="closeModal('editSettingsModal')">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- باقي المودالات (نفس الكود السابق) -->
+<div class="modal-layer" id="salaryModal">
+    <div class="modal-box">
+        <div class="modal-head"><h2>تفاصيل الراتب</h2></div>
+        <div class="modal-content" id="salaryBody"></div>
+        <div class="total-strip"><span>صافي الراتب</span><span id="totalVal">0 ل.س</span></div>
+        <div class="modal-footer">
+            <button class="btn-outline btn-success" style="flex:1;" onclick="showSalaryVerification()">تحقق من المبلغ</button>
+            <button class="btn-outline" style="flex:1;" onclick="closeModal('salaryModal')">إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-layer" id="verifyModal">
+    <div class="modal-box">
+        <div class="modal-head"><h2>التحقق من المبلغ</h2></div>
+        <div class="modal-content">
+            <div style="background:var(--bg-card); border-radius:16px; padding:20px;">
+                <div style="font-size:14px; color:var(--text-sec); text-align:center; margin-bottom:10px;">المبلغ المستحق</div>
+                <div style="font-size:36px; font-weight:900; color:var(--accent); text-align:center; margin-bottom:20px;" id="expectedAmount">0 ل.س</div>
+                <div class="field-group">
+                    <label class="field-label">المبلغ المستلم</label>
+                    <input type="number" class="field-input" id="receivedAmount" placeholder="أدخل المبلغ المستلم">
+                </div>
+                <button class="btn-main" onclick="verifyPayment()" style="margin:10px 0 20px;">تحقق الآن</button>
+                <div id="verificationResult"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-outline" style="flex:1;" onclick="closeModal('verifyModal')">إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-layer" id="prevWeekModal">
+    <div class="modal-box">
+        <div class="modal-head"><h2>الأسبوع الماضي</h2></div>
+        <div class="modal-content" id="prevWeekDetails"></div>
+        <div class="modal-footer">
+            <button class="btn-outline btn-success" style="flex:1;" onclick="checkPrevWeekPayment()">تحقق من المبلغ</button>
+            <button class="btn-outline" style="flex:1;" onclick="closeModal('prevWeekModal')">إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-layer" id="backupModal">
+    <div class="modal-box">
+        <div class="modal-head"><h2>نسخ احتياطي</h2></div>
+        <div class="modal-content">
+            <div class="btn-row" style="margin-bottom:16px;">
+                <button class="btn-outline btn-success" style="flex:1;" onclick="exportData()">تصدير</button>
+                <button class="btn-outline" style="flex:1;" onclick="importData()">استيراد</button>
+            </div>
+            <textarea class="backup-textarea" id="backupArea" placeholder="كود النسخة سيظهر هنا..." rows="5" style="width:100%; background:var(--bg-input); border:1px solid var(--border); border-radius:12px; padding:12px; color:var(--text-main); font-family:monospace; resize:none;"></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-outline" style="flex:1;" onclick="closeModal('backupModal')">إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-layer" id="activationModal">
+    <div class="modal-box">
+        <div class="modal-head"><h2>تفعيل البرنامج</h2></div>
+        <div class="modal-content" style="text-align:center;">
+            <div style="width:50px; height:50px; background:var(--accent); border-radius:16px; margin:0 auto 16px; display:flex; align-items:center; justify-content:center;">
+                <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+            </div>
+            <p style="color:var(--text-sec); margin-bottom:16px;">أدخل كود التفعيل للاستمرار</p>
+            <input type="text" class="field-input" id="codeInput" placeholder="كود التفعيل" style="text-align:center; letter-spacing:2px;">
+            <p id="actErr" style="color:var(--danger); font-size:12px; margin-top:8px; height:20px;"></p>
+            <button class="btn-main" style="margin-top:16px;" onclick="activate()">تفعيل</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const state = {
+        salary: 300000,
+        hours: 8,
+        start: '08:00',
+        end: '17:00',
+        week: 0,
+        weeks: [],
+        activated: true,
+        previousWeekPayment: null
+    };
+
+    const CODE = '0952725590';
+    const DAYS = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+    const CUR = ' ل.س';
+
+    // دالة تحويل الأرقام إلى كلمات
+    function numberToWords(num) {
+        const units = ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة'];
+        const tens = ['', 'عشرة', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'];
+        const hundreds = ['', 'مئة', 'مئتان', 'ثلاثمئة', 'أربعمئة', 'خمسمئة', 'ستمئة', 'سبعمئة', 'ثمانمئة', 'تسعمئة'];
+        
+        if (num === 0) return 'صفر';
+        
+        let words = '';
+        
+        // الملايين
+        if (num >= 1000000) {
+            const millions = Math.floor(num / 1000000);
+            if (millions === 1) words += 'مليون ';
+            else if (millions === 2) words += 'مليونان ';
+            else if (millions >= 3 && millions <= 10) words += units[millions] + ' ملايين ';
+            else words += units[millions] + ' مليون ';
+            num %= 1000000;
+        }
+        
+        // الآلاف
+        if (num >= 1000) {
+            const thousands = Math.floor(num / 1000);
+            if (thousands === 1) words += 'ألف ';
+            else if (thousands === 2) words += 'ألفان ';
+            else if (thousands >= 3 && thousands <= 10) words += units[thousands] + ' آلاف ';
+            else words += units[thousands] + ' ألف ';
+            num %= 1000;
+        }
+        
+        // المئات
+        if (num >= 100) {
+            const hundred = Math.floor(num / 100);
+            words += hundreds[hundred] + ' ';
+            num %= 100;
+        }
+        
+        // العشرات والآحاد
+        if (num >= 20) {
+            const ten = Math.floor(num / 10);
+            words += tens[ten] + ' ';
+            num %= 10;
+        } else if (num >= 10) {
+            if (num === 10) words += 'عشرة ';
+            else if (num === 11) words += 'أحد عشر ';
+            else if (num === 12) words += 'اثنا عشر ';
+            else if (num === 13) words += 'ثلاثة عشر ';
+            else if (num === 14) words += 'أربعة عشر ';
+            else if (num === 15) words += 'خمسة عشر ';
+            else if (num === 16) words += 'ستة عشر ';
+            else if (num === 17) words += 'سبعة عشر ';
+            else if (num === 18) words += 'ثمانية عشر ';
+            else if (num === 19) words += 'تسعة عشر ';
+            num = 0;
+        }
+        
+        if (num > 0) {
+            words += units[num] + ' ';
+        }
+        
+        return words.trim() + ' ليرة سورية';
+    }
+
+    // تحديث تلميح الراتب
+    function updateSalaryHint() {
+        const salary = parseFloat(document.getElementById('salaryInput').value) || 0;
+        const hintText = document.getElementById('hintText');
+        if (salary > 0) {
+            hintText.textContent = numberToWords(salary);
+        } else {
+            hintText.textContent = 'أدخل المبلغ لتحويله إلى كلمات';
+        }
+    }
+
+    function updateEditSalaryHint() {
+        const salary = parseFloat(document.getElementById('editSalaryInput').value) || 0;
+        const hintText = document.getElementById('editHintText');
+        if (salary > 0) {
+            hintText.textContent = numberToWords(salary);
+        } else {
+            hintText.textContent = 'أدخل المبلغ';
+        }
+    }
+
+    function updateWorkHoursHint() {
+        const hours = document.getElementById('workHoursInput').value;
+        document.getElementById('workHoursHint').querySelector('span').textContent = `ساعات العمل اليومية: ${hours} ساعات`;
+    }
+
+    // ضبط ساعات العمل من الأزرار السريعة
+    function setWorkHours(hours) {
+        document.getElementById('workHoursInput').value = hours;
+        updateWorkHoursHint();
+    }
+
+    function setEditWorkHours(hours) {
+        document.getElementById('editWorkHoursInput').value = hours;
+    }
+
+    // فتح مودال تعديل الإعدادات
+    function showEditSettings() {
+        document.getElementById('editSalaryInput').value = state.salary;
+        document.getElementById('editWorkHoursInput').value = state.hours;
+        document.getElementById('editStartTimeInput').value = state.start;
+        document.getElementById('editEndTimeInput').value = state.end;
+        updateEditSalaryHint();
+        openModal('editSettingsModal');
+    }
+
+    // حفظ الإعدادات المعدلة
+    function saveSettings() {
+        const newSalary = parseFloat(document.getElementById('editSalaryInput').value);
+        const newHours = parseInt(document.getElementById('editWorkHoursInput').value);
+        const newStart = document.getElementById('editStartTimeInput').value;
+        const newEnd = document.getElementById('editEndTimeInput').value;
+        
+        if (newSalary && newSalary > 0) state.salary = newSalary;
+        if (newHours && newHours > 0) state.hours = newHours;
+        if (newStart) state.start = newStart;
+        if (newEnd) state.end = newEnd;
+        
+        saveToStorage();
+        closeModal('editSettingsModal');
+        toast('تم تحديث الإعدادات');
+        renderWeek(); // إعادة رسم الأسبوع لتطبيق التغييرات
+    }
+
+    function init() {
+        updateClock();
+        setInterval(updateClock, 1000);
+        loadFromStorage();
+        updateSalaryHint();
+        updateWorkHoursHint();
+    }
+
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        const clockEl = document.getElementById('clockTime');
+        if (clockEl) clockEl.textContent = `${hours}:${minutes}:${seconds}`;
+        
+        const dateEl = document.getElementById('clockDate');
+        if (dateEl) {
+            dateEl.textContent = now.toLocaleDateString('ar-SA', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+    }
+
+    function timeToMinutes(time) {
+        if (!time) return 0;
+        const parts = time.split(':');
+        return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+    }
+
+    function formatDuration(minutes) {
+        if (minutes <= 0) return '0 د';
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        if (hours > 0 && mins > 0) return `${hours}س ${mins}د`;
+        if (hours > 0) return `${hours} ساعة`;
+        return `${mins} دقيقة`;
+    }
+
+    function formatNumber(num) {
+        return Math.round(num).toLocaleString('ar-SY');
+    }
+
+    function createWeek() {
+        const today = new Date();
+        const currentDay = today.getDay();
+        const diffToSaturday = (currentDay + 1) % 7;
+        
+        const startDate = new Date(today);
+        startDate.setDate(today.getDate() - diffToSaturday);
+        startDate.setHours(0, 0, 0, 0);
+        
+        const week = {
+            start: startDate.toISOString(),
+            days: []
+        };
+        
+        for (let i = 0; i < 7; i++) {
+            const dayDate = new Date(startDate);
+            dayDate.setDate(startDate.getDate() + i);
+            
+            week.days.push({
+                name: DAYS[i],
+                date: dayDate.toISOString(),
+                in: '',
+                out: '',
+                late: 0,
+                extra: 0,
+                status: ''
+            });
+        }
+        
+        return week;
+    }
+
+    function calculateDayStats(day) {
+        if (!day.in || !day.out) {
+            day.status = '';
+            return;
+        }
+        
+        day.late = 0;
+        day.extra = 0;
+        
+        const startMinutes = timeToMinutes(state.start);
+        const endMinutes = timeToMinutes(state.end);
+        const inMinutes = timeToMinutes(day.in);
+        const outMinutes = timeToMinutes(day.out);
+        
+        if (inMinutes > startMinutes) {
+            day.late = inMinutes - startMinutes;
+        }
+        
+        if (outMinutes > endMinutes) {
+            day.extra = outMinutes - endMinutes;
+        }
+        
+        if (day.late > 0 && day.extra > 0) {
+            day.status = 'mix';
+        } else if (day.late > 0) {
+            day.status = 'late';
+        } else if (day.extra > 0) {
+            day.status = 'extra';
+        } else {
+            day.status = 'ok';
+        }
+    }
+
+    function renderWeek() {
+        if (!state.weeks.length) return;
+        
+        const week = state.weeks[state.week];
+        
+        document.getElementById('weekTitle').textContent = `الأسبوع ${state.week + 1}`;
+        
+        const startDate = new Date(week.start);
+        const endDate = new Date(startDate);
+        endDate.setDate(startDate.getDate() + 6);
+        
+        const dateOptions = { month: 'short', day: 'numeric' };
+        document.getElementById('weekDates').textContent = 
+            `${startDate.toLocaleDateString('ar-SA', dateOptions)} - ${endDate.toLocaleDateString('ar-SA', dateOptions)}`;
+        
+        const container = document.getElementById('daysContainer');
+        container.innerHTML = '';
+        
+        week.days.forEach((day, index) => {
+            const isWeekend = index === 0 || index === 6;
+            const dayDate = new Date(day.date);
+            
+            let statusTags = '';
+            if (day.status === 'late') {
+                statusTags = `<span class="tag tag-late">تأخر ${formatDuration(day.late)}</span>`;
+            } else if (day.status === 'extra') {
+                statusTags = `<span class="tag tag-extra">إضافي ${formatDuration(day.extra)}</span>`;
+            } else if (day.status === 'mix') {
+                statusTags = `
+                    <span class="tag tag-late">تأخر ${formatDuration(day.late)}</span>
+                    <span class="tag tag-extra">إضافي ${formatDuration(day.extra)}</span>
+                `;
+            } else if (day.status === 'ok') {
+                statusTags = `<span class="tag tag-ok">منتظم</span>`;
+            }
+            
+            const dayCard = document.createElement('div');
+            dayCard.className = `day-card${isWeekend ? ' weekend' : ''}`;
+            dayCard.innerHTML = `
+                <div class="day-top">
+                    <span class="day-name">${day.name}</span>
+                    <span class="day-date">${dayDate.toLocaleDateString('ar-SA', { day: 'numeric', month: 'short' })}</span>
+                </div>
+                <div class="inputs-grid">
+                    <div class="input-box">
+                        <label class="input-label-sm">الحضور</label>
+                        <input type="time" class="input-time" value="${day.in || ''}" onchange="updateDay(${index}, 'in', this.value)">
+                    </div>
+                    <div class="input-box">
+                        <label class="input-label-sm">المغادرة</label>
+                        <input type="time" class="input-time" value="${day.out || ''}" onchange="updateDay(${index}, 'out', this.value)">
+                    </div>
+                </div>
+                <div class="status-tags">${statusTags}</div>
+            `;
+            
+            container.appendChild(dayCard);
+        });
+        
+        updatePreviousWeekDisplay();
+    }
+
+    function updateDay(index, field, value) {
+        const week = state.weeks[state.week];
+        if (week && week.days[index]) {
+            week.days[index][field] = value;
+            calculateDayStats(week.days[index]);
+            renderWeek();
+            saveToStorage();
+        }
+    }
+
+    function prevWeek() {
+        if (state.week > 0) {
+            state.week--;
+            renderWeek();
+        } else {
+            toast('هذا أول أسبوع');
+        }
+    }
+
+    function nextWeek() {
+        if (state.week < state.weeks.length - 1) {
+            state.week++;
+        } else {
+            state.weeks.push(createWeek());
+            state.week = state.weeks.length - 1;
+        }
+        renderWeek();
+        saveToStorage();
+    }
+
+    function calculateWeeklySalary() {
+        const week = state.weeks[state.week];
+        if (!week) return null;
+        
+        let totalLate = 0;
+        let totalExtra = 0;
+        let workingDays = 0;
+        
+        week.days.forEach(day => {
+            if (day.in && day.out) {
+                totalLate += day.late || 0;
+                totalExtra += day.extra || 0;
+                workingDays++;
+            }
+        });
+        
+        const hourlyRate = state.salary / (state.hours * 30);
+        const minuteRate = hourlyRate / 60;
+        
+        const baseSalary = state.salary / 4;
+        const lateDeduction = totalLate * minuteRate;
+        const extraBonus = totalExtra * minuteRate * 1.5;
+        const netSalary = baseSalary - lateDeduction + extraBonus;
+        
+        return {
+            workingDays,
+            totalLate,
+            totalExtra,
+            baseSalary,
+            lateDeduction,
+            extraBonus,
+            netSalary
+        };
+    }
+
+    function openSalaryModal() {
+        const result = calculateWeeklySalary();
+        if (!result) {
+            toast('لا توجد بيانات كافية');
+            return;
+        }
+        
+        const body = document.getElementById('salaryBody');
+        body.innerHTML = `
+            <div class="summary-row">
+                <span class="summary-lbl">أيام العمل</span>
+                <span class="summary-val">${result.workingDays} يوم</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-lbl">الراتب الأساسي</span>
+                <span class="summary-val">${formatNumber(result.baseSalary)}${CUR}</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-lbl">خصم التأخير</span>
+                <span class="summary-val neg">- ${formatNumber(result.lateDeduction)}${CUR}</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-lbl">مكافأة الإضافي</span>
+                <span class="summary-val pos">+ ${formatNumber(result.extraBonus)}${CUR}</span>
+            </div>
+        `;
+        
+        document.getElementById('totalVal').textContent = `${formatNumber(result.netSalary)}${CUR}`;
+        
+        openModal('salaryModal');
+    }
+
+    function showSalaryVerification() {
+        closeModal('salaryModal');
+        
+        const result = calculateWeeklySalary();
+        if (!result) return;
+        
+        document.getElementById('expectedAmount').textContent = `${formatNumber(result.netSalary)}${CUR}`;
+        document.getElementById('receivedAmount').value = '';
+        document.getElementById('verificationResult').innerHTML = '';
+        
+        openModal('verifyModal');
+    }
+
+    function verifyPayment() {
+        const received = parseFloat(document.getElementById('receivedAmount').value);
+        const result = calculateWeeklySalary();
+        
+        if (!received || received <= 0) {
+            toast('أدخل المبلغ المستلم');
+            return;
+        }
+        
+        const expected = result.netSalary;
+        const difference = expected - received;
+        
+        let resultHtml = '';
+        
+        if (Math.abs(difference) < 0.01) {
+            resultHtml = `
+                <div class="verification-result success">
+                    <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="margin: 0 auto 10px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div style="font-size: 16px; font-weight: 700; margin-bottom: 5px;">المبلغ صحيح ✓</div>
+                    <div class="verification-amount">${formatNumber(received)}${CUR}</div>
+                </div>
+            `;
+        } else {
+            const isPositive = difference > 0;
+            const status = isPositive ? 'باقي للمحاسب' : 'زيادة لك';
+            
+            resultHtml = `
+                <div class="verification-result ${isPositive ? 'error' : 'success'}">
+                    <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="margin: 0 auto 10px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/>
+                    </svg>
+                    <div style="font-size: 16px; font-weight: 700; margin-bottom: 5px;">المبلغ غير صحيح</div>
+                    <div class="verification-amount">${formatNumber(Math.abs(difference))}${CUR}</div>
+                    <div style="font-size: 16px; font-weight: 700; margin: 8px 0;">${status}</div>
+                    <div style="font-size: 13px; opacity: 0.8;">المستحق: ${formatNumber(expected)}${CUR}</div>
+                </div>
+            `;
+        }
+        
+        document.getElementById('verificationResult').innerHTML = resultHtml;
+    }
+
+    function updatePreviousWeekDisplay() {
+        if (state.week > 0) {
+            const prevWeek = state.weeks[state.week - 1];
+            if (prevWeek) {
+                let totalLate = 0;
+                let totalExtra = 0;
+                
+                prevWeek.days.forEach(day => {
+                    if (day.in && day.out) {
+                        totalLate += day.late || 0;
+                        totalExtra += day.extra || 0;
+                    }
+                });
+                
+                const hourlyRate = state.salary / (state.hours * 30);
+                const minuteRate = hourlyRate / 60;
+                const baseSalary = state.salary / 4;
+                const netSalary = baseSalary - (totalLate * minuteRate) + (totalExtra * minuteRate * 1.5);
+                
+                document.getElementById('prevWeekTotal').textContent = `${formatNumber(netSalary)}${CUR}`;
+            }
+        } else {
+            document.getElementById('prevWeekTotal').textContent = `0${CUR}`;
+        }
+    }
+
+    function showPrevWeekDetails() {
+        if (state.week === 0) {
+            toast('لا يوجد أسبوع سابق');
+            return;
+        }
+        
+        const prevWeek = state.weeks[state.week - 1];
+        if (!prevWeek) return;
+        
+        let detailsHtml = '<div style="margin-bottom: 16px;">';
+        let totalLate = 0;
+        let totalExtra = 0;
+        
+        prevWeek.days.forEach(day => {
+            if (day.in && day.out) {
+                totalLate += day.late || 0;
+                totalExtra += day.extra || 0;
+                
+                const lateText = day.late > 0 ? `<span style="color: var(--danger);"> (تأخر ${formatDuration(day.late)})</span>` : '';
+                const extraText = day.extra > 0 ? `<span style="color: var(--success);"> (إضافي ${formatDuration(day.extra)})</span>` : '';
+                
+                detailsHtml += `
+                    <div class="summary-row">
+                        <span class="summary-lbl">${day.name}</span>
+                        <span class="summary-val">
+                            ${day.in} - ${day.out}
+                            ${lateText} ${extraText}
+                        </span>
+                    </div>
+                `;
+            }
+        });
+        
+        const hourlyRate = state.salary / (state.hours * 30);
+        const minuteRate = hourlyRate / 60;
+        const baseSalary = state.salary / 4;
+        const netSalary = baseSalary - (totalLate * minuteRate) + (totalExtra * minuteRate * 1.5);
+        
+        detailsHtml += `
+            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
+                <div class="summary-row">
+                    <span class="summary-lbl">إجمالي الراتب</span>
+                    <span class="summary-val" style="color: var(--accent); font-size: 18px;">${formatNumber(netSalary)}${CUR}</span>
+                </div>
+            </div>
+        `;
+        detailsHtml += '</div>';
+        
+        detailsHtml += `
+            <div style="margin-top: 20px; padding: 16px; background: var(--bg-card); border-radius: 16px;">
+                <div class="field-group">
+                    <label class="field-label">المبلغ المستلم (الأسبوع الماضي)</label>
+                    <input type="number" class="field-input" id="prevWeekReceived" value="${state.previousWeekPayment || ''}" placeholder="أدخل المبلغ المستلم">
+                </div>
+                <div id="prevWeekVerification"></div>
+            </div>
+        `;
+        
+        document.getElementById('prevWeekDetails').innerHTML = detailsHtml;
+        openModal('prevWeekModal');
+    }
+
+    function checkPrevWeekPayment() {
+        const received = parseFloat(document.getElementById('prevWeekReceived').value);
+        
+        if (!received || received <= 0) {
+            toast('أدخل المبلغ المستلم');
+            return;
+        }
+        
+        const prevWeek = state.weeks[state.week - 1];
+        if (!prevWeek) return;
+        
+        let totalLate = 0;
+        let totalExtra = 0;
+        
+        prevWeek.days.forEach(day => {
+            if (day.in && day.out) {
+                totalLate += day.late || 0;
+                totalExtra += day.extra || 0;
+            }
+        });
+        
+        const hourlyRate = state.salary / (state.hours * 30);
+        const minuteRate = hourlyRate / 60;
+        const baseSalary = state.salary / 4;
+        const expected = baseSalary - (totalLate * minuteRate) + (totalExtra * minuteRate * 1.5);
+        
+        const difference = expected - received;
+        state.previousWeekPayment = received;
+        saveToStorage();
+        
+        let resultHtml = '';
+        
+        if (Math.abs(difference) < 0.01) {
+            resultHtml = `
+                <div style="background: var(--success-soft); color: var(--success); padding: 16px; border-radius: 12px; text-align: center; margin-top: 16px;">
+                    <div style="font-size: 18px; font-weight: 700;">المبلغ صحيح ✓</div>
+                    <div style="font-size: 14px; margin-top: 5px;">${formatNumber(received)}${CUR}</div>
+                </div>
+            `;
+        } else {
+            const status = difference > 0 ? 'باقي للمحاسب' : 'زيادة لك';
+            const color = difference > 0 ? 'var(--danger)' : 'var(--success)';
+            const bgColor = difference > 0 ? 'var(--danger-soft)' : 'var(--success-soft)';
+            resultHtml = `
+                <div style="background: ${bgColor}; color: ${color}; padding: 16px; border-radius: 12px; margin-top: 16px; text-align: center;">
+                    <div style="font-size: 14px; margin-bottom: 5px;">المبلغ غير صحيح</div>
+                    <div style="font-size: 28px; font-weight: 900;">${formatNumber(Math.abs(difference))}${CUR}</div>
+                    <div style="font-size: 16px; font-weight: 700; margin: 8px 0;">${status}</div>
+                    <div style="font-size: 12px; opacity: 0.8;">المستحق: ${formatNumber(expected)}${CUR}</div>
+                </div>
+            `;
+        }
+        
+        document.getElementById('prevWeekVerification').innerHTML = resultHtml;
+    }
+
+    function startApp() {
+        const salary = parseFloat(document.getElementById('salaryInput').value);
+        const hours = parseInt(document.getElementById('workHoursInput').value);
+        const start = document.getElementById('startTimeInput').value;
+        const end = document.getElementById('endTimeInput').value;
+        
+        if (!salary || salary <= 0) {
+            toast('أدخل الراتب الشهري');
+            return;
+        }
+        
+        if (!hours || hours <= 0) {
+            toast('أدخل ساعات العمل اليومية');
+            return;
+        }
+        
+        if (!start || !end) {
+            toast('أدخل أوقات الدوام');
+            return;
+        }
+        
+        state.salary = salary;
+        state.hours = hours;
+        state.start = start;
+        state.end = end;
+        
+        if (state.weeks.length === 0) {
+            state.weeks = [createWeek()];
+            state.week = 0;
+        }
+        
+        if (!state.activated) {
+            saveToStorage();
+            openModal('activationModal');
+            return;
+        }
+        
+        showWeeklyScreen();
+        renderWeek();
+        saveToStorage();
+    }
+
+    function showWeeklyScreen() {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+        document.getElementById('weeklyScreen').classList.add('active');
+    }
+
+    function saveData() {
+        saveToStorage();
+        toast('تم حفظ البيانات بنجاح');
+    }
+
+    function saveToStorage() {
+        localStorage.setItem('hozori_app', JSON.stringify(state));
+    }
+
+    function loadFromStorage() {
+        const saved = localStorage.getItem('hozori_app');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                Object.assign(state, parsed);
+                
+                if (state.activated && state.weeks.length > 0) {
+                    showWeeklyScreen();
+                    renderWeek();
+                }
+            } catch (e) {
+                console.error('خطأ في تحميل البيانات');
+            }
+        }
+    }
+
+    function activate() {
+        const code = document.getElementById('codeInput').value.trim();
+        const errorEl = document.getElementById('actErr');
+        
+        if (code === CODE) {
+            state.activated = true;
+            saveToStorage();
+            closeModal('activationModal');
+            showWeeklyScreen();
+            renderWeek();
+            toast('تم التفعيل بنجاح');
+        } else {
+            errorEl.textContent = 'كود التفعيل غير صحيح';
+            document.getElementById('codeInput').value = '';
+        }
+    }
+
+    function exportData() {
+        document.getElementById('backupArea').value = JSON.stringify(state);
+        toast('تم تصدير البيانات');
+    }
+
+    function importData() {
+        const data = document.getElementById('backupArea').value.trim();
+        if (!data) {
+            toast('أدخل بيانات النسخة الاحتياطية');
+            return;
+        }
+        
+        try {
+            const parsed = JSON.parse(data);
+            if (parsed.salary && parsed.weeks) {
+                Object.assign(state, parsed);
+                saveToStorage();
+                toast('تم استيراد البيانات بنجاح');
+                closeModal('backupModal');
+                
+                if (state.activated) {
+                    showWeeklyScreen();
+                    renderWeek();
+                }
+            } else {
+                toast('بيانات غير صالحة');
+            }
+        } catch (e) {
+            toast('خطأ في تنسيق البيانات');
+        }
+    }
+
+    function openBackupModal() {
+        document.getElementById('backupArea').value = '';
+        openModal('backupModal');
+    }
+
+    function openModal(id) {
+        document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+    }
+
+    function toast(message) {
+        const toastEl = document.getElementById('toast');
+        toastEl.textContent = message;
+        toastEl.classList.add('show');
+        setTimeout(() => {
+            toastEl.classList.remove('show');
+        }, 2000);
+    }
+
+    document.querySelectorAll('.modal-layer').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
