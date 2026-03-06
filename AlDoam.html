@@ -4,27 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام إدارة الرواتب وساعات العمل</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #6200ea;
-            --primary-light: #b388ff;
-            --secondary-color: #00bfa5;
-            --accent-color: #ff5252;
-            --bg-color: #f3f4f6;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --text-secondary: #666666;
+            /* Dark Theme Colors */
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --input-bg: #2d2d2d;
+            --primary-color: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary-color: #10b981;
+            --secondary-light: #34d399;
+            --secondary-dark: #059669;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-color: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --border-color: #374151;
             --border-radius: 16px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', 'Cairo', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -39,11 +46,11 @@
 
         /* Clock Widget */
         .clock-widget {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
             color: white;
-            padding: 20px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
+            padding: 25px 20px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
             text-align: center;
             box-shadow: var(--shadow);
             position: sticky;
@@ -52,111 +59,138 @@
         }
 
         .clock-time {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 700;
             letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .clock-date {
-            font-size: 1rem;
-            opacity: 0.9;
-            margin-top: 5px;
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-top: 8px;
+            font-weight: 500;
         }
 
         /* Container */
         .container {
-            padding: 20px;
+            padding: 25px;
             max-width: 720px;
             margin: 0 auto;
             width: 100%;
             flex: 1;
-            padding-bottom: 80px; /* Space for footer */
+            padding-bottom: 80px;
         }
 
         /* Cards */
         .card {
-            background: var(--card-bg);
+            background-color: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
             box-shadow: var(--shadow);
-            transition: transform 0.2s;
-            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         }
 
         .card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
         }
 
         .card-header i {
-            color: var(--primary-color);
-            margin-left: 10px;
-            font-size: 24px;
+            color: var(--primary-light);
+            margin-left: 12px;
+            font-size: 28px;
+            background: rgba(99, 102, 241, 0.15);
+            padding: 10px;
+            border-radius: 12px;
         }
 
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--primary-light);
         }
 
         /* Inputs & Labels */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             position: relative;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: var(--text-secondary);
+            font-size: 0.95rem;
         }
 
         input, select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
             font-size: 1rem;
-            transition: border-color 0.3s;
-            background: #fafafa;
+            transition: all 0.3s;
+            background-color: var(--input-bg);
+            color: var(--text-color);
         }
 
         input:focus {
             outline: none;
             border-color: var(--primary-color);
-            background: #fff;
+            background-color: #374151;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
 
         /* Tooltip */
         .tooltip {
-            font-size: 0.85rem;
-            color: var(--secondary-color);
-            margin-top: 5px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
             font-weight: 600;
             display: block;
-            min-height: 20px;
+            min-height: 24px;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border-right: 3px solid var(--secondary-color);
         }
 
         .warning-text {
-            color: var(--accent-color);
+            color: var(--danger-color);
+            background: rgba(239, 68, 68, 0.1);
+            border-right-color: var(--danger-color);
         }
 
         /* Buttons */
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
@@ -164,31 +198,50 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: background 0.3s, transform 0.1s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
         .btn:active {
             transform: scale(0.98);
         }
 
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn:hover::before {
+            transform: translateX(100%);
+        }
+
         .btn-primary {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
             color: white;
         }
 
         .btn-secondary {
-            background: var(--secondary-color);
+            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary-color));
             color: white;
         }
 
         .btn-outline {
             background: transparent;
             border: 2px solid var(--primary-color);
-            color: var(--primary-color);
+            color: var(--primary-light);
         }
 
         .btn-danger {
-            background: var(--accent-color);
+            background: linear-gradient(135deg, #b91c1c, #ef4444);
             color: white;
         }
 
@@ -196,7 +249,7 @@
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 20px;
         }
 
         /* Days List */
@@ -204,8 +257,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px dashed #eee;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .day-row:last-child {
@@ -214,8 +267,13 @@
 
         .day-name {
             font-weight: 700;
-            width: 60px;
-            color: var(--primary-color);
+            width: 65px;
+            color: var(--primary-light);
+            background: rgba(99, 102, 241, 0.1);
+            padding: 5px 10px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
         }
 
         .day-inputs {
@@ -225,9 +283,31 @@
         }
 
         .day-inputs input {
-            padding: 8px;
+            padding: 10px;
             font-size: 0.9rem;
         }
+
+        /* Status Indicators */
+        .status-indicator {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .status-ok { background: rgba(16, 185, 129, 0.2); color: var(--secondary-light); }
+        .status-late { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .status-ot { background: rgba(99, 102, 241, 0.2); color: var(--primary-light); }
 
         /* Welcome Screen */
         #welcome-screen {
@@ -236,7 +316,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #6200ea, #3700b3);
+            background: linear-gradient(135deg, var(--primary-dark), #1e1b4b);
             color: white;
             display: flex;
             flex-direction: column;
@@ -248,41 +328,52 @@
         }
 
         .welcome-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 90px;
+            margin-bottom: 25px;
             animation: bounce 2s infinite;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 50%;
         }
 
         .welcome-title {
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
         }
 
         .welcome-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 40px;
-            opacity: 0.9;
-            max-width: 400px;
+            opacity: 0.95;
+            max-width: 450px;
+            line-height: 1.6;
         }
 
         .trial-badge {
             background: rgba(255,255,255,0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+            padding: 8px 20px;
+            border-radius: 30px;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
         }
 
         /* Designer Footer */
         .designer-info {
             position: fixed;
-            bottom: 10px;
-            right: 15px;
-            font-size: 0.7rem;
-            color: rgba(0,0,0,0.4);
+            bottom: 15px;
+            right: 20px;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
             z-index: 50;
             text-align: right;
             pointer-events: none;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 12px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
         }
 
         /* Modal */
@@ -293,11 +384,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             z-index: 2000;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            backdrop-filter: blur(5px);
         }
 
         .modal.active {
@@ -305,25 +397,30 @@
         }
 
         .modal-content {
-            background: white;
-            padding: 25px;
-            border-radius: var(--border-radius);
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 25px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
             animation: slideUp 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
         }
 
-        /* Status Indicators */
+        /* Status Tag */
         .status-tag {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
             font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
-        .status-ok { background: #e8f5e9; color: #2e7d32; }
-        .status-late { background: #ffebee; color: #c62828; }
-        .status-ot { background: #e3f2fd; color: #1565c0; }
+        .status-ok { background: rgba(16, 185, 129, 0.2); color: var(--secondary-light); }
+        .status-late { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+        .status-ot { background: rgba(99, 102, 241, 0.2); color: var(--primary-light); }
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
@@ -332,7 +429,7 @@
         }
 
         @keyframes slideUp {
-            from {transform: translateY(20px); opacity: 0;}
+            from {transform: translateY(30px); opacity: 0;}
             to {transform: translateY(0); opacity: 1;}
         }
         
@@ -344,7 +441,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: white;
+            background: var(--bg-color);
             z-index: 1500;
             padding: 20px;
             overflow-y: auto;
@@ -357,24 +454,71 @@
         /* Notification Toast */
         .toast {
             position: fixed;
-            bottom: 80px;
+            bottom: 90px;
             left: 50%;
             transform: translateX(-50%);
-            background: #333;
-            color: white;
-            padding: 12px 24px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 15px 30px;
             border-radius: 30px;
             z-index: 3000;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s, transform 0.3s;
             pointer-events: none;
             width: 90%;
             text-align: center;
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
         }
         .toast.show {
             opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
+        /* Activation Banner */
+        #activation-banner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            text-align: center;
+            padding: 12px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Daily Status Result */
+        #daily-status-result {
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--input-bg);
+            border-radius: 15px;
+            border: 1px dashed var(--border-color);
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .notification-late {
+            background-color: var(--danger-color);
+        }
+
+        .notification-ot {
+            background-color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
@@ -388,8 +532,8 @@
             نظام متكامل لإدارة الرواتب وساعات العمل.
             <br>يُرجى التواصل مع المطور للتفعيل بعد انتهاء الفترة التجريبية.
         </p>
-        <p style="margin-bottom: 20px; font-size: 0.9rem;">المطور: يمان محمد الحسين</p>
-        <button class="btn btn-secondary" style="width: 200px;" onclick="enterApp()">
+        <p style="margin-bottom: 25px; font-size: 1rem; opacity: 0.9;">المطور: يمان محمد الحسين</p>
+        <button class="btn btn-secondary" style="width: 220px;" onclick="enterApp()">
             دخول البرنامج
             <i class="material-icons">arrow_back</i>
         </button>
@@ -407,9 +551,9 @@
         <div class="container">
             
             <!-- Activation Status Bar -->
-            <div id="activation-banner" class="card" style="background: #fff3e0; border: 1px solid #ffe0b2; text-align: center; padding: 10px;">
-                <span style="color: #e65100; font-weight: bold;">⚠ الوضع التجريبي</span>
-                <button onclick="showActivationModal()" style="background:none; border:none; color: #e65100; text-decoration: underline; cursor: pointer; margin-right: 5px;">اضغط هنا للتفعيل</button>
+            <div id="activation-banner">
+                <span style="color: var(--accent-color); font-weight: bold;">⚠ الوضع التجريبي</span>
+                <button onclick="showActivationModal()" style="background:none; border:none; color: var(--accent-color); text-decoration: underline; cursor: pointer; margin-right: 5px; font-weight: 600;">اضغط هنا للتفعيل</button>
             </div>
 
             <!-- Salary Section -->
@@ -426,16 +570,16 @@
                 </div>
 
                 <div class="grid-2">
-                    <div class="card" style="margin:0; text-align: center; padding: 15px;">
-                        <div style="font-size: 0.8rem; color: #666;">الراتب الأسبوعي</div>
-                        <div style="font-size: 1.2rem; font-weight: bold; color: var(--secondary-color);" id="weekly-salary">0</div>
+                    <div class="card" style="margin:0; text-align: center; padding: 20px; background: rgba(16, 185, 129, 0.1);">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 5px;">الراتب الأسبوعي</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-light);" id="weekly-salary">0</div>
                     </div>
-                    <div class="card" style="margin:0; text-align: center; padding: 15px;">
-                        <div style="font-size: 0.8rem; color: #666;">معدل اليومي</div>
-                        <div style="font-size: 1.2rem; font-weight: bold; color: var(--primary-color);" id="daily-salary">0</div>
+                    <div class="card" style="margin:0; text-align: center; padding: 20px; background: rgba(99, 102, 241, 0.1);">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 5px;">معدل اليومي</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-light);" id="daily-salary">0</div>
                     </div>
                 </div>
-                <button class="btn btn-outline" style="margin-top: 15px;" onclick="editSalary()">
+                <button class="btn btn-outline" style="margin-top: 20px;" onclick="editSalary()">
                     <i class="material-icons">edit</i> تعديل الراتب الأساسي
                 </button>
             </div>
@@ -456,8 +600,9 @@
                         <input type="time" id="leave-time" value="15:00" onchange="calculateDailyStatus()">
                     </div>
                 </div>
-                <div class="tooltip" style="text-align: center; font-size: 0.8rem;">
-                    * التأخير: بعد وقت البدء | الإضافي: بعد وقت المغادرة
+                <div class="tooltip" style="text-align: center; font-size: 0.85rem; background: rgba(99, 102, 241, 0.1); border-right: none; border-radius: 10px;">
+                    <i class="material-icons" style="font-size: 16px; vertical-align: middle; margin-left: 5px;">info</i>
+                    التأخير: بعد وقت البدء | الإضافي: بعد وقت المغادرة
                 </div>
             </div>
 
@@ -477,10 +622,10 @@
                         <input type="time" id="actual-end" onchange="calculateDailyStatus()">
                     </div>
                 </div>
-                <div id="daily-status-result" style="margin-top: 10px; padding: 10px; background: #f9f9f9; border-radius: 8px; display: none;">
+                <div id="daily-status-result" style="display: none;">
                     <!-- Status injected here -->
                 </div>
-                <button class="btn btn-primary" style="margin-top: 15px;" onclick="saveDailyRecord()">
+                <button class="btn btn-primary" style="margin-top: 20px;" onclick="saveDailyRecord()">
                     <i class="material-icons">save</i> حفظ اليوم
                 </button>
             </div>
@@ -494,7 +639,7 @@
                 <div id="weekly-records">
                     <!-- Days will be generated by JS -->
                 </div>
-                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
                     <button class="btn btn-secondary" onclick="showLastWeek()">
                         <i class="material-icons">history</i> الأسبوع الماضي
                     </button>
@@ -525,7 +670,7 @@
                     <i class="material-icons">settings</i>
                     <div class="card-title">إعدادات وبيانات</div>
                 </div>
-                <div style="display: grid; gap: 10px;">
+                <div style="display: grid; gap: 12px;">
                     <button class="btn btn-outline" onclick="createBackup()">
                         <i class="material-icons">cloud_upload</i> إنشاء نسخة احتياطية
                     </button>
@@ -538,33 +683,33 @@
                 </div>
             </div>
             
-            <div style="height: 50px;"></div> <!-- Spacer -->
+            <div style="height: 60px;"></div> <!-- Spacer -->
         </div>
     </div>
 
     <!-- History Overlay -->
     <div id="history-overlay">
-        <div class="card-header" style="justify-content: space-between; border: none;">
+        <div class="card-header" style="justify-content: space-between; border: none; padding: 10px 0;">
             <div class="card-title">سجل الأسبوع الماضي</div>
-            <button onclick="closeLastWeek()" style="background:none; border:none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            <button onclick="closeLastWeek()" style="background:none; border:none; font-size: 1.8rem; cursor: pointer; color: var(--text-color);">&times;</button>
         </div>
         <div id="last-week-content">
-            <p style="text-align: center; color: #666; margin-top: 50px;">لا توجد بيانات للأسبوع الماضي</p>
+            <p style="text-align: center; color: var(--text-secondary); margin-top: 50px;">لا توجد بيانات للأسبوع الماضي</p>
         </div>
     </div>
 
     <!-- Activation Modal -->
     <div id="activation-modal" class="modal">
         <div class="modal-content">
-            <i class="material-icons" style="font-size: 40px; color: var(--primary-color); margin-bottom: 10px;">vpn_key</i>
-            <h3 style="margin-bottom: 15px;">تفعيل النسخة الكاملة</h3>
-            <p style="margin-bottom: 20px; color: #666; font-size: 0.9rem;">
+            <i class="material-icons" style="font-size: 50px; color: var(--primary-light); margin-bottom: 15px;">vpn_key</i>
+            <h3 style="margin-bottom: 20px; font-size: 1.5rem; color: var(--text-color);">تفعيل النسخة الكاملة</h3>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
                 للاستفادة من كافة الميزات، يرجى إدخال كود التفعيل.
                 <br>للحصول على الكود تواصل مع: <strong>يمان محمد</strong>
             </p>
             <input type="number" id="activation-code-input" placeholder="أدخل كود التفعيل" style="margin-bottom: 20px;">
             <button class="btn btn-primary" onclick="activateApp()">تفعيل</button>
-            <button class="btn btn-outline" style="margin-top: 10px; border: none;" onclick="closeActivationModal()">إلغاء</button>
+            <button class="btn btn-outline" style="margin-top: 15px; border: none;" onclick="closeActivationModal()">إلغاء</button>
         </div>
     </div>
 
@@ -584,7 +729,7 @@
             salary: 0,
             startTime: "08:00",
             leaveTime: "15:00",
-            weeklyRecords: {}, // { "Sunday": {start: "", end: "", status: ""} }
+            weeklyRecords: {}, // { "Sunday": {start: "", end: "", status: "", late: 0, ot: 0} }
             lastWeekData: null,
             isActivated: false,
             loans: []
@@ -598,9 +743,6 @@
             startClock();
             loadState();
             renderWeeklyGrid();
-            
-            // Check if visited before to skip welcome screen (optional, but kept welcome as per request emphasis)
-            // For now, we keep the welcome screen logic as requested: "Start page welcome"
         };
 
         function enterApp() {
@@ -636,33 +778,94 @@
             const weekly = state.salary / 4;
             document.getElementById('weekly-salary').innerText = formatMoney(weekly);
             
-            // Daily (Assuming 6 working days/week for simple math or 30 days/month)
-            // User said "Divide salary into 4 weeks", let's stick to that.
-            // If user wants daily based on working days, usually 26 days/month. 
-            // Let's use Salary / 30 for simplicity unless specified.
+            // Daily
             document.getElementById('daily-salary').innerText = formatMoney(state.salary / 30);
             
-            calculateLoanPlan(); // Update loan plan if salary changes
+            calculateLoanPlan();
             saveState();
         }
 
         function numberToArabicWords(n) {
-            // Simplified function for demo, handles basic numbers
+            // دالة محسنة لتحويل الأرقام إلى كلمات
+            if (isNaN(n) || n === 0) return "صفر";
+            
+            n = Math.floor(n); // تحويل إلى عدد صحيح
+            
+            const units = ["", "واحد", "اثنان", "ثلاثة", "أربعة", "خمسة", "ستة", "سبعة", "ثمانية", "تسعة"];
+            const tens = ["", "عشرة", "عشرون", "ثلاثون", "أربعون", "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"];
+            const hundreds = ["", "مائة", "مئتان", "ثلاثمائة", "أربعمائة", "خمسمائة", "ستمائة", "سبعمائة", "ثمانمائة", "تسعمائة"];
+            const thousands = ["", "ألف", "ألفان", "آلاف", "آلاف"];
+            const millions = ["", "مليون", "مليونان", "ملايين", "ملايين"];
+            const billions = ["", "مليار", "ملياران", "مليارات", "مليارات"];
+            
             if (n === 1000) return "ألف";
             if (n === 1000000) return "مليون";
             if (n === 1500000) return "مليون ونصف المليون";
+            if (n === 2000000) return "مليونان";
+            if (n === 1000000000) return "مليار";
             
-            // Basic generic fallback for the example provided 1000
-            if (n === 1000) return "ألف";
+            // للتحويل الدقيق، سنستخدم خوارزمية تفكيك الرقم
+            // هذه نسخة مبسطة تعالج الأرقام الشائعة
             
-            // For a robust app, a full library is needed. Here is a mock implementation
-            // that covers the user's example (1000) and some basics.
-            const units = ["", "ألف", "مليون", "مليار"];
-            // Just returning the number if complex to keep code small, 
-            // but fulfilling the "1000 -> Alf" requirement explicitly
-            if(n == 1000) return "ألف";
+            // معالجة الملايين
+            if (n >= 1000000) {
+                const millionsPart = Math.floor(n / 1000000);
+                const remainder = n % 1000000;
+                let millionWord = "";
+                
+                if (millionsPart === 1) millionWord = "مليون";
+                else if (millionsPart === 2) millionWord = "مليونان";
+                else if (millionsPart <= 10) millionWord = numberToArabicWords(millionsPart) + " ملايين";
+                else millionWord = numberToArabicWords(millionsPart) + " مليون";
+                
+                if (remainder === 0) return millionWord;
+                else return millionWord + " و" + numberToArabicWords(remainder);
+            }
             
-            return n.toLocaleString('ar-EG'); 
+            // معالجة الآلاف
+            if (n >= 1000) {
+                const thousandsPart = Math.floor(n / 1000);
+                const remainder = n % 1000;
+                let thousandWord = "";
+                
+                if (thousandsPart === 1) thousandWord = "ألف";
+                else if (thousandsPart === 2) thousandWord = "ألفان";
+                else if (thousandsPart <= 10) thousandWord = numberToArabicWords(thousandsPart) + " آلاف";
+                else thousandWord = numberToArabicWords(thousandsPart) + " ألف";
+                
+                if (remainder === 0) return thousandWord;
+                else return thousandWord + " و" + numberToArabicWords(remainder);
+            }
+            
+            // معالئة المئات
+            if (n >= 100) {
+                const hundredsPart = Math.floor(n / 100);
+                const remainder = n % 100;
+                
+                if (remainder === 0) return hundreds[hundredsPart];
+                else return hundreds[hundredsPart] + " و" + numberToArabicWords(remainder);
+            }
+            
+            // معالجة العشرات
+            if (n >= 20) {
+                const tensPart = Math.floor(n / 10);
+                const unitsPart = n % 10;
+                
+                if (unitsPart === 0) return tens[tensPart];
+                else return units[unitsPart] + " و" + tens[tensPart];
+            }
+            
+            // معالجة الأرقام من 11 إلى 19
+            if (n >= 11) {
+                const specialNumbers = [
+                    "أحد عشر", "اثنا عشر", "ثلاثة عشر", "أربعة عشر", "خمسة عشر", 
+                    "ستة عشر", "سبعة عشر", "ثمانية عشر", "تسعة عشر"
+                ];
+                return specialNumbers[n - 11];
+            }
+            
+            // معالجة الأرقام من 1 إلى 10
+            return units[n];
         }
 
         function formatMoney(amount) {
@@ -691,7 +894,7 @@
             resultDiv.style.display = 'block';
             
             if (!actStart || !actEnd) {
-                resultDiv.innerHTML = "<span style='color:#666'>أكمل أوقات الحضور والمغادرة</span>";
+                resultDiv.innerHTML = "<span style='color:var(--text-secondary); display:block; text-align:center; padding:10px;'>أكمل أوقات الحضور والمغادرة</span>";
                 return;
             }
 
@@ -703,17 +906,17 @@
             if (actStart > startT) {
                 const diff = timeDiffMinutes(startT, actStart);
                 minutesLate = diff;
-                msg += `<div class="status-tag status-late" style="display:inline-block">تأخير: ${diff} دقيقة</div> `;
+                msg += `<div class="status-tag status-late" style="display:inline-flex; margin-left:5px;"><i class="material-icons" style="font-size:16px;">schedule</i> تأخير: ${diff} دقيقة</div> `;
             }
 
             // OT Calculation
             if (actEnd > leaveT) {
                 const diff = timeDiffMinutes(leaveT, actEnd);
                 minutesOT = diff;
-                msg += `<div class="status-tag status-ot" style="display:inline-block">إضافي: ${diff} دقيقة</div>`;
+                msg += `<div class="status-tag status-ot" style="display:inline-flex;"><i class="material-icons" style="font-size:16px;">access_time</i> إضافي: ${diff} دقيقة</div>`;
             }
 
-            if (msg === "") msg = `<div class="status-tag status-ok">دوام منتظم</div>`;
+            if (msg === "") msg = `<div class="status-tag status-ok" style="display:inline-flex;"><i class="material-icons" style="font-size:16px;">check_circle</i> دوام منتظم</div>`;
             
             resultDiv.innerHTML = msg;
             return { minutesLate, minutesOT };
@@ -731,34 +934,82 @@
             container.innerHTML = '';
             
             days.forEach(day => {
-                const rec = state.weeklyRecords[day] || { start: '', end: '', status: '' };
+                const rec = state.weeklyRecords[day] || { start: '', end: '', status: '', late: 0, ot: 0 };
                 
                 const row = document.createElement('div');
                 row.className = 'day-row';
+                
+                // Create status indicators
+                let statusIndicators = '<div class="status-indicator">';
+                if (rec.late > 0) {
+                    statusIndicators += `<div class="status-badge status-late"><i class="material-icons" style="font-size:12px;">schedule</i> تأخير: ${rec.late} د</div>`;
+                }
+                if (rec.ot > 0) {
+                    statusIndicators += `<div class="status-badge status-ot"><i class="material-icons" style="font-size:12px;">access_time</i> إضافي: ${rec.ot} د</div>`;
+                }
+                if (rec.late === 0 && rec.ot === 0 && rec.status) {
+                    statusIndicators += `<div class="status-badge status-ok"><i class="material-icons" style="font-size:12px;">check_circle</i> منتظم</div>`;
+                }
+                statusIndicators += '</div>';
+                
                 row.innerHTML = `
-                    <div class="day-name">${day}</div>
+                    <div class="day-name">
+                        ${day}
+                        ${rec.late > 0 ? `<span class="notification-badge notification-late">${rec.late}</span>` : ''}
+                        ${rec.ot > 0 ? `<span class="notification-badge notification-ot">${rec.ot}</span>` : ''}
+                    </div>
                     <div class="day-inputs">
                         <input type="time" value="${rec.start}" onchange="updateWeekDay('${day}', 'start', this.value)">
                         <input type="time" value="${rec.end}" onchange="updateWeekDay('${day}', 'end', this.value)">
-                        <div style="font-size: 0.8rem; color: #666; display: flex; align-items: center;">${rec.status}</div>
                     </div>
+                    ${statusIndicators}
                 `;
                 container.appendChild(row);
             });
         }
 
         function updateWeekDay(day, field, value) {
-            if (!state.weeklyRecords[day]) state.weeklyRecords[day] = {};
+            if (!state.weeklyRecords[day]) state.weeklyRecords[day] = { start: '', end: '', status: '', late: 0, ot: 0 };
             state.weeklyRecords[day][field] = value;
             
             // Recalculate status for that day if both times exist
             const rec = state.weeklyRecords[day];
             if (rec.start && rec.end) {
-                 // Simple re-use of logic
-                 // Ideally we should abstract calcDailyStatus to accept times, but for now let's mock the status text
-                 // Just storing values is enough for this demo, visual status updates on "Save"
+                // Calculate late and overtime
+                const startT = state.startTime || "08:00";
+                const leaveT = state.leaveTime || "15:00";
+                
+                let late = 0;
+                let ot = 0;
+                
+                if (rec.start > startT) {
+                    late = timeDiffMinutes(startT, rec.start);
+                }
+                
+                if (rec.end > leaveT) {
+                    ot = timeDiffMinutes(leaveT, rec.end);
+                }
+                
+                rec.late = late;
+                rec.ot = ot;
+                
+                // Create status text
+                let statusText = "";
+                if (late > 0 && ot > 0) {
+                    statusText = `تأخير: ${late} دقيقة | إضافي: ${ot} دقيقة`;
+                } else if (late > 0) {
+                    statusText = `تأخير: ${late} دقيقة`;
+                } else if (ot > 0) {
+                    statusText = `إضافي: ${ot} دقيقة`;
+                } else {
+                    statusText = "دوام منتظم";
+                }
+                
+                rec.status = statusText;
             }
+            
             saveState();
+            renderWeeklyGrid();
         }
 
         function saveDailyRecord() {
@@ -771,13 +1022,16 @@
                 return;
             }
 
-            // Get status text
+            // Calculate status
+            const statusResult = calculateDailyStatus();
             const statusEl = document.getElementById('daily-status-result').innerText;
             
             state.weeklyRecords[todayName] = {
                 start: actStart,
                 end: actEnd,
-                status: statusEl
+                status: statusEl,
+                late: statusResult ? statusResult.minutesLate : 0,
+                ot: statusResult ? statusResult.minutesOT : 0
             };
             
             saveState();
@@ -792,18 +1046,34 @@
             overlay.classList.add('active');
             
             if (!state.lastWeekData) {
-                content.innerHTML = "<p style='text-align: center; color: #666; margin-top: 50px;'>لا توجد بيانات محفوظة للأسبوع الماضي</p>";
+                content.innerHTML = "<p style='text-align: center; color: var(--text-secondary); margin-top: 50px;'>لا توجد بيانات محفوظة للأسبوع الماضي</p>";
                 return;
             }
             
             let html = "<div class='grid-2'>";
             for (const [day, data] of Object.entries(state.lastWeekData)) {
+                // Create status indicators for history
+                let statusIndicators = '';
+                if (data.late > 0) {
+                    statusIndicators += `<div class="status-badge status-late" style="margin:2px;"><i class="material-icons" style="font-size:12px;">schedule</i> تأخير: ${data.late} د</div>`;
+                }
+                if (data.ot > 0) {
+                    statusIndicators += `<div class="status-badge status-ot" style="margin:2px;"><i class="material-icons" style="font-size:12px;">access_time</i> إضافي: ${data.ot} د</div>`;
+                }
+                if (data.late === 0 && data.ot === 0 && data.status) {
+                    statusIndicators += `<div class="status-badge status-ok" style="margin:2px;"><i class="material-icons" style="font-size:12px;">check_circle</i> منتظم</div>`;
+                }
+                
                 html += `
-                    <div style="background:#f9f9f9; padding:10px; border-radius:8px; margin-bottom:10px;">
-                        <div style="font-weight:bold; color:var(--primary-color)">${day}</div>
-                        <div style="font-size:0.8rem">من: ${data.start}</div>
-                        <div style="font-size:0.8rem">إلى: ${data.end}</div>
-                        <div style="font-size:0.8rem; margin-top:5px;">${data.status}</div>
+                    <div style="background:var(--card-bg); padding:15px; border-radius:15px; margin-bottom:15px; box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.3); border:1px solid var(--border-color);">
+                        <div style="font-weight:bold; color:var(--primary-light); margin-bottom:8px; display:flex; align-items:center;">
+                            ${day}
+                            ${data.late > 0 ? `<span class="notification-badge notification-late" style="position:static; margin-right:5px;">${data.late}</span>` : ''}
+                            ${data.ot > 0 ? `<span class="notification-badge notification-ot" style="position:static; margin-right:5px;">${data.ot}</span>` : ''}
+                        </div>
+                        <div style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:4px;">من: ${data.start || '---'}</div>
+                        <div style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:8px;">إلى: ${data.end || '---'}</div>
+                        <div style="display:flex; flex-wrap:wrap;">${statusIndicators}</div>
                     </div>
                 `;
             }
@@ -815,17 +1085,6 @@
             document.getElementById('history-overlay').classList.remove('active');
         }
         
-        // When saving "New Week", current data moves to Last Week? 
-        // Let's add a "End Week" button implicitly or assume "Backup" does it.
-        // For this demo, let's add a feature: If they click backup, we archive current week to last week.
-        // Actually, let's add a small button in Weekly section to "Close Week".
-        // I will inject this button in the UI if needed, or just let 'Backup' handle archiving.
-        // To keep it simple per requirements "Add last week box", let's just assume last week exists in memory.
-        
-        // Let's modify renderWeeklyGrid to add "Archive" button at bottom
-        const weekHeader = document.querySelector('#weekly-records').parentNode;
-        // (Logic handled in HTML structure manually for clarity)
-
         // --- Loan Logic ---
         function calculateLoanPlan() {
             const amount = parseFloat(document.getElementById('loan-amount').value) || 0;
@@ -835,9 +1094,9 @@
                 // Simple 4 week repayment
                 const weeklyPay = amount / 4;
                 document.getElementById('loan-repayment-plan').innerHTML = `
-                    <div style="background:#e0f7fa; padding:10px; border-radius:8px; border:1px solid #b2ebf2;">
-                        <strong>خطة السداد (4 أسابيع):</strong><br>
-                        خصم أسبوعي: <span style="color:var(--primary-color)">${formatMoney(weeklyPay)}</span> ل.س
+                    <div style="background:rgba(16, 185, 129, 0.1); padding:15px; border-radius:15px; border:1px solid rgba(16, 185, 129, 0.2);">
+                        <div style="font-weight:bold; color:var(--secondary-light); margin-bottom:10px;">خطة السداد (4 أسابيع):</div>
+                        <div>خصم أسبوعي: <span style="font-size:1.2rem; font-weight:bold; color:var(--primary-light);">${formatMoney(weeklyPay)}</span> ل.س</div>
                     </div>
                 `;
             } else {
