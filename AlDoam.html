@@ -2,16 +2,16 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>نظام إدارة الرواتب وساعات العمل</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         :root {
-            /* Dark Theme Colors */
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --input-bg: #2d2d2d;
+            /* Improved Color Palette */
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --input-bg: #334155;
             --primary-color: #6366f1;
             --primary-light: #818cf8;
             --primary-dark: #4f46e5;
@@ -20,9 +20,9 @@
             --secondary-dark: #059669;
             --accent-color: #f59e0b;
             --danger-color: #ef4444;
-            --text-color: #e5e7eb;
-            --text-secondary: #9ca3af;
-            --border-color: #374151;
+            --text-color: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
             --border-radius: 16px;
             --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
         }
@@ -35,22 +35,27 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
         }
 
         /* Clock Widget */
         .clock-widget {
             background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
             color: white;
-            padding: 25px 20px;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
+            padding: 20px 15px;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
             text-align: center;
             box-shadow: var(--shadow);
             position: sticky;
@@ -59,22 +64,22 @@
         }
 
         .clock-time {
-            font-size: 2.8rem;
+            font-size: 2rem;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .clock-date {
-            font-size: 1.1rem;
+            font-size: 1rem;
             opacity: 0.95;
-            margin-top: 8px;
+            margin-top: 5px;
             font-weight: 500;
         }
 
         /* Container */
         .container {
-            padding: 25px;
+            padding: 20px;
             max-width: 720px;
             margin: 0 auto;
             width: 100%;
@@ -82,12 +87,22 @@
             padding-bottom: 80px;
         }
 
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            .clock-time {
+                font-size: 1.8rem;
+            }
+        }
+
         /* Cards */
         .card {
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
-            padding: 25px;
-            margin-bottom: 25px;
+            padding: 20px;
+            margin-bottom: 20px;
             box-shadow: var(--shadow);
             transition: transform 0.3s, box-shadow 0.3s;
             border: 1px solid var(--border-color);
@@ -106,52 +121,52 @@
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
+            padding-bottom: 12px;
         }
 
         .card-header i {
             color: var(--primary-light);
-            margin-left: 12px;
-            font-size: 28px;
+            margin-left: 10px;
+            font-size: 24px;
             background: rgba(99, 102, 241, 0.15);
-            padding: 10px;
-            border-radius: 12px;
+            padding: 8px;
+            border-radius: 10px;
         }
 
         .card-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--primary-light);
         }
 
         /* Inputs & Labels */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: var(--text-secondary);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         input, select {
             width: 100%;
-            padding: 15px 20px;
+            padding: 12px 15px;
             border: 2px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 1rem;
             transition: all 0.3s;
             background-color: var(--input-bg);
@@ -167,15 +182,15 @@
 
         /* Tooltip */
         .tooltip {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
             margin-top: 8px;
             font-weight: 600;
             display: block;
             min-height: 24px;
             background: rgba(16, 185, 129, 0.1);
-            padding: 8px 12px;
-            border-radius: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
             border-right: 3px solid var(--secondary-color);
         }
 
@@ -188,16 +203,16 @@
         /* Buttons */
         .btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             transition: all 0.3s;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
             position: relative;
@@ -249,15 +264,14 @@
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
         }
 
         /* Days List */
         .day-row {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 0;
+            flex-direction: column;
+            padding: 12px 0;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -265,21 +279,25 @@
             border-bottom: none;
         }
 
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
         .day-name {
             font-weight: 700;
-            width: 65px;
             color: var(--primary-light);
             background: rgba(99, 102, 241, 0.1);
             padding: 5px 10px;
             border-radius: 8px;
             text-align: center;
-            position: relative;
         }
 
         .day-inputs {
             display: flex;
             gap: 10px;
-            flex: 1;
         }
 
         .day-inputs input {
@@ -292,7 +310,7 @@
             display: flex;
             gap: 5px;
             flex-wrap: wrap;
-            margin-top: 5px;
+            margin-top: 8px;
         }
 
         .status-badge {
@@ -324,12 +342,12 @@
             align-items: center;
             text-align: center;
             z-index: 1000;
-            padding: 40px;
+            padding: 30px;
         }
 
         .welcome-icon {
-            font-size: 90px;
-            margin-bottom: 25px;
+            font-size: 80px;
+            margin-bottom: 20px;
             animation: bounce 2s infinite;
             background: rgba(255,255,255,0.1);
             padding: 20px;
@@ -337,16 +355,16 @@
         }
 
         .welcome-title {
-            font-size: 2.2rem;
+            font-size: 2rem;
             margin-bottom: 15px;
             font-weight: 700;
         }
 
         .welcome-subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
             opacity: 0.95;
-            max-width: 450px;
+            max-width: 400px;
             line-height: 1.6;
         }
 
@@ -398,10 +416,10 @@
 
         .modal-content {
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 25px;
+            padding: 25px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             text-align: center;
             animation: slideUp 0.3s ease;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -459,13 +477,14 @@
             transform: translateX(-50%);
             background: var(--card-bg);
             color: var(--text-color);
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 30px;
             z-index: 3000;
             opacity: 0;
             transition: opacity 0.3s, transform 0.3s;
             pointer-events: none;
             width: 90%;
+            max-width: 400px;
             text-align: center;
             box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border-color);
@@ -480,36 +499,34 @@
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
             border: 1px solid rgba(245, 158, 11, 0.3);
             text-align: center;
-            padding: 12px;
-            border-radius: 15px;
-            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 12px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.3);
         }
 
         /* Daily Status Result */
         #daily-status-result {
             margin-top: 15px;
-            padding: 15px;
+            padding: 12px;
             background: var(--input-bg);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px dashed var(--border-color);
         }
 
         /* Notification Badge */
         .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             font-size: 12px;
             font-weight: bold;
             color: white;
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-right: 5px;
         }
 
         .notification-late {
@@ -533,7 +550,7 @@
             <br>يُرجى التواصل مع المطور للتفعيل بعد انتهاء الفترة التجريبية.
         </p>
         <p style="margin-bottom: 25px; font-size: 1rem; opacity: 0.9;">المطور: يمان محمد الحسين</p>
-        <button class="btn btn-secondary" style="width: 220px;" onclick="enterApp()">
+        <button class="btn btn-secondary" style="width: 200px;" onclick="enterApp()">
             دخول البرنامج
             <i class="material-icons">arrow_back</i>
         </button>
@@ -570,16 +587,16 @@
                 </div>
 
                 <div class="grid-2">
-                    <div class="card" style="margin:0; text-align: center; padding: 20px; background: rgba(16, 185, 129, 0.1);">
-                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 5px;">الراتب الأسبوعي</div>
-                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-light);" id="weekly-salary">0</div>
+                    <div class="card" style="margin:0; text-align: center; padding: 15px; background: rgba(16, 185, 129, 0.1);">
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px;">الراتب الأسبوعي</div>
+                        <div style="font-size: 1.3rem; font-weight: bold; color: var(--secondary-light);" id="weekly-salary">0</div>
                     </div>
-                    <div class="card" style="margin:0; text-align: center; padding: 20px; background: rgba(99, 102, 241, 0.1);">
-                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 5px;">معدل اليومي</div>
-                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-light);" id="daily-salary">0</div>
+                    <div class="card" style="margin:0; text-align: center; padding: 15px; background: rgba(99, 102, 241, 0.1);">
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px;">معدل اليومي</div>
+                        <div style="font-size: 1.3rem; font-weight: bold; color: var(--primary-light);" id="daily-salary">0</div>
                     </div>
                 </div>
-                <button class="btn btn-outline" style="margin-top: 20px;" onclick="editSalary()">
+                <button class="btn btn-outline" style="margin-top: 15px;" onclick="editSalary()">
                     <i class="material-icons">edit</i> تعديل الراتب الأساسي
                 </button>
             </div>
@@ -600,8 +617,8 @@
                         <input type="time" id="leave-time" value="15:00" onchange="calculateDailyStatus()">
                     </div>
                 </div>
-                <div class="tooltip" style="text-align: center; font-size: 0.85rem; background: rgba(99, 102, 241, 0.1); border-right: none; border-radius: 10px;">
-                    <i class="material-icons" style="font-size: 16px; vertical-align: middle; margin-left: 5px;">info</i>
+                <div class="tooltip" style="text-align: center; font-size: 0.8rem; background: rgba(99, 102, 241, 0.1); border-right: none; border-radius: 8px;">
+                    <i class="material-icons" style="font-size: 14px; vertical-align: middle; margin-left: 5px;">info</i>
                     التأخير: بعد وقت البدء | الإضافي: بعد وقت المغادرة
                 </div>
             </div>
@@ -625,7 +642,7 @@
                 <div id="daily-status-result" style="display: none;">
                     <!-- Status injected here -->
                 </div>
-                <button class="btn btn-primary" style="margin-top: 20px;" onclick="saveDailyRecord()">
+                <button class="btn btn-primary" style="margin-top: 15px;" onclick="saveDailyRecord()">
                     <i class="material-icons">save</i> حفظ اليوم
                 </button>
             </div>
@@ -639,7 +656,7 @@
                 <div id="weekly-records">
                     <!-- Days will be generated by JS -->
                 </div>
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
                     <button class="btn btn-secondary" onclick="showLastWeek()">
                         <i class="material-icons">history</i> الأسبوع الماضي
                     </button>
@@ -670,7 +687,7 @@
                     <i class="material-icons">settings</i>
                     <div class="card-title">إعدادات وبيانات</div>
                 </div>
-                <div style="display: grid; gap: 12px;">
+                <div style="display: grid; gap: 10px;">
                     <button class="btn btn-outline" onclick="createBackup()">
                         <i class="material-icons">cloud_upload</i> إنشاء نسخة احتياطية
                     </button>
@@ -683,7 +700,7 @@
                 </div>
             </div>
             
-            <div style="height: 60px;"></div> <!-- Spacer -->
+            <div style="height: 50px;"></div> <!-- Spacer -->
         </div>
     </div>
 
@@ -694,22 +711,22 @@
             <button onclick="closeLastWeek()" style="background:none; border:none; font-size: 1.8rem; cursor: pointer; color: var(--text-color);">&times;</button>
         </div>
         <div id="last-week-content">
-            <p style="text-align: center; color: var(--text-secondary); margin-top: 50px;">لا توجد بيانات للأسبوع الماضي</p>
+            <p style='text-align: center; color: var(--text-secondary); margin-top: 50px;'>لا توجد بيانات محفوظة للأسبوع الماضي</p>
         </div>
     </div>
 
     <!-- Activation Modal -->
     <div id="activation-modal" class="modal">
         <div class="modal-content">
-            <i class="material-icons" style="font-size: 50px; color: var(--primary-light); margin-bottom: 15px;">vpn_key</i>
-            <h3 style="margin-bottom: 20px; font-size: 1.5rem; color: var(--text-color);">تفعيل النسخة الكاملة</h3>
-            <p style="margin-bottom: 25px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+            <i class="material-icons" style="font-size: 45px; color: var(--primary-light); margin-bottom: 15px;">vpn_key</i>
+            <h3 style="margin-bottom: 15px; font-size: 1.4rem; color: var(--text-color);">تفعيل النسخة الكاملة</h3>
+            <p style="margin-bottom: 20px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
                 للاستفادة من كافة الميزات، يرجى إدخال كود التفعيل.
                 <br>للحصول على الكود تواصل مع: <strong>يمان محمد</strong>
             </p>
-            <input type="number" id="activation-code-input" placeholder="أدخل كود التفعيل" style="margin-bottom: 20px;">
+            <input type="number" id="activation-code-input" placeholder="أدخل كود التفعيل" style="margin-bottom: 15px;">
             <button class="btn btn-primary" onclick="activateApp()">تفعيل</button>
-            <button class="btn btn-outline" style="margin-top: 15px; border: none;" onclick="closeActivationModal()">إلغاء</button>
+            <button class="btn btn-outline" style="margin-top: 10px; border: none;" onclick="closeActivationModal()">إلغاء</button>
         </div>
     </div>
 
@@ -736,7 +753,7 @@
         };
 
         // Days Array
-        const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+        const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "جمعة", "السبت"];
 
         // --- Initialization ---
         window.onload = function() {
@@ -953,10 +970,12 @@
                 statusIndicators += '</div>';
                 
                 row.innerHTML = `
-                    <div class="day-name">
-                        ${day}
-                        ${rec.late > 0 ? `<span class="notification-badge notification-late">${rec.late}</span>` : ''}
-                        ${rec.ot > 0 ? `<span class="notification-badge notification-ot">${rec.ot}</span>` : ''}
+                    <div class="day-header">
+                        <div class="day-name">
+                            ${day}
+                            ${rec.late > 0 ? `<span class="notification-badge notification-late">${rec.late}</span>` : ''}
+                            ${rec.ot > 0 ? `<span class="notification-badge notification-ot">${rec.ot}</span>` : ''}
+                        </div>
                     </div>
                     <div class="day-inputs">
                         <input type="time" value="${rec.start}" onchange="updateWeekDay('${day}', 'start', this.value)">
@@ -1094,9 +1113,9 @@
                 // Simple 4 week repayment
                 const weeklyPay = amount / 4;
                 document.getElementById('loan-repayment-plan').innerHTML = `
-                    <div style="background:rgba(16, 185, 129, 0.1); padding:15px; border-radius:15px; border:1px solid rgba(16, 185, 129, 0.2);">
-                        <div style="font-weight:bold; color:var(--secondary-light); margin-bottom:10px;">خطة السداد (4 أسابيع):</div>
-                        <div>خصم أسبوعي: <span style="font-size:1.2rem; font-weight:bold; color:var(--primary-light);">${formatMoney(weeklyPay)}</span> ل.س</div>
+                    <div style="background:rgba(16, 185, 129, 0.1); padding:12px; border-radius:12px; border:1px solid rgba(16, 185, 129, 0.2);">
+                        <div style="font-weight:bold; color:var(--secondary-light); margin-bottom:8px;">خطة السداد (4 أسابيع):</div>
+                        <div>خصم أسبوعي: <span style="font-size:1.1rem; font-weight:bold; color:var(--primary-light);">${formatMoney(weeklyPay)}</span> ل.س</div>
                     </div>
                 `;
             } else {
