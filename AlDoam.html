@@ -4,34 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>نظام إدارة الرواتب وساعات العمل</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         :root {
-            /* Improved Color Palette */
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --input-bg: #334155;
+            /* Light Theme with Gradient Cards */
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f0f2f5;
+            
+            /* Gradient Colors */
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            
+            /* Solid Colors */
             --primary-color: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --secondary-color: #10b981;
-            --secondary-light: #34d399;
-            --secondary-dark: #059669;
+            --secondary-color: #8b5cf6;
             --accent-color: #f59e0b;
+            --success-color: #10b981;
             --danger-color: #ef4444;
-            --text-color: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --border-color: #334155;
-            --border-radius: 16px;
-            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+            
+            /* Text Colors */
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-tertiary: #9ca3af;
+            
+            /* UI Elements */
+            --border-radius: 20px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-colored: 0 4px 20px rgba(99, 102, 241, 0.15);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Tajawal', 'Cairo', sans-serif;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -42,8 +54,8 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -51,27 +63,27 @@
 
         /* Clock Widget */
         .clock-widget {
-            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            background: var(--gradient-1);
             color: white;
-            padding: 20px 15px;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
+            padding: 24px 20px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
             text-align: center;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-colored);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .clock-time {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .clock-date {
-            font-size: 1rem;
+            font-size: 1.1rem;
             opacity: 0.95;
             margin-top: 5px;
             font-weight: 500;
@@ -79,7 +91,7 @@
 
         /* Container */
         .container {
-            padding: 20px;
+            padding: 24px 20px;
             max-width: 720px;
             margin: 0 auto;
             width: 100%;
@@ -90,67 +102,57 @@
         /* Responsive adjustments */
         @media (max-width: 480px) {
             .container {
-                padding: 15px;
+                padding: 20px 15px;
             }
             .clock-time {
-                font-size: 1.8rem;
+                font-size: 1.9rem;
             }
         }
 
         /* Cards */
         .card {
-            background-color: var(--card-bg);
+            background-color: var(--bg-secondary);
             border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: var(--shadow-md);
             transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-        }
-
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 18px;
+            border-bottom: 1px solid #f0f0f0;
             padding-bottom: 12px;
         }
 
         .card-header i {
-            color: var(--primary-light);
-            margin-left: 10px;
+            color: white;
+            margin-left: 12px;
             font-size: 24px;
-            background: rgba(99, 102, 241, 0.15);
-            padding: 8px;
-            border-radius: 10px;
+            background: var(--gradient-1);
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
         }
 
         .card-title {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--primary-light);
+            color: var(--text-primary);
         }
 
         /* Inputs & Labels */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             position: relative;
         }
 
@@ -159,39 +161,39 @@
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         input, select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
+            padding: 14px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
             font-size: 1rem;
             transition: all 0.3s;
-            background-color: var(--input-bg);
-            color: var(--text-color);
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--primary-color);
-            background-color: #374151;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            background-color: var(--bg-secondary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
         /* Tooltip */
         .tooltip {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
-            margin-top: 8px;
-            font-weight: 600;
+            margin-top: 10px;
+            font-weight: 500;
             display: block;
-            min-height: 24px;
+            min-height: 26px;
             background: rgba(16, 185, 129, 0.1);
-            padding: 8px 10px;
-            border-radius: 8px;
-            border-right: 3px solid var(--secondary-color);
+            padding: 10px 12px;
+            border-radius: 10px;
+            border-right: 4px solid var(--success-color);
         }
 
         .warning-text {
@@ -205,8 +207,8 @@
             width: 100%;
             padding: 14px;
             border: none;
-            border-radius: 10px;
-            font-size: 0.95rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             display: flex;
@@ -214,9 +216,9 @@
             justify-content: center;
             gap: 8px;
             transition: all 0.3s;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
 
         .btn:active {
@@ -230,7 +232,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(to right, rgba(255,255,255,0.2), transparent);
             transform: translateX(-100%);
             transition: transform 0.6s;
         }
@@ -240,31 +242,40 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            background: var(--gradient-1);
             color: white;
+            box-shadow: var(--shadow-colored);
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary-dark), var(--secondary-color));
+            background: var(--gradient-2);
             color: white;
+            box-shadow: 0 4px 20px rgba(245, 87, 108, 0.3);
+        }
+
+        .btn-success {
+            background: var(--gradient-4);
+            color: white;
+            box-shadow: 0 4px 20px rgba(67, 233, 123, 0.3);
         }
 
         .btn-outline {
             background: transparent;
             border: 2px solid var(--primary-color);
-            color: var(--primary-light);
+            color: var(--primary-color);
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #b91c1c, #ef4444);
+            background: linear-gradient(135deg, #f87171, #ef4444);
             color: white;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
         }
 
         /* Grid Layouts */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 16px;
         }
 
         /* Days List */
@@ -272,7 +283,7 @@
             display: flex;
             flex-direction: column;
             padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .day-row:last-child {
@@ -288,16 +299,16 @@
 
         .day-name {
             font-weight: 700;
-            color: var(--primary-light);
+            color: var(--primary-color);
             background: rgba(99, 102, 241, 0.1);
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 8px;
             text-align: center;
         }
 
         .day-inputs {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .day-inputs input {
@@ -308,7 +319,7 @@
         /* Status Indicators */
         .status-indicator {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             flex-wrap: wrap;
             margin-top: 8px;
         }
@@ -323,9 +334,9 @@
             gap: 3px;
         }
 
-        .status-ok { background: rgba(16, 185, 129, 0.2); color: var(--secondary-light); }
-        .status-late { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
-        .status-ot { background: rgba(99, 102, 241, 0.2); color: var(--primary-light); }
+        .status-ok { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+        .status-late { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
+        .status-ot { background: rgba(99, 102, 241, 0.1); color: var(--primary-color); }
 
         /* Welcome Screen */
         #welcome-screen {
@@ -334,7 +345,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--primary-dark), #1e1b4b);
+            background: var(--gradient-1);
             color: white;
             display: flex;
             flex-direction: column;
@@ -347,51 +358,55 @@
 
         .welcome-icon {
             font-size: 80px;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
-            background: rgba(255,255,255,0.1);
+            margin-bottom: 24px;
+            animation: pulse 2s infinite;
+            background: rgba(255, 255, 255, 0.2);
             padding: 20px;
             border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .welcome-title {
-            font-size: 2rem;
-            margin-bottom: 15px;
+            font-size: 2.2rem;
+            margin-bottom: 16px;
             font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .welcome-subtitle {
             font-size: 1.1rem;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
             opacity: 0.95;
             max-width: 400px;
             line-height: 1.6;
         }
 
         .trial-badge {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             padding: 8px 20px;
             border-radius: 30px;
-            margin-bottom: 25px;
+            margin-bottom: 28px;
             font-size: 1rem;
             font-weight: 600;
             backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         /* Designer Footer */
         .designer-info {
             position: fixed;
-            bottom: 15px;
+            bottom: 20px;
             right: 20px;
             font-size: 0.75rem;
-            color: rgba(255,255,255,0.6);
+            color: var(--text-tertiary);
             z-index: 50;
             text-align: right;
             pointer-events: none;
-            background: rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.8);
             padding: 8px 12px;
             border-radius: 10px;
             backdrop-filter: blur(5px);
+            box-shadow: var(--shadow-sm);
         }
 
         /* Modal */
@@ -402,12 +417,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            backdrop-filter: blur(5px);
         }
 
         .modal.active {
@@ -415,15 +430,14 @@
         }
 
         .modal-content {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 20px;
+            background: var(--bg-secondary);
+            padding: 28px;
+            border-radius: 24px;
             width: 100%;
             max-width: 400px;
             text-align: center;
             animation: slideUp 0.3s ease;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
         }
 
         /* Status Tag */
@@ -436,14 +450,14 @@
             align-items: center;
             gap: 5px;
         }
-        .status-ok { background: rgba(16, 185, 129, 0.2); color: var(--secondary-light); }
-        .status-late { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
-        .status-ot { background: rgba(99, 102, 241, 0.2); color: var(--primary-light); }
+        .status-ok { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+        .status-late { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
+        .status-ot { background: rgba(99, 102, 241, 0.1); color: var(--primary-color); }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-20px);}
-            60% {transform: translateY(-10px);}
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
         }
 
         @keyframes slideUp {
@@ -459,7 +473,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-color);
+            background: var(--bg-primary);
             z-index: 1500;
             padding: 20px;
             overflow-y: auto;
@@ -472,12 +486,12 @@
         /* Notification Toast */
         .toast {
             position: fixed;
-            bottom: 90px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--card-bg);
-            color: var(--text-color);
-            padding: 12px 25px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 14px 24px;
             border-radius: 30px;
             z-index: 3000;
             opacity: 0;
@@ -486,8 +500,7 @@
             width: 90%;
             max-width: 400px;
             text-align: center;
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
         }
         .toast.show {
             opacity: 1;
@@ -496,22 +509,22 @@
 
         /* Activation Banner */
         #activation-banner {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
+            background: rgba(245, 158, 11, 0.1);
             border: 1px solid rgba(245, 158, 11, 0.3);
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
         }
 
         /* Daily Status Result */
         #daily-status-result {
-            margin-top: 15px;
-            padding: 12px;
-            background: var(--input-bg);
+            margin-top: 16px;
+            padding: 14px;
+            background: var(--bg-tertiary);
             border-radius: 12px;
-            border: 1px dashed var(--border-color);
+            border: 1px dashed #e5e7eb;
         }
 
         /* Notification Badge */
@@ -525,7 +538,7 @@
             font-size: 12px;
             font-weight: bold;
             color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-sm);
             margin-right: 5px;
         }
 
@@ -535,6 +548,142 @@
 
         .notification-ot {
             background-color: var(--primary-color);
+        }
+
+        /* Week Management Buttons */
+        .week-management {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        /* History Options */
+        .history-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .history-option-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-md);
+        }
+
+        .history-option-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .history-option-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: var(--shadow-colored);
+        }
+
+        .history-option-text {
+            flex: 1;
+        }
+
+        .history-option-title {
+            font-weight: bold;
+            margin-bottom: 6px;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+        }
+
+        .history-option-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Week Data Card */
+        .week-data-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .week-data-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .week-data-date {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .week-data-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .week-data-action-btn {
+            background: rgba(99, 102, 241, 0.1);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .week-data-action-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .week-data-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+            gap: 12px;
+        }
+
+        .day-card {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .day-card-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .day-card-time {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: var(--text-tertiary);
+        }
+
+        .day-card-status {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
         }
     </style>
 </head>
@@ -549,8 +698,8 @@
             نظام متكامل لإدارة الرواتب وساعات العمل.
             <br>يُرجى التواصل مع المطور للتفعيل بعد انتهاء الفترة التجريبية.
         </p>
-        <p style="margin-bottom: 25px; font-size: 1rem; opacity: 0.9;">المطور: يمان محمد الحسين</p>
-        <button class="btn btn-secondary" style="width: 200px;" onclick="enterApp()">
+        <p style="margin-bottom: 30px; font-size: 1rem; opacity: 0.9;">المطور: يمان محمد الحسين</p>
+        <button class="btn btn-secondary" style="width: 220px;" onclick="enterApp()">
             دخول البرنامج
             <i class="material-icons">arrow_back</i>
         </button>
@@ -587,16 +736,16 @@
                 </div>
 
                 <div class="grid-2">
-                    <div class="card" style="margin:0; text-align: center; padding: 15px; background: rgba(16, 185, 129, 0.1);">
-                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px;">الراتب الأسبوعي</div>
-                        <div style="font-size: 1.3rem; font-weight: bold; color: var(--secondary-light);" id="weekly-salary">0</div>
+                    <div class="card" style="margin:0; text-align: center; padding: 16px; background: rgba(16, 185, 129, 0.1);">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 8px;">الراتب الأسبوعي</div>
+                        <div style="font-size: 1.4rem; font-weight: bold; color: var(--success-color);" id="weekly-salary">0</div>
                     </div>
-                    <div class="card" style="margin:0; text-align: center; padding: 15px; background: rgba(99, 102, 241, 0.1);">
-                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px;">معدل اليومي</div>
-                        <div style="font-size: 1.3rem; font-weight: bold; color: var(--primary-light);" id="daily-salary">0</div>
+                    <div class="card" style="margin:0; text-align: center; padding: 16px; background: rgba(99, 102, 241, 0.1);">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 8px;">معدل اليومي</div>
+                        <div style="font-size: 1.4rem; font-weight: bold; color: var(--primary-color);" id="daily-salary">0</div>
                     </div>
                 </div>
-                <button class="btn btn-outline" style="margin-top: 15px;" onclick="editSalary()">
+                <button class="btn btn-outline" style="margin-top: 16px;" onclick="editSalary()">
                     <i class="material-icons">edit</i> تعديل الراتب الأساسي
                 </button>
             </div>
@@ -617,8 +766,8 @@
                         <input type="time" id="leave-time" value="15:00" onchange="calculateDailyStatus()">
                     </div>
                 </div>
-                <div class="tooltip" style="text-align: center; font-size: 0.8rem; background: rgba(99, 102, 241, 0.1); border-right: none; border-radius: 8px;">
-                    <i class="material-icons" style="font-size: 14px; vertical-align: middle; margin-left: 5px;">info</i>
+                <div class="tooltip" style="text-align: center; font-size: 0.85rem; background: rgba(99, 102, 241, 0.1); border-right: none; border-radius: 10px;">
+                    <i class="material-icons" style="font-size: 16px; vertical-align: middle; margin-left: 6px;">info</i>
                     التأخير: بعد وقت البدء | الإضافي: بعد وقت المغادرة
                 </div>
             </div>
@@ -642,7 +791,7 @@
                 <div id="daily-status-result" style="display: none;">
                     <!-- Status injected here -->
                 </div>
-                <button class="btn btn-primary" style="margin-top: 15px;" onclick="saveDailyRecord()">
+                <button class="btn btn-primary" style="margin-top: 16px;" onclick="saveDailyRecord()">
                     <i class="material-icons">save</i> حفظ اليوم
                 </button>
             </div>
@@ -656,8 +805,13 @@
                 <div id="weekly-records">
                     <!-- Days will be generated by JS -->
                 </div>
-                <div style="margin-top: 15px; display: flex; gap: 10px;">
-                    <button class="btn btn-secondary" onclick="showLastWeek()">
+                
+                <!-- Week Management Buttons -->
+                <div class="week-management">
+                    <button class="btn btn-success" onclick="startNewWeek()">
+                        <i class="material-icons">add_circle</i> أسبوع جديد
+                    </button>
+                    <button class="btn btn-secondary" onclick="showLastWeekOptions()">
                         <i class="material-icons">history</i> الأسبوع الماضي
                     </button>
                 </div>
@@ -676,7 +830,7 @@
                 <div class="tooltip" id="loan-repayment-plan">
                     أدخل المبلغ لرؤية خطة السداد
                 </div>
-                <button class="btn btn-primary" onclick="requestLoan()" style="background: var(--secondary-color);">
+                <button class="btn btn-primary" onclick="requestLoan()" style="background: var(--gradient-2);">
                     <i class="material-icons">add_circle</i> تسجيل سلفة
                 </button>
             </div>
@@ -687,7 +841,7 @@
                     <i class="material-icons">settings</i>
                     <div class="card-title">إعدادات وبيانات</div>
                 </div>
-                <div style="display: grid; gap: 10px;">
+                <div style="display: grid; gap: 12px;">
                     <button class="btn btn-outline" onclick="createBackup()">
                         <i class="material-icons">cloud_upload</i> إنشاء نسخة احتياطية
                     </button>
@@ -700,33 +854,77 @@
                 </div>
             </div>
             
-            <div style="height: 50px;"></div> <!-- Spacer -->
+            <div style="height: 60px;"></div> <!-- Spacer -->
         </div>
     </div>
 
     <!-- History Overlay -->
     <div id="history-overlay">
-        <div class="card-header" style="justify-content: space-between; border: none; padding: 10px 0;">
+        <div class="card-header" style="justify-content: space-between; border: none; padding: 12px 0;">
             <div class="card-title">سجل الأسبوع الماضي</div>
-            <button onclick="closeLastWeek()" style="background:none; border:none; font-size: 1.8rem; cursor: pointer; color: var(--text-color);">&times;</button>
+            <button onclick="closeLastWeek()" style="background:none; border:none; font-size: 2rem; cursor: pointer; color: var(--text-primary);">&times;</button>
         </div>
-        <div id="last-week-content">
-            <p style='text-align: center; color: var(--text-secondary); margin-top: 50px;'>لا توجد بيانات محفوظة للأسبوع الماضي</p>
+        
+        <!-- History Options (Initial View) -->
+        <div id="history-options" class="history-options">
+            <div class="history-option-card" onclick="restorePreviousWeek()">
+                <div class="history-option-icon">
+                    <i class="material-icons">restore</i>
+                </div>
+                <div class="history-option-text">
+                    <div class="history-option-title">استعادة الأسبوع السابق</div>
+                    <div class="history-option-desc">استعادة بيانات الأسبوع السابق مباشرة</div>
+                </div>
+            </div>
+            
+            <div class="history-option-card" onclick="showDatePicker()">
+                <div class="history-option-icon" style="background: var(--gradient-2);">
+                    <i class="material-icons">calendar_today</i>
+                </div>
+                <div class="history-option-text">
+                    <div class="history-option-title">استعادة بتاريخ محدد</div>
+                    <div class="history-option-desc">اختر تاريخاً لاستعادة بيانات ذلك الأسبوع</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Week Data Container (for displaying restored data) -->
+        <div id="week-data-container" style="display: none;">
+            <!-- Week data will be injected here -->
+        </div>
+        
+        <!-- Date Picker (Hidden by default) -->
+        <div id="date-picker-container" style="display: none; margin-top: 24px;">
+            <div class="form-group">
+                <label>اختر التاريخ</label>
+                <input type="date" id="history-date-picker" style="margin-bottom: 16px;">
+            </div>
+            <button class="btn btn-primary" onclick="restoreByDate()">
+                <i class="material-icons">restore</i> استعادة البيانات
+            </button>
+            <button class="btn btn-outline" style="margin-top: 12px;" onclick="hideDatePicker()">
+                إلغاء
+            </button>
+        </div>
+        
+        <!-- Empty State (Shown when no data available) -->
+        <div id="empty-history-state" style="display: none;">
+            <p style='text-align: center; color: var(--text-tertiary); margin-top: 60px;'>لا توجد بيانات محفوظة للأسبوع الماضي</p>
         </div>
     </div>
 
     <!-- Activation Modal -->
     <div id="activation-modal" class="modal">
         <div class="modal-content">
-            <i class="material-icons" style="font-size: 45px; color: var(--primary-light); margin-bottom: 15px;">vpn_key</i>
-            <h3 style="margin-bottom: 15px; font-size: 1.4rem; color: var(--text-color);">تفعيل النسخة الكاملة</h3>
-            <p style="margin-bottom: 20px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6;">
+            <i class="material-icons" style="font-size: 48px; color: var(--primary-color); margin-bottom: 16px;">vpn_key</i>
+            <h3 style="margin-bottom: 16px; font-size: 1.4rem; color: var(--text-primary);">تفعيل النسخة الكاملة</h3>
+            <p style="margin-bottom: 24px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
                 للاستفادة من كافة الميزات، يرجى إدخال كود التفعيل.
                 <br>للحصول على الكود تواصل مع: <strong>يمان محمد</strong>
             </p>
-            <input type="number" id="activation-code-input" placeholder="أدخل كود التفعيل" style="margin-bottom: 15px;">
+            <input type="number" id="activation-code-input" placeholder="أدخل كود التفعيل" style="margin-bottom: 16px;">
             <button class="btn btn-primary" onclick="activateApp()">تفعيل</button>
-            <button class="btn btn-outline" style="margin-top: 10px; border: none;" onclick="closeActivationModal()">إلغاء</button>
+            <button class="btn btn-outline" style="margin-top: 12px; border: none;" onclick="closeActivationModal()">إلغاء</button>
         </div>
     </div>
 
@@ -749,7 +947,8 @@
             weeklyRecords: {}, // { "Sunday": {start: "", end: "", status: "", late: 0, ot: 0} }
             lastWeekData: null,
             isActivated: false,
-            loans: []
+            loans: [],
+            archivedWeeks: [] // Store multiple weeks of data
         };
 
         // Days Array
@@ -811,18 +1010,12 @@
             const units = ["", "واحد", "اثنان", "ثلاثة", "أربعة", "خمسة", "ستة", "سبعة", "ثمانية", "تسعة"];
             const tens = ["", "عشرة", "عشرون", "ثلاثون", "أربعون", "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"];
             const hundreds = ["", "مائة", "مئتان", "ثلاثمائة", "أربعمائة", "خمسمائة", "ستمائة", "سبعمائة", "ثمانمائة", "تسعمائة"];
-            const thousands = ["", "ألف", "ألفان", "آلاف", "آلاف"];
-            const millions = ["", "مليون", "مليونان", "ملايين", "ملايين"];
-            const billions = ["", "مليار", "ملياران", "مليارات", "مليارات"];
             
             if (n === 1000) return "ألف";
             if (n === 1000000) return "مليون";
             if (n === 1500000) return "مليون ونصف المليون";
             if (n === 2000000) return "مليونان";
             if (n === 1000000000) return "مليار";
-            
-            // للتحويل الدقيق، سنستخدم خوارزمية تفكيك الرقم
-            // هذه نسخة مبسطة تعالج الأرقام الشائعة
             
             // معالجة الملايين
             if (n >= 1000000) {
@@ -911,7 +1104,7 @@
             resultDiv.style.display = 'block';
             
             if (!actStart || !actEnd) {
-                resultDiv.innerHTML = "<span style='color:var(--text-secondary); display:block; text-align:center; padding:10px;'>أكمل أوقات الحضور والمغادرة</span>";
+                resultDiv.innerHTML = "<span style='color:var(--text-tertiary); display:block; text-align:center; padding:12px;'>أكمل أوقات الحضور والمغادرة</span>";
                 return;
             }
 
@@ -923,7 +1116,7 @@
             if (actStart > startT) {
                 const diff = timeDiffMinutes(startT, actStart);
                 minutesLate = diff;
-                msg += `<div class="status-tag status-late" style="display:inline-flex; margin-left:5px;"><i class="material-icons" style="font-size:16px;">schedule</i> تأخير: ${diff} دقيقة</div> `;
+                msg += `<div class="status-tag status-late" style="display:inline-flex; margin-left:6px;"><i class="material-icons" style="font-size:16px;">schedule</i> تأخير: ${diff} دقيقة</div> `;
             }
 
             // OT Calculation
@@ -959,13 +1152,13 @@
                 // Create status indicators
                 let statusIndicators = '<div class="status-indicator">';
                 if (rec.late > 0) {
-                    statusIndicators += `<div class="status-badge status-late"><i class="material-icons" style="font-size:12px;">schedule</i> تأخير: ${rec.late} د</div>`;
+                    statusIndicators += `<div class="status-badge status-late"><i class="material-icons" style="font-size:14px;">schedule</i> تأخير: ${rec.late} د</div>`;
                 }
                 if (rec.ot > 0) {
-                    statusIndicators += `<div class="status-badge status-ot"><i class="material-icons" style="font-size:12px;">access_time</i> إضافي: ${rec.ot} د</div>`;
+                    statusIndicators += `<div class="status-badge status-ot"><i class="material-icons" style="font-size:14px;">access_time</i> إضافي: ${rec.ot} د</div>`;
                 }
                 if (rec.late === 0 && rec.ot === 0 && rec.status) {
-                    statusIndicators += `<div class="status-badge status-ok"><i class="material-icons" style="font-size:12px;">check_circle</i> منتظم</div>`;
+                    statusIndicators += `<div class="status-badge status-ok"><i class="material-icons" style="font-size:14px;">check_circle</i> منتظم</div>`;
                 }
                 statusIndicators += '</div>';
                 
@@ -1058,52 +1251,247 @@
             showToast("تم حفظ سجل اليوم");
         }
 
-        // --- Last Week ---
-        function showLastWeek() {
-            const overlay = document.getElementById('history-overlay');
-            const content = document.getElementById('last-week-content');
-            overlay.classList.add('active');
-            
-            if (!state.lastWeekData) {
-                content.innerHTML = "<p style='text-align: center; color: var(--text-secondary); margin-top: 50px;'>لا توجد بيانات محفوظة للأسبوع الماضي</p>";
+        // --- New Week Feature ---
+        function startNewWeek() {
+            // Check if app is activated
+            if (!state.isActivated) {
+                showActivationRequiredMessage();
                 return;
             }
             
-            let html = "<div class='grid-2'>";
-            for (const [day, data] of Object.entries(state.lastWeekData)) {
-                // Create status indicators for history
-                let statusIndicators = '';
-                if (data.late > 0) {
-                    statusIndicators += `<div class="status-badge status-late" style="margin:2px;"><i class="material-icons" style="font-size:12px;">schedule</i> تأخير: ${data.late} د</div>`;
+            // Check if there's data to save
+            const hasData = Object.keys(state.weeklyRecords).some(day => 
+                state.weeklyRecords[day].start || state.weeklyRecords[day].end
+            );
+            
+            if (!hasData) {
+                if (!confirm("لا توجد بيانات للأسبوع الحالي. هل تريد البدء بأسبوع جديد على أي حال؟")) {
+                    return;
                 }
-                if (data.ot > 0) {
-                    statusIndicators += `<div class="status-badge status-ot" style="margin:2px;"><i class="material-icons" style="font-size:12px;">access_time</i> إضافي: ${data.ot} د</div>`;
+            } else {
+                if (!confirm("سيتم حفظ بيانات الأسبوع الحالي وبدء أسبوع جديد. هل أنت متأكد؟")) {
+                    return;
                 }
-                if (data.late === 0 && data.ot === 0 && data.status) {
-                    statusIndicators += `<div class="status-badge status-ok" style="margin:2px;"><i class="material-icons" style="font-size:12px;">check_circle</i> منتظم</div>`;
+            }
+            
+            // Save current week to archived weeks
+            if (hasData) {
+                const weekData = {
+                    date: new Date().toISOString(),
+                    records: {...state.weeklyRecords}
+                };
+                
+                // Add to archived weeks (keep only last 4 weeks)
+                state.archivedWeeks.unshift(weekData);
+                if (state.archivedWeeks.length > 4) {
+                    state.archivedWeeks = state.archivedWeeks.slice(0, 4);
+                }
+                
+                // Set as last week data for backward compatibility
+                state.lastWeekData = {...state.weeklyRecords};
+            }
+            
+            // Clear current week data
+            state.weeklyRecords = {};
+            
+            saveState();
+            renderWeeklyGrid();
+            showToast("تم بدء أسبوع جديد بنجاح");
+        }
+
+        // --- Last Week Features ---
+        function showLastWeekOptions() {
+            const overlay = document.getElementById('history-overlay');
+            
+            // Show options container, hide others
+            document.getElementById('history-options').style.display = 'flex';
+            document.getElementById('week-data-container').style.display = 'none';
+            document.getElementById('date-picker-container').style.display = 'none';
+            document.getElementById('empty-history-state').style.display = 'none';
+            
+            overlay.classList.add('active');
+        }
+
+        function restorePreviousWeek() {
+            // Check if app is activated
+            if (!state.isActivated) {
+                showActivationRequiredMessage();
+                return;
+            }
+            
+            // Check if there's last week data
+            if (!state.lastWeekData) {
+                document.getElementById('history-options').style.display = 'none';
+                document.getElementById('empty-history-state').style.display = 'block';
+                return;
+            }
+            
+            // Display the last week data as cards
+            displayWeekData(state.lastWeekData, "الأسبوع السابق");
+        }
+
+        function showDatePicker() {
+            // Check if app is activated
+            if (!state.isActivated) {
+                showActivationRequiredMessage();
+                return;
+            }
+            
+            // Check if there's archived data
+            if (!state.archivedWeeks || state.archivedWeeks.length === 0) {
+                document.getElementById('history-options').style.display = 'none';
+                document.getElementById('empty-history-state').style.display = 'block';
+                return;
+            }
+            
+            // Show date picker
+            document.getElementById('history-options').style.display = 'none';
+            document.getElementById('date-picker-container').style.display = 'block';
+            
+            // Set min and max dates based on archived weeks
+            if (state.archivedWeeks.length > 0) {
+                const newestWeek = new Date(state.archivedWeeks[0].date);
+                const oldestWeek = new Date(state.archivedWeeks[state.archivedWeeks.length - 1].date);
+                
+                // Format dates for input
+                const minDate = oldestWeek.toISOString().split('T')[0];
+                const maxDate = newestWeek.toISOString().split('T')[0];
+                
+                document.getElementById('history-date-picker').min = minDate;
+                document.getElementById('history-date-picker').max = maxDate;
+            }
+        }
+
+        function hideDatePicker() {
+            document.getElementById('date-picker-container').style.display = 'none';
+            document.getElementById('history-options').style.display = 'flex';
+        }
+
+        function restoreByDate() {
+            const selectedDate = document.getElementById('history-date-picker').value;
+            if (!selectedDate) {
+                showToast("يرجى اختيار تاريخ");
+                return;
+            }
+            
+            // Find the week with the closest date to the selected date
+            let closestWeek = null;
+            let minDiff = Infinity;
+            
+            state.archivedWeeks.forEach(week => {
+                const weekDate = new Date(week.date);
+                const selected = new Date(selectedDate);
+                const diff = Math.abs(weekDate - selected);
+                
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestWeek = week;
+                }
+            });
+            
+            if (closestWeek) {
+                const dateStr = new Date(closestWeek.date).toLocaleDateString('ar-SY');
+                displayWeekData(closestWeek.records, `أسبوع ${dateStr}`);
+            } else {
+                document.getElementById('date-picker-container').style.display = 'none';
+                document.getElementById('empty-history-state').style.display = 'block';
+            }
+        }
+
+        function displayWeekData(weekData, title) {
+            const container = document.getElementById('week-data-container');
+            const optionsContainer = document.getElementById('history-options');
+            const datePickerContainer = document.getElementById('date-picker-container');
+            
+            // Hide options and date picker, show data container
+            optionsContainer.style.display = 'none';
+            datePickerContainer.style.display = 'none';
+            container.style.display = 'block';
+            
+            // Generate week data card
+            let html = `
+                <div class="week-data-card">
+                    <div class="week-data-header">
+                        <div class="week-data-date">${title}</div>
+                        <div class="week-data-actions">
+                            <button class="week-data-action-btn" onclick="restoreToCurrentWeek()">
+                                <i class="material-icons" style="font-size: 16px; vertical-align: middle;">refresh</i> استعادة للأسبوع الحالي
+                            </button>
+                        </div>
+                    </div>
+                    <div class="week-data-content">
+            `;
+            
+            // Add day cards
+            for (const [dayName, dayData] of Object.entries(weekData)) {
+                // Determine status badge class
+                let statusClass = 'status-ok';
+                let statusText = 'منتظم';
+                
+                if (dayData.late > 0 && dayData.ot > 0) {
+                    statusClass = 'status-late';
+                    statusText = `تأخير ${dayData.late}د | إضافي ${dayData.ot}د`;
+                } else if (dayData.late > 0) {
+                    statusClass = 'status-late';
+                    statusText = `تأخير ${dayData.late}د`;
+                } else if (dayData.ot > 0) {
+                    statusClass = 'status-ot';
+                    statusText = `إضافي ${dayData.ot}د`;
                 }
                 
                 html += `
-                    <div style="background:var(--card-bg); padding:15px; border-radius:15px; margin-bottom:15px; box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.3); border:1px solid var(--border-color);">
-                        <div style="font-weight:bold; color:var(--primary-light); margin-bottom:8px; display:flex; align-items:center;">
-                            ${day}
-                            ${data.late > 0 ? `<span class="notification-badge notification-late" style="position:static; margin-right:5px;">${data.late}</span>` : ''}
-                            ${data.ot > 0 ? `<span class="notification-badge notification-ot" style="position:static; margin-right:5px;">${data.ot}</span>` : ''}
-                        </div>
-                        <div style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:4px;">من: ${data.start || '---'}</div>
-                        <div style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:8px;">إلى: ${data.end || '---'}</div>
-                        <div style="display:flex; flex-wrap:wrap;">${statusIndicators}</div>
+                    <div class="day-card">
+                        <div class="day-card-name">${dayName}</div>
+                        <div class="day-card-time">من: ${dayData.start || '---'}</div>
+                        <div class="day-card-time">إلى: ${dayData.end || '---'}</div>
+                        <div class="day-card-status ${statusClass}">${statusText}</div>
                     </div>
                 `;
             }
-            html += "</div>";
-            content.innerHTML = html;
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function restoreToCurrentWeek() {
+            if (!confirm("هل تريد استعادة هذه البيانات للأسبوع الحالي؟ سيتم استبدال البيانات الحالية.")) {
+                return;
+            }
+            
+            // Get the current displayed week data
+            let currentDisplayedData = null;
+            
+            // Try to get data from last week data first
+            if (state.lastWeekData) {
+                currentDisplayedData = state.lastWeekData;
+            } else {
+                // If not, try to get from archived weeks
+                // In a real app, we'd need to track which week is currently displayed
+                // For now, we'll just use the most recent archived week
+                if (state.archivedWeeks && state.archivedWeeks.length > 0) {
+                    currentDisplayedData = state.archivedWeeks[0].records;
+                }
+            }
+            
+            if (currentDisplayedData) {
+                state.weeklyRecords = {...currentDisplayedData};
+                saveState();
+                renderWeeklyGrid();
+                closeLastWeek();
+                showToast("تم استعادة البيانات بنجاح");
+            } else {
+                showToast("لا يمكن استعادة البيانات");
+            }
         }
 
         function closeLastWeek() {
             document.getElementById('history-overlay').classList.remove('active');
         }
-        
+
         // --- Loan Logic ---
         function calculateLoanPlan() {
             const amount = parseFloat(document.getElementById('loan-amount').value) || 0;
@@ -1113,9 +1501,9 @@
                 // Simple 4 week repayment
                 const weeklyPay = amount / 4;
                 document.getElementById('loan-repayment-plan').innerHTML = `
-                    <div style="background:rgba(16, 185, 129, 0.1); padding:12px; border-radius:12px; border:1px solid rgba(16, 185, 129, 0.2);">
-                        <div style="font-weight:bold; color:var(--secondary-light); margin-bottom:8px;">خطة السداد (4 أسابيع):</div>
-                        <div>خصم أسبوعي: <span style="font-size:1.1rem; font-weight:bold; color:var(--primary-light);">${formatMoney(weeklyPay)}</span> ل.س</div>
+                    <div style="background:rgba(16, 185, 129, 0.1); padding:14px; border-radius:12px; border:1px solid rgba(16, 185, 129, 0.2);">
+                        <div style="font-weight:bold; color:var(--success-color); margin-bottom:10px;">خطة السداد (4 أسابيع):</div>
+                        <div>خصم أسبوعي: <span style="font-size:1.15rem; font-weight:bold; color:var(--primary-color);">${formatMoney(weeklyPay)}</span> ل.س</div>
                     </div>
                 `;
             } else {
@@ -1147,6 +1535,10 @@
         }
 
         // --- Activation ---
+        function showActivationRequiredMessage() {
+            showToast("للاستفادة من هذه الميزة، يرجى التواصل مع المصمم للتفعيل", 4000);
+        }
+
         function showActivationModal() {
             document.getElementById('activation-modal').classList.add('active');
         }
@@ -1186,6 +1578,19 @@
             const stored = localStorage.getItem('salaryApp_state');
             if (stored) {
                 state = JSON.parse(stored);
+                
+                // Initialize archivedWeeks array if it doesn't exist (for backward compatibility)
+                if (!state.archivedWeeks) {
+                    state.archivedWeeks = [];
+                    
+                    // If there's lastWeekData, add it to archivedWeeks
+                    if (state.lastWeekData) {
+                        state.archivedWeeks.push({
+                            date: new Date().toISOString(),
+                            records: state.lastWeekData
+                        });
+                    }
+                }
             }
         }
 
@@ -1201,8 +1606,6 @@
             // Archive current week to last week before backing up (Simulated)
             if (Object.keys(state.weeklyRecords).length > 0) {
                 state.lastWeekData = {...state.weeklyRecords};
-                // Optionally clear current
-                // state.weeklyRecords = {}; 
             }
             saveState();
             
@@ -1230,6 +1633,20 @@
                     try {
                         const obj = JSON.parse(event.target.result);
                         state = obj;
+                        
+                        // Initialize archivedWeeks array if it doesn't exist (for backward compatibility)
+                        if (!state.archivedWeeks) {
+                            state.archivedWeeks = [];
+                            
+                            // If there's lastWeekData, add it to archivedWeeks
+                            if (state.lastWeekData) {
+                                state.archivedWeeks.push({
+                                    date: new Date().toISOString(),
+                                    records: state.lastWeekData
+                                });
+                            }
+                        }
+                        
                         saveState();
                         loadStateToUI();
                         renderWeeklyGrid();
@@ -1260,4 +1677,4 @@
 
     </script>
 </body>
-</html> 
+</html>
