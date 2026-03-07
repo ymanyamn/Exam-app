@@ -3,40 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>نظام إدارة الرواتب وساعات العمل</title>
+    <title>نظام إدارة الرواتب | Pro Dark</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         :root {
-            /* Light Theme with Gradient Cards */
-            --bg-primary: #f8f9fa;
-            --bg-secondary: #ffffff;
-            --bg-tertiary: #f0f2f5;
+            /* Modern Dark Palette */
+            --bg-body: #0f172a;       /* Slate 900 - Very Dark Blue-Grey */
+            --bg-card: #1e293b;       /* Slate 800 - Card Background */
+            --bg-card-hover: #334155; /* Slate 700 */
+            --bg-input: #0f172a;
             
-            /* Gradient Colors */
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            
-            /* Solid Colors */
-            --primary-color: #6366f1;
-            --secondary-color: #8b5cf6;
-            --accent-color: #f59e0b;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            
+            /* Gradients */
+            --primary-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6); /* Blue to Violet */
+            --success-gradient: linear-gradient(135deg, #10b981, #059669);
+            --danger-gradient: linear-gradient(135deg, #ef4444, #b91c1c);
+            --gold-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+
             /* Text Colors */
-            --text-primary: #1f2937;
-            --text-secondary: #4b5563;
-            --text-tertiary: #9ca3af;
+            --text-primary: #f8fafc;   /* Slate 50 */
+            --text-secondary: #94a3b8; /* Slate 400 */
+            --text-muted: #64748b;     /* Slate 500 */
             
             /* UI Elements */
-            --border-radius: 20px;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-            --shadow-colored: 0 4px 20px rgba(99, 102, 241, 0.15);
+            --border-radius: 16px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            --border-color: #334155;
+            --glow-primary: 0 0 20px rgba(59, 130, 246, 0.3);
         }
 
         * {
@@ -51,42 +45,51 @@
             height: 100%;
             width: 100%;
             overflow-x: hidden;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
         }
 
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 20%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Clock Widget */
+        /* Clock Widget - Glassmorphism */
         .clock-widget {
-            background: var(--gradient-1);
-            color: white;
-            padding: 24px 20px;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: var(--text-primary);
+            padding: 24px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             text-align: center;
-            box-shadow: var(--shadow-colored);
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: var(--shadow-sm);
         }
 
         .clock-time {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Tajawal', sans-serif;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
         }
 
         .clock-date {
             font-size: 1.1rem;
-            opacity: 0.95;
+            opacity: 0.9;
             margin-top: 5px;
             font-weight: 500;
+            color: var(--text-secondary);
         }
 
         /* Container */
@@ -99,60 +102,53 @@
             padding-bottom: 80px;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 480px) {
-            .container {
-                padding: 20px 15px;
-            }
-            .clock-time {
-                font-size: 1.9rem;
-            }
-        }
-
         /* Cards */
         .card {
-            background-color: var(--bg-secondary);
+            background-color: var(--bg-card);
             border-radius: var(--border-radius);
-            padding: 22px;
-            margin-bottom: 22px;
-            box-shadow: var(--shadow-md);
-            transition: transform 0.3s, box-shadow 0.3s;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(255,255,255,0.05);
             position: relative;
             overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
+            border-color: rgba(59, 130, 246, 0.2);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            margin-bottom: 18px;
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .card-header i {
             color: white;
-            margin-left: 12px;
+            margin-left: 14px;
             font-size: 24px;
-            background: var(--gradient-1);
+            background: var(--primary-gradient);
             padding: 10px;
             border-radius: 12px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--glow-primary);
         }
 
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--text-primary);
+            letter-spacing: -0.5px;
         }
 
         /* Inputs & Labels */
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             position: relative;
         }
 
@@ -167,45 +163,46 @@
         input, select {
             width: 100%;
             padding: 14px 16px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             font-size: 1rem;
             transition: all 0.3s;
-            background-color: var(--bg-tertiary);
+            background-color: var(--bg-input);
             color: var(--text-primary);
+            outline: none;
         }
 
         input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            background-color: var(--bg-secondary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            background-color: #162032;
         }
 
-        /* Tooltip */
+        /* Tooltip - Dark Styled */
         .tooltip {
             font-size: 0.9rem;
             color: var(--text-secondary);
             margin-top: 10px;
             font-weight: 500;
             display: block;
-            min-height: 26px;
-            background: rgba(16, 185, 129, 0.1);
-            padding: 10px 12px;
+            min-height: 40px;
+            background-color: rgba(16, 185, 129, 0.1);
+            padding: 12px;
             border-radius: 10px;
-            border-right: 4px solid var(--success-color);
+            border-right: 4px solid #10b981;
+            backdrop-filter: blur(5px);
         }
 
         .warning-text {
-            color: var(--danger-color);
-            background: rgba(239, 68, 68, 0.1);
-            border-right-color: var(--danger-color);
+            color: #fca5a5;
+            background-color: rgba(239, 68, 68, 0.1);
+            border-right-color: #ef4444;
         }
 
         /* Buttons */
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border: none;
             border-radius: 12px;
             font-size: 1rem;
@@ -214,61 +211,54 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            transition: all 0.3s;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
+            color: white;
         }
 
         .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-
-        .btn:hover::before {
-            transform: translateX(100%);
+            transform: scale(0.97);
         }
 
         .btn-primary {
-            background: var(--gradient-1);
-            color: white;
-            box-shadow: var(--shadow-colored);
+            background: var(--primary-gradient);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
         }
 
         .btn-secondary {
-            background: var(--gradient-2);
-            color: white;
-            box-shadow: 0 4px 20px rgba(245, 87, 108, 0.3);
+            background-color: var(--bg-card-hover);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
         }
 
         .btn-success {
-            background: var(--gradient-4);
-            color: white;
-            box-shadow: 0 4px 20px rgba(67, 233, 123, 0.3);
+            background: var(--success-gradient);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
         }
 
         .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
+            background-color: transparent;
+            border: 2px solid #3b82f6;
+            color: #3b82f6;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(59, 130, 246, 0.1);
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #f87171, #ef4444);
-            color: white;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+            background: var(--danger-gradient);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
         }
 
         /* Grid Layouts */
@@ -282,8 +272,8 @@
         .day-row {
             display: flex;
             flex-direction: column;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .day-row:last-child {
@@ -294,16 +284,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .day-name {
             font-weight: 700;
-            color: var(--primary-color);
-            background: rgba(99, 102, 241, 0.1);
-            padding: 6px 12px;
-            border-radius: 8px;
+            color: white;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
             text-align: center;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .day-inputs {
@@ -312,31 +304,34 @@
         }
 
         .day-inputs input {
-            padding: 10px;
+            padding: 12px;
             font-size: 0.9rem;
+            background-color: var(--bg-input);
+            border-color: rgba(255,255,255,0.1);
         }
 
         /* Status Indicators */
         .status-indicator {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-top: 8px;
+            margin-top: 12px;
         }
 
         .status-badge {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 3px;
+            gap: 5px;
+            backdrop-filter: blur(4px);
         }
 
-        .status-ok { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
-        .status-late { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
-        .status-ot { background: rgba(99, 102, 241, 0.1); color: var(--primary-color); }
+        .status-ok { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-late { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .status-ot { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
 
         /* Welcome Screen */
         #welcome-screen {
@@ -345,8 +340,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--gradient-1);
-            color: white;
+            background: radial-gradient(circle at center, #1e293b, #0f172a);
+            color: var(--text-primary);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -359,37 +354,47 @@
         .welcome-icon {
             font-size: 80px;
             margin-bottom: 24px;
-            animation: pulse 2s infinite;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 50%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { filter: drop-shadow(0 0 0 rgba(59, 130, 246, 0.4)); }
+            50% { filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)); }
+            100% { filter: drop-shadow(0 0 0 rgba(59, 130, 246, 0.4)); }
         }
 
         .welcome-title {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             margin-bottom: 16px;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .welcome-subtitle {
             font-size: 1.1rem;
             margin-bottom: 32px;
-            opacity: 0.95;
-            max-width: 400px;
+            opacity: 0.8;
+            max-width: 420px;
             line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 300;
         }
 
         .trial-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 20px;
+            background: rgba(245, 158, 11, 0.15);
+            padding: 10px 24px;
             border-radius: 30px;
             margin-bottom: 28px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.1);
         }
 
         /* Designer Footer */
@@ -398,15 +403,15 @@
             bottom: 20px;
             right: 20px;
             font-size: 0.75rem;
-            color: var(--text-tertiary);
+            color: var(--text-muted);
             z-index: 50;
             text-align: right;
             pointer-events: none;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(4px);
             padding: 8px 12px;
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-            box-shadow: var(--shadow-sm);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         /* Modal */
@@ -417,12 +422,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.7);
             z-index: 2000;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            backdrop-filter: blur(8px);
         }
 
         .modal.active {
@@ -430,35 +435,32 @@
         }
 
         .modal-content {
-            background: var(--bg-secondary);
-            padding: 28px;
-            border-radius: 24px;
+            background: #1e293b;
+            padding: 32px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
-            animation: slideUp 0.3s ease;
-            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         /* Status Tag */
         .status-tag {
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            margin-left: 8px;
+            margin-bottom: 8px;
         }
-        .status-ok { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
-        .status-late { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
-        .status-ot { background: rgba(99, 102, 241, 0.1); color: var(--primary-color); }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-            70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-        }
+        .status-ok { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .status-late { background-color: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .status-ot { background-color: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.2); }
 
         @keyframes slideUp {
             from {transform: translateY(30px); opacity: 0;}
@@ -473,7 +475,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-primary);
+            background-color: var(--bg-body);
             z-index: 1500;
             padding: 20px;
             overflow-y: auto;
@@ -488,19 +490,21 @@
             position: fixed;
             bottom: 100px;
             left: 50%;
-            transform: translateX(-50%);
-            background: var(--bg-secondary);
+            transform: translateX(-50%) translateY(20px);
+            background: #1e293b;
             color: var(--text-primary);
-            padding: 14px 24px;
-            border-radius: 30px;
+            padding: 16px 28px;
+            border-radius: 50px;
             z-index: 3000;
             opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
             width: 90%;
             max-width: 400px;
             text-align: center;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            font-weight: 600;
         }
         .toast.show {
             opacity: 1;
@@ -512,19 +516,19 @@
             background: rgba(245, 158, 11, 0.1);
             border: 1px solid rgba(245, 158, 11, 0.3);
             text-align: center;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-sm);
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.1);
         }
 
         /* Daily Status Result */
         #daily-status-result {
             margin-top: 16px;
-            padding: 14px;
-            background: var(--bg-tertiary);
+            padding: 16px;
+            background-color: rgba(15, 23, 42, 0.5);
             border-radius: 12px;
-            border: 1px dashed #e5e7eb;
+            border: 1px dashed var(--border-color);
         }
 
         /* Notification Badge */
@@ -535,26 +539,21 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 11px;
+            font-weight: 700;
             color: white;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
             margin-right: 5px;
         }
 
-        .notification-late {
-            background-color: var(--danger-color);
-        }
-
-        .notification-ot {
-            background-color: var(--primary-color);
-        }
+        .notification-late { background: #ef4444; }
+        .notification-ot { background: #f59e0b; }
 
         /* Week Management Buttons */
         .week-management {
             display: flex;
             gap: 12px;
-            margin-top: 16px;
+            margin-top: 24px;
         }
 
         /* History Options */
@@ -566,72 +565,58 @@
         }
 
         .history-option-card {
-            background: var(--bg-secondary);
+            background-color: var(--bg-card);
             border-radius: 16px;
-            padding: 18px;
+            padding: 20px;
             display: flex;
             align-items: center;
             gap: 16px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .history-option-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 0 0 2px #3b82f6;
+            background-color: var(--bg-card-hover);
         }
 
         .history-option-icon {
             width: 50px;
             height: 50px;
-            border-radius: 50%;
-            background: var(--gradient-1);
+            border-radius: 14px;
+            background: var(--primary-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            box-shadow: var(--shadow-colored);
-        }
-
-        .history-option-text {
-            flex: 1;
-        }
-
-        .history-option-title {
-            font-weight: bold;
-            margin-bottom: 6px;
-            font-size: 1.05rem;
-            color: var(--text-primary);
-        }
-
-        .history-option-desc {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
         /* Week Data Card */
         .week-data-card {
-            background: var(--bg-secondary);
+            background-color: var(--bg-card);
             border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 18px;
-            box-shadow: var(--shadow-md);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .week-data-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             padding-bottom: 16px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .week-data-date {
-            font-weight: bold;
-            color: var(--primary-color);
-            font-size: 1.1rem;
+            font-weight: 700;
+            color: #3b82f6;
+            font-size: 1.2rem;
         }
 
         .week-data-actions {
@@ -640,18 +625,20 @@
         }
 
         .week-data-action-btn {
-            background: rgba(99, 102, 241, 0.1);
+            background-color: rgba(59, 130, 246, 0.1);
             border: none;
             border-radius: 8px;
             padding: 8px 12px;
-            color: var(--primary-color);
+            color: #60a5fa;
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: 600;
         }
-
+        
         .week-data-action-btn:hover {
-            background: rgba(99, 102, 241, 0.2);
+            background-color: rgba(59, 130, 246, 0.2);
+            color: white;
         }
 
         .week-data-content {
@@ -661,22 +648,23 @@
         }
 
         .day-card {
-            background: var(--bg-tertiary);
+            background-color: #0f172a;
             border-radius: 12px;
-            padding: 12px;
+            padding: 16px;
             text-align: center;
+            border: 1px solid rgba(255,255,255,0.03);
         }
 
         .day-card-name {
-            font-weight: bold;
-            margin-bottom: 8px;
+            font-weight: 700;
+            margin-bottom: 10px;
             color: var(--text-secondary);
         }
 
         .day-card-time {
             font-size: 0.9rem;
-            margin-bottom: 5px;
-            color: var(--text-tertiary);
+            margin-bottom: 6px;
+            color: var(--text-muted);
         }
 
         .day-card-status {
@@ -684,6 +672,13 @@
             padding: 4px 8px;
             border-radius: 6px;
             display: inline-block;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .container { padding: 16px; }
+            .clock-time { font-size: 2rem; }
+            .grid-2 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -695,11 +690,11 @@
         <h1 class="welcome-title">مرحباً بك</h1>
         <div class="trial-badge">النسخة التجريبية - الأسبوع الأول مجاناً</div>
         <p class="welcome-subtitle">
-            نظام متكامل لإدارة الرواتب وساعات العمل.
+            نظام متكامل لإدارة الرواتب وساعات العمل بتصميم عصري.
             <br>يُرجى التواصل مع المطور للتفعيل بعد انتهاء الفترة التجريبية.
         </p>
-        <p style="margin-bottom: 30px; font-size: 1rem; opacity: 0.9;">المطور: يمان محمد الحسين</p>
-        <button class="btn btn-secondary" style="width: 220px;" onclick="enterApp()">
+        <p style="margin-bottom: 30px; font-size: 1rem; opacity: 0.8; color: var(--text-secondary);">المطور: يمان محمد الحسين</p>
+        <button class="btn btn-primary" style="width: 240px; margin: 0 auto;" onclick="enterApp()">
             دخول البرنامج
             <i class="material-icons">arrow_back</i>
         </button>
@@ -718,8 +713,8 @@
             
             <!-- Activation Status Bar -->
             <div id="activation-banner">
-                <span style="color: var(--accent-color); font-weight: bold;">⚠ الوضع التجريبي</span>
-                <button onclick="showActivationModal()" style="background:none; border:none; color: var(--accent-color); text-decoration: underline; cursor: pointer; margin-right: 5px; font-weight: 600;">اضغط هنا للتفعيل</button>
+                <span style="color: #fbbf24; font-weight: 700;">⚠ الوضع التجريبي</span>
+                <button onclick="showActivationModal()" style="background:none; border:none; color: #fbbf24; text-decoration: underline; cursor: pointer; margin-right: 5px; font-weight: 600; font-size: 0.9rem;">اضغط هنا للتفعيل</button>
             </div>
 
             <!-- Salary Section -->
@@ -736,16 +731,16 @@
                 </div>
 
                 <div class="grid-2">
-                    <div class="card" style="margin:0; text-align: center; padding: 16px; background: rgba(16, 185, 129, 0.1);">
-                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 8px;">الراتب الأسبوعي</div>
-                        <div style="font-size: 1.4rem; font-weight: bold; color: var(--success-color);" id="weekly-salary">0</div>
+                    <div class="card" style="margin:0; text-align: center; padding: 20px; background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 10px;">الراتب الأسبوعي</div>
+                        <div style="font-size: 1.6rem; font-weight: 800; color: #34d399;" id="weekly-salary">0</div>
                     </div>
-                    <div class="card" style="margin:0; text-align: center; padding: 16px; background: rgba(99, 102, 241, 0.1);">
-                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 8px;">معدل اليومي</div>
-                        <div style="font-size: 1.4rem; font-weight: bold; color: var(--primary-color);" id="daily-salary">0</div>
+                    <div class="card" style="margin:0; text-align: center; padding: 20px; background-color: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2);">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 10px;">معدل اليومي</div>
+                        <div style="font-size: 1.6rem; font-weight: 800; color: #60a5fa;" id="daily-salary">0</div>
                     </div>
                 </div>
-                <button class="btn btn-outline" style="margin-top: 16px;" onclick="editSalary()">
+                <button class="btn btn-outline" style="margin-top: 24px;" onclick="editSalary()">
                     <i class="material-icons">edit</i> تعديل الراتب الأساسي
                 </button>
             </div>
@@ -766,8 +761,8 @@
                         <input type="time" id="leave-time" value="15:00" onchange="calculateDailyStatus()">
                     </div>
                 </div>
-                <div class="tooltip" style="text-align: center; font-size: 0.85rem; background: rgba(99, 102, 241, 0.1); border-right: none; border-radius: 10px;">
-                    <i class="material-icons" style="font-size: 16px; vertical-align: middle; margin-left: 6px;">info</i>
+                <div class="tooltip" style="text-align: center; font-size: 0.9rem; background-color: rgba(59, 130, 246, 0.1); border-right: none; border-radius: 12px; color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2);">
+                    <i class="material-icons" style="font-size: 18px; vertical-align: middle; margin-left: 6px;">info</i>
                     التأخير: بعد وقت البدء | الإضافي: بعد وقت المغادرة
                 </div>
             </div>
@@ -791,7 +786,7 @@
                 <div id="daily-status-result" style="display: none;">
                     <!-- Status injected here -->
                 </div>
-                <button class="btn btn-primary" style="margin-top: 16px;" onclick="saveDailyRecord()">
+                <button class="btn btn-primary" style="margin-top: 20px;" onclick="saveDailyRecord()">
                     <i class="material-icons">save</i> حفظ اليوم
                 </button>
             </div>
@@ -830,7 +825,7 @@
                 <div class="tooltip" id="loan-repayment-plan">
                     أدخل المبلغ لرؤية خطة السداد
                 </div>
-                <button class="btn btn-primary" onclick="requestLoan()" style="background: var(--gradient-2);">
+                <button class="btn btn-primary" onclick="requestLoan()" style="background: var(--gold-gradient); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);">
                     <i class="material-icons">add_circle</i> تسجيل سلفة
                 </button>
             </div>
@@ -854,15 +849,15 @@
                 </div>
             </div>
             
-            <div style="height: 60px;"></div> <!-- Spacer -->
+            <div style="height: 80px;"></div> <!-- Spacer -->
         </div>
     </div>
 
     <!-- History Overlay -->
     <div id="history-overlay">
-        <div class="card-header" style="justify-content: space-between; border: none; padding: 12px 0;">
+        <div class="card-header" style="justify-content: space-between; border: none; padding: 14px 0;">
             <div class="card-title">سجل الأسبوع الماضي</div>
-            <button onclick="closeLastWeek()" style="background:none; border:none; font-size: 2rem; cursor: pointer; color: var(--text-primary);">&times;</button>
+            <button onclick="closeLastWeek()" style="background:none; border:none; font-size: 2.2rem; cursor: pointer; color: var(--text-primary); line-height: 1;">&times;</button>
         </div>
         
         <!-- History Options (Initial View) -->
@@ -872,18 +867,18 @@
                     <i class="material-icons">restore</i>
                 </div>
                 <div class="history-option-text">
-                    <div class="history-option-title">استعادة الأسبوع السابق</div>
-                    <div class="history-option-desc">استعادة بيانات الأسبوع السابق مباشرة</div>
+                    <div class="card-title" style="margin-bottom: 6px; font-size: 1.1rem;">استعادة الأسبوع السابق</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">استعادة بيانات الأسبوع السابق مباشرة</div>
                 </div>
             </div>
             
             <div class="history-option-card" onclick="showDatePicker()">
-                <div class="history-option-icon" style="background: var(--gradient-2);">
+                <div class="history-option-icon" style="background: var(--gold-gradient); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
                     <i class="material-icons">calendar_today</i>
                 </div>
                 <div class="history-option-text">
-                    <div class="history-option-title">استعادة بتاريخ محدد</div>
-                    <div class="history-option-desc">اختر تاريخاً لاستعادة بيانات ذلك الأسبوع</div>
+                    <div class="card-title" style="margin-bottom: 6px; font-size: 1.1rem;">استعادة بتاريخ محدد</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">اختر تاريخاً لاستعادة بيانات ذلك الأسبوع</div>
                 </div>
             </div>
         </div>
@@ -894,41 +889,41 @@
         </div>
         
         <!-- Date Picker (Hidden by default) -->
-        <div id="date-picker-container" style="display: none; margin-top: 24px;">
+        <div id="date-picker-container" style="display: none; margin-top: 28px;">
             <div class="form-group">
                 <label>اختر التاريخ</label>
-                <input type="date" id="history-date-picker" style="margin-bottom: 16px;">
+                <input type="date" id="history-date-picker" style="margin-bottom: 18px;">
             </div>
             <button class="btn btn-primary" onclick="restoreByDate()">
                 <i class="material-icons">restore</i> استعادة البيانات
             </button>
-            <button class="btn btn-outline" style="margin-top: 12px;" onclick="hideDatePicker()">
+            <button class="btn btn-outline" style="margin-top: 14px;" onclick="hideDatePicker()">
                 إلغاء
             </button>
         </div>
         
         <!-- Empty State (Shown when no data available) -->
         <div id="empty-history-state" style="display: none;">
-            <p style='text-align: center; color: var(--text-tertiary); margin-top: 60px;'>لا توجد بيانات محفوظة للأسبوع الماضي</p>
+            <p style='text-align: center; color: var(--text-muted); margin-top: 70px;'>لا توجد بيانات محفوظة للأسبوع الماضي</p>
         </div>
     </div>
 
     <!-- Activation Modal -->
     <div id="activation-modal" class="modal">
         <div class="modal-content">
-            <i class="material-icons" style="font-size: 48px; color: var(--primary-color); margin-bottom: 16px;">vpn_key</i>
-            <h3 style="margin-bottom: 16px; font-size: 1.4rem; color: var(--text-primary);">تفعيل النسخة الكاملة</h3>
-            <p style="margin-bottom: 24px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+            <i class="material-icons" style="font-size: 56px; color: #3b82f6; margin-bottom: 20px;">vpn_key</i>
+            <h3 style="margin-bottom: 20px; font-size: 1.6rem; color: var(--text-primary);">تفعيل النسخة الكاملة</h3>
+            <p style="margin-bottom: 30px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7;">
                 للاستفادة من كافة الميزات، يرجى إدخال كود التفعيل.
                 <br>للحصول على الكود تواصل مع: <strong>يمان محمد</strong>
             </p>
-            <input type="number" id="activation-code-input" placeholder="أدخل كود التفعيل" style="margin-bottom: 16px;">
+            <input type="number" id="activation-code-input" placeholder="أدخل كود التفعيل" style="margin-bottom: 20px;">
             <button class="btn btn-primary" onclick="activateApp()">تفعيل</button>
-            <button class="btn btn-outline" style="margin-top: 12px; border: none;" onclick="closeActivationModal()">إلغاء</button>
+            <button class="btn btn-outline" style="margin-top: 14px; border: none; color: var(--text-secondary);" onclick="closeActivationModal()">إلغاء</button>
         </div>
     </div>
 
-    <!-- Designer Info (Unobtrusive) -->
+    <!-- Designer Info -->
     <div class="designer-info">
         Design: Yaman Muhammad<br>
         0952725590
@@ -944,11 +939,11 @@
             salary: 0,
             startTime: "08:00",
             leaveTime: "15:00",
-            weeklyRecords: {}, // { "Sunday": {start: "", end: "", status: "", late: 0, ot: 0} }
+            weeklyRecords: {}, 
             lastWeekData: null,
             isActivated: false,
             loans: [],
-            archivedWeeks: [] // Store multiple weeks of data
+            archivedWeeks: []
         };
 
         // Days Array
@@ -972,9 +967,7 @@
         function startClock() {
             function update() {
                 const now = new Date();
-                // Time
                 document.getElementById('clock-time').innerText = now.toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                // Date
                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 document.getElementById('clock-date').innerText = now.toLocaleDateString('ar-SY', options);
             }
@@ -987,14 +980,11 @@
             const val = document.getElementById('salary-input').value;
             state.salary = parseFloat(val) || 0;
             
-            // Words
             document.getElementById('salary-words').innerText = state.salary > 0 ? numberToArabicWords(state.salary) + " ليرة سورية" : "";
             
-            // Weekly
             const weekly = state.salary / 4;
             document.getElementById('weekly-salary').innerText = formatMoney(weekly);
             
-            // Daily
             document.getElementById('daily-salary').innerText = formatMoney(state.salary / 30);
             
             calculateLoanPlan();
@@ -1002,10 +992,8 @@
         }
 
         function numberToArabicWords(n) {
-            // دالة محسنة لتحويل الأرقام إلى كلمات
             if (isNaN(n) || n === 0) return "صفر";
-            
-            n = Math.floor(n); // تحويل إلى عدد صحيح
+            n = Math.floor(n); 
             
             const units = ["", "واحد", "اثنان", "ثلاثة", "أربعة", "خمسة", "ستة", "سبعة", "ثمانية", "تسعة"];
             const tens = ["", "عشرة", "عشرون", "ثلاثون", "أربعون", "خمسون", "ستون", "سبعون", "ثمانون", "تسعون"];
@@ -1017,7 +1005,6 @@
             if (n === 2000000) return "مليونان";
             if (n === 1000000000) return "مليار";
             
-            // معالجة الملايين
             if (n >= 1000000) {
                 const millionsPart = Math.floor(n / 1000000);
                 const remainder = n % 1000000;
@@ -1032,7 +1019,6 @@
                 else return millionWord + " و" + numberToArabicWords(remainder);
             }
             
-            // معالجة الآلاف
             if (n >= 1000) {
                 const thousandsPart = Math.floor(n / 1000);
                 const remainder = n % 1000;
@@ -1047,7 +1033,6 @@
                 else return thousandWord + " و" + numberToArabicWords(remainder);
             }
             
-            // معالئة المئات
             if (n >= 100) {
                 const hundredsPart = Math.floor(n / 100);
                 const remainder = n % 100;
@@ -1056,7 +1041,6 @@
                 else return hundreds[hundredsPart] + " و" + numberToArabicWords(remainder);
             }
             
-            // معالجة العشرات
             if (n >= 20) {
                 const tensPart = Math.floor(n / 10);
                 const unitsPart = n % 10;
@@ -1065,7 +1049,6 @@
                 else return units[unitsPart] + " و" + tens[tensPart];
             }
             
-            // معالجة الأرقام من 11 إلى 19
             if (n >= 11) {
                 const specialNumbers = [
                     "أحد عشر", "اثنا عشر", "ثلاثة عشر", "أربعة عشر", "خمسة عشر", 
@@ -1074,7 +1057,6 @@
                 return specialNumbers[n - 11];
             }
             
-            // معالجة الأرقام من 1 إلى 10
             return units[n];
         }
 
@@ -1104,7 +1086,7 @@
             resultDiv.style.display = 'block';
             
             if (!actStart || !actEnd) {
-                resultDiv.innerHTML = "<span style='color:var(--text-tertiary); display:block; text-align:center; padding:12px;'>أكمل أوقات الحضور والمغادرة</span>";
+                resultDiv.innerHTML = "<span style='color:var(--text-muted); display:block; text-align:center; padding:14px;'>أكمل أوقات الحضور والمغادرة</span>";
                 return;
             }
 
@@ -1112,21 +1094,19 @@
             let minutesLate = 0;
             let minutesOT = 0;
 
-            // Late Calculation
             if (actStart > startT) {
                 const diff = timeDiffMinutes(startT, actStart);
                 minutesLate = diff;
-                msg += `<div class="status-tag status-late" style="display:inline-flex; margin-left:6px;"><i class="material-icons" style="font-size:16px;">schedule</i> تأخير: ${diff} دقيقة</div> `;
+                msg += `<div class="status-tag status-late" style="display:inline-flex; margin-left:8px;"><i class="material-icons" style="font-size:18px;">schedule</i> تأخير: ${diff} دقيقة</div> `;
             }
 
-            // OT Calculation
             if (actEnd > leaveT) {
                 const diff = timeDiffMinutes(leaveT, actEnd);
                 minutesOT = diff;
-                msg += `<div class="status-tag status-ot" style="display:inline-flex;"><i class="material-icons" style="font-size:16px;">access_time</i> إضافي: ${diff} دقيقة</div>`;
+                msg += `<div class="status-tag status-ot" style="display:inline-flex;"><i class="material-icons" style="font-size:18px;">access_time</i> إضافي: ${diff} دقيقة</div>`;
             }
 
-            if (msg === "") msg = `<div class="status-tag status-ok" style="display:inline-flex;"><i class="material-icons" style="font-size:16px;">check_circle</i> دوام منتظم</div>`;
+            if (msg === "") msg = `<div class="status-tag status-ok" style="display:inline-flex;"><i class="material-icons" style="font-size:18px;">check_circle</i> دوام منتظم</div>`;
             
             resultDiv.innerHTML = msg;
             return { minutesLate, minutesOT };
@@ -1149,16 +1129,15 @@
                 const row = document.createElement('div');
                 row.className = 'day-row';
                 
-                // Create status indicators
                 let statusIndicators = '<div class="status-indicator">';
                 if (rec.late > 0) {
-                    statusIndicators += `<div class="status-badge status-late"><i class="material-icons" style="font-size:14px;">schedule</i> تأخير: ${rec.late} د</div>`;
+                    statusIndicators += `<div class="status-badge status-late"><i class="material-icons" style="font-size:16px;">schedule</i> تأخير: ${rec.late} د</div>`;
                 }
                 if (rec.ot > 0) {
-                    statusIndicators += `<div class="status-badge status-ot"><i class="material-icons" style="font-size:14px;">access_time</i> إضافي: ${rec.ot} د</div>`;
+                    statusIndicators += `<div class="status-badge status-ot"><i class="material-icons" style="font-size:16px;">access_time</i> إضافي: ${rec.ot} د</div>`;
                 }
                 if (rec.late === 0 && rec.ot === 0 && rec.status) {
-                    statusIndicators += `<div class="status-badge status-ok"><i class="material-icons" style="font-size:14px;">check_circle</i> منتظم</div>`;
+                    statusIndicators += `<div class="status-badge status-ok"><i class="material-icons" style="font-size:16px;">check_circle</i> منتظم</div>`;
                 }
                 statusIndicators += '</div>';
                 
@@ -1184,10 +1163,8 @@
             if (!state.weeklyRecords[day]) state.weeklyRecords[day] = { start: '', end: '', status: '', late: 0, ot: 0 };
             state.weeklyRecords[day][field] = value;
             
-            // Recalculate status for that day if both times exist
             const rec = state.weeklyRecords[day];
             if (rec.start && rec.end) {
-                // Calculate late and overtime
                 const startT = state.startTime || "08:00";
                 const leaveT = state.leaveTime || "15:00";
                 
@@ -1205,7 +1182,6 @@
                 rec.late = late;
                 rec.ot = ot;
                 
-                // Create status text
                 let statusText = "";
                 if (late > 0 && ot > 0) {
                     statusText = `تأخير: ${late} دقيقة | إضافي: ${ot} دقيقة`;
@@ -1227,14 +1203,13 @@
         function saveDailyRecord() {
             const actStart = document.getElementById('actual-start').value;
             const actEnd = document.getElementById('actual-end').value;
-            const todayName = days[new Date().getDay()]; // 0 is Sunday in JS
+            const todayName = days[new Date().getDay()]; 
             
             if(!actStart || !actEnd) {
                 showToast("يرجى إدخال وقت الحضور والمغادرة");
                 return;
             }
 
-            // Calculate status
             const statusResult = calculateDailyStatus();
             const statusEl = document.getElementById('daily-status-result').innerText;
             
@@ -1253,13 +1228,11 @@
 
         // --- New Week Feature ---
         function startNewWeek() {
-            // Check if app is activated
             if (!state.isActivated) {
                 showActivationRequiredMessage();
                 return;
             }
             
-            // Check if there's data to save
             const hasData = Object.keys(state.weeklyRecords).some(day => 
                 state.weeklyRecords[day].start || state.weeklyRecords[day].end
             );
@@ -1274,24 +1247,20 @@
                 }
             }
             
-            // Save current week to archived weeks
             if (hasData) {
                 const weekData = {
                     date: new Date().toISOString(),
                     records: {...state.weeklyRecords}
                 };
                 
-                // Add to archived weeks (keep only last 4 weeks)
                 state.archivedWeeks.unshift(weekData);
                 if (state.archivedWeeks.length > 4) {
                     state.archivedWeeks = state.archivedWeeks.slice(0, 4);
                 }
                 
-                // Set as last week data for backward compatibility
                 state.lastWeekData = {...state.weeklyRecords};
             }
             
-            // Clear current week data
             state.weeklyRecords = {};
             
             saveState();
@@ -1303,7 +1272,6 @@
         function showLastWeekOptions() {
             const overlay = document.getElementById('history-overlay');
             
-            // Show options container, hide others
             document.getElementById('history-options').style.display = 'flex';
             document.getElementById('week-data-container').style.display = 'none';
             document.getElementById('date-picker-container').style.display = 'none';
@@ -1313,47 +1281,39 @@
         }
 
         function restorePreviousWeek() {
-            // Check if app is activated
             if (!state.isActivated) {
                 showActivationRequiredMessage();
                 return;
             }
             
-            // Check if there's last week data
             if (!state.lastWeekData) {
                 document.getElementById('history-options').style.display = 'none';
                 document.getElementById('empty-history-state').style.display = 'block';
                 return;
             }
             
-            // Display the last week data as cards
             displayWeekData(state.lastWeekData, "الأسبوع السابق");
         }
 
         function showDatePicker() {
-            // Check if app is activated
             if (!state.isActivated) {
                 showActivationRequiredMessage();
                 return;
             }
             
-            // Check if there's archived data
             if (!state.archivedWeeks || state.archivedWeeks.length === 0) {
                 document.getElementById('history-options').style.display = 'none';
                 document.getElementById('empty-history-state').style.display = 'block';
                 return;
             }
             
-            // Show date picker
             document.getElementById('history-options').style.display = 'none';
             document.getElementById('date-picker-container').style.display = 'block';
             
-            // Set min and max dates based on archived weeks
             if (state.archivedWeeks.length > 0) {
                 const newestWeek = new Date(state.archivedWeeks[0].date);
                 const oldestWeek = new Date(state.archivedWeeks[state.archivedWeeks.length - 1].date);
                 
-                // Format dates for input
                 const minDate = oldestWeek.toISOString().split('T')[0];
                 const maxDate = newestWeek.toISOString().split('T')[0];
                 
@@ -1374,7 +1334,6 @@
                 return;
             }
             
-            // Find the week with the closest date to the selected date
             let closestWeek = null;
             let minDiff = Infinity;
             
@@ -1403,28 +1362,24 @@
             const optionsContainer = document.getElementById('history-options');
             const datePickerContainer = document.getElementById('date-picker-container');
             
-            // Hide options and date picker, show data container
             optionsContainer.style.display = 'none';
             datePickerContainer.style.display = 'none';
             container.style.display = 'block';
             
-            // Generate week data card
             let html = `
                 <div class="week-data-card">
                     <div class="week-data-header">
                         <div class="week-data-date">${title}</div>
                         <div class="week-data-actions">
                             <button class="week-data-action-btn" onclick="restoreToCurrentWeek()">
-                                <i class="material-icons" style="font-size: 16px; vertical-align: middle;">refresh</i> استعادة للأسبوع الحالي
+                                <i class="material-icons" style="font-size: 18px; vertical-align: middle;">refresh</i> استعادة للأسبوع الحالي
                             </button>
                         </div>
                     </div>
                     <div class="week-data-content">
             `;
             
-            // Add day cards
             for (const [dayName, dayData] of Object.entries(weekData)) {
-                // Determine status badge class
                 let statusClass = 'status-ok';
                 let statusText = 'منتظم';
                 
@@ -1462,16 +1417,11 @@
                 return;
             }
             
-            // Get the current displayed week data
             let currentDisplayedData = null;
             
-            // Try to get data from last week data first
             if (state.lastWeekData) {
                 currentDisplayedData = state.lastWeekData;
             } else {
-                // If not, try to get from archived weeks
-                // In a real app, we'd need to track which week is currently displayed
-                // For now, we'll just use the most recent archived week
                 if (state.archivedWeeks && state.archivedWeeks.length > 0) {
                     currentDisplayedData = state.archivedWeeks[0].records;
                 }
@@ -1498,12 +1448,11 @@
             const weeklySalary = state.salary / 4;
             
             if (amount > 0 && weeklySalary > 0) {
-                // Simple 4 week repayment
                 const weeklyPay = amount / 4;
                 document.getElementById('loan-repayment-plan').innerHTML = `
-                    <div style="background:rgba(16, 185, 129, 0.1); padding:14px; border-radius:12px; border:1px solid rgba(16, 185, 129, 0.2);">
-                        <div style="font-weight:bold; color:var(--success-color); margin-bottom:10px;">خطة السداد (4 أسابيع):</div>
-                        <div>خصم أسبوعي: <span style="font-size:1.15rem; font-weight:bold; color:var(--primary-color);">${formatMoney(weeklyPay)}</span> ل.س</div>
+                    <div style="background-color:rgba(16, 185, 129, 0.15); padding:16px; border-radius:12px; border:1px solid rgba(16, 185, 129, 0.3);">
+                        <div style="font-weight:700; color:#34d399; margin-bottom:10px;">خطة السداد (4 أسابيع):</div>
+                        <div>خصم أسبوعي: <span style="font-size:1.2rem; font-weight:800; color:#fbbf24;">${formatMoney(weeklyPay)}</span> ل.س</div>
                     </div>
                 `;
             } else {
@@ -1519,7 +1468,7 @@
             
             if(!state.isActivated) {
                 showToast("يجب تفعيل البرنامج لاستخدام ميزة السلف", 3000);
-                return; // Enforce activation for advanced feature
+                return; 
             }
 
             state.loans.push({
@@ -1579,11 +1528,9 @@
             if (stored) {
                 state = JSON.parse(stored);
                 
-                // Initialize archivedWeeks array if it doesn't exist (for backward compatibility)
                 if (!state.archivedWeeks) {
                     state.archivedWeeks = [];
                     
-                    // If there's lastWeekData, add it to archivedWeeks
                     if (state.lastWeekData) {
                         state.archivedWeeks.push({
                             date: new Date().toISOString(),
@@ -1603,7 +1550,6 @@
         }
 
         function createBackup() {
-            // Archive current week to last week before backing up (Simulated)
             if (Object.keys(state.weeklyRecords).length > 0) {
                 state.lastWeekData = {...state.weeklyRecords};
             }
@@ -1634,11 +1580,9 @@
                         const obj = JSON.parse(event.target.result);
                         state = obj;
                         
-                        // Initialize archivedWeeks array if it doesn't exist (for backward compatibility)
                         if (!state.archivedWeeks) {
                             state.archivedWeeks = [];
                             
-                            // If there's lastWeekData, add it to archivedWeeks
                             if (state.lastWeekData) {
                                 state.archivedWeeks.push({
                                     date: new Date().toISOString(),
