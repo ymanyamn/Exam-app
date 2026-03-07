@@ -9,21 +9,22 @@
     <style>
         :root {
             /* Modern Dark Palette */
-            --bg-body: #0f172a;       /* Slate 900 - Very Dark Blue-Grey */
-            --bg-card: #1e293b;       /* Slate 800 - Card Background */
-            --bg-card-hover: #334155; /* Slate 700 */
+            --bg-body: #0f172a;       
+            --bg-card: #1e293b;       
+            --bg-card-hover: #334155; 
             --bg-input: #0f172a;
             
             /* Gradients */
-            --primary-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6); /* Blue to Violet */
+            --primary-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
             --success-gradient: linear-gradient(135deg, #10b981, #059669);
             --danger-gradient: linear-gradient(135deg, #ef4444, #b91c1c);
             --gold-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+            --disabled-gradient: linear-gradient(135deg, #475569, #334155);
 
             /* Text Colors */
-            --text-primary: #f8fafc;   /* Slate 50 */
-            --text-secondary: #94a3b8; /* Slate 400 */
-            --text-muted: #64748b;     /* Slate 500 */
+            --text-primary: #f8fafc;   
+            --text-secondary: #94a3b8; 
+            --text-muted: #64748b;     
             
             /* UI Elements */
             --border-radius: 16px;
@@ -58,7 +59,7 @@
             flex-direction: column;
         }
 
-        /* Clock Widget - Glassmorphism */
+        /* Clock Widget */
         .clock-widget {
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(12px);
@@ -178,7 +179,7 @@
             background-color: #162032;
         }
 
-        /* Tooltip - Dark Styled */
+        /* Tooltip */
         .tooltip {
             font-size: 0.9rem;
             color: var(--text-secondary);
@@ -261,6 +262,25 @@
             box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
         }
 
+        /* Disabled Button (Future Ideas) */
+        .btn-disabled {
+            background: var(--disabled-gradient);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            opacity: 0.7;
+            position: relative;
+        }
+        
+        .btn-disabled::after {
+            content: 'قريباً';
+            position: absolute;
+            left: 10px;
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
         /* Grid Layouts */
         .grid-2 {
             display: grid;
@@ -332,6 +352,30 @@
         .status-ok { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
         .status-late { background-color: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
         .status-ot { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        /* Salary Detail Modal Styles */
+        .salary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+        .salary-row:last-child { border-bottom: none; }
+        .salary-row.total {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #34d399;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 2px dashed var(--border-color);
+        }
+        .salary-row.deduction {
+            color: #f87171;
+        }
+        .salary-row.addition {
+            color: #fbbf24;
+        }
 
         /* Welcome Screen */
         #welcome-screen {
@@ -444,6 +488,8 @@
             animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255,255,255,0.05);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         /* Status Tag */
@@ -674,7 +720,21 @@
             display: inline-block;
         }
         
-        /* Responsive adjustments */
+        /* Future Ideas Section */
+        .future-ideas {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .future-title {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 480px) {
             .container { padding: 16px; }
             .clock-time { font-size: 2rem; }
@@ -740,9 +800,14 @@
                         <div style="font-size: 1.6rem; font-weight: 800; color: #60a5fa;" id="daily-salary">0</div>
                     </div>
                 </div>
-                <button class="btn btn-outline" style="margin-top: 24px;" onclick="editSalary()">
-                    <i class="material-icons">edit</i> تعديل الراتب الأساسي
-                </button>
+                <div style="display: flex; gap: 10px; margin-top: 24px;">
+                    <button class="btn btn-outline" style="flex:1;" onclick="editSalary()">
+                        <i class="material-icons">edit</i> تعديل
+                    </button>
+                    <button class="btn btn-primary" style="flex:1;" onclick="showSalaryDetailsModal()">
+                        <i class="material-icons">calculate</i> حساب الراتب
+                    </button>
+                </div>
             </div>
 
             <!-- Attendance Settings -->
@@ -830,8 +895,24 @@
                 </button>
             </div>
 
+            <!-- Future Ideas -->
+            <div class="future-ideas">
+                <div class="future-title">ميزات قادمة</div>
+                <div style="display: grid; gap: 10px;">
+                    <button class="btn btn-disabled" title="نظام إدارة الإجازات والعطل">
+                        <i class="material-icons">flight_takeoff</i> نظام الإجازات
+                    </button>
+                    <button class="btn btn-disabled" title="تصدير التقارير بصيغة PDF">
+                        <i class="material-icons">picture_as_pdf</i> تقارير PDF
+                    </button>
+                    <button class="btn btn-disabled" title="إضافة موظفين جدد">
+                        <i class="material-icons">group_add</i> إدارة موظفين متعددين
+                    </button>
+                </div>
+            </div>
+
             <!-- Settings & Backup -->
-            <div class="card">
+            <div class="card" style="margin-top: 24px;">
                 <div class="card-header">
                     <i class="material-icons">settings</i>
                     <div class="card-title">إعدادات وبيانات</div>
@@ -860,7 +941,7 @@
             <button onclick="closeLastWeek()" style="background:none; border:none; font-size: 2.2rem; cursor: pointer; color: var(--text-primary); line-height: 1;">&times;</button>
         </div>
         
-        <!-- History Options (Initial View) -->
+        <!-- History Options -->
         <div id="history-options" class="history-options">
             <div class="history-option-card" onclick="restorePreviousWeek()">
                 <div class="history-option-icon">
@@ -883,12 +964,10 @@
             </div>
         </div>
         
-        <!-- Week Data Container (for displaying restored data) -->
-        <div id="week-data-container" style="display: none;">
-            <!-- Week data will be injected here -->
-        </div>
+        <!-- Week Data Container -->
+        <div id="week-data-container" style="display: none;"></div>
         
-        <!-- Date Picker (Hidden by default) -->
+        <!-- Date Picker -->
         <div id="date-picker-container" style="display: none; margin-top: 28px;">
             <div class="form-group">
                 <label>اختر التاريخ</label>
@@ -902,7 +981,7 @@
             </button>
         </div>
         
-        <!-- Empty State (Shown when no data available) -->
+        <!-- Empty State -->
         <div id="empty-history-state" style="display: none;">
             <p style='text-align: center; color: var(--text-muted); margin-top: 70px;'>لا توجد بيانات محفوظة للأسبوع الماضي</p>
         </div>
@@ -923,6 +1002,20 @@
         </div>
     </div>
 
+    <!-- Salary Details Modal -->
+    <div id="salary-details-modal" class="modal">
+        <div class="modal-content">
+            <div class="card-header" style="border:none; padding-bottom: 0;">
+                <i class="material-icons" style="font-size: 32px; margin-left: 10px; background: var(--gold-gradient); border-radius: 8px;">receipt_long</i>
+                <div class="card-title">تفاصيل الراتب الأسبوعي</div>
+            </div>
+            <div id="salary-calculation-results" style="text-align: right; margin-top: 20px;">
+                <!-- JS will fill this -->
+            </div>
+            <button class="btn btn-primary" style="margin-top: 24px;" onclick="closeSalaryDetailsModal()">إغلاق</button>
+        </div>
+    </div>
+
     <!-- Designer Info -->
     <div class="designer-info">
         Design: Yaman Muhammad<br>
@@ -933,8 +1026,16 @@
     <div id="toast" class="toast">رسالة تنبيه</div>
 
     <script>
+        // --- HIDDEN CODE ENCODED (Base64) ---
+        // The real code is 0952725590. Encoded to hide it.
+        const ENCODED_CODE = "MDk1MjcyNTU5MA=="; 
+
+        function decodeHiddenCode() {
+            // Simple Base64 decode function
+            return atob(ENCODED_CODE);
+        }
+
         // State
-        const HIDDEN_CODE = "0952725590";
         let state = {
             salary: 0,
             startTime: "08:00",
@@ -1129,12 +1230,27 @@
                 const row = document.createElement('div');
                 row.className = 'day-row';
                 
+                // Calculate Hourly Rate dynamically
+                const dailyRate = state.salary / 30;
+                const hourlyRate = dailyRate / 7; // Approx 7 working hours per day
+                
+                // OT Calculation in Hours and Money
+                const otHours = (rec.ot / 60).toFixed(1); // Convert to decimal hours (1.5)
+                const otMoney = (otHours * hourlyRate * 1.5).toFixed(0); // 1.5x multiplier for OT
+
                 let statusIndicators = '<div class="status-indicator">';
                 if (rec.late > 0) {
                     statusIndicators += `<div class="status-badge status-late"><i class="material-icons" style="font-size:16px;">schedule</i> تأخير: ${rec.late} د</div>`;
                 }
                 if (rec.ot > 0) {
-                    statusIndicators += `<div class="status-badge status-ot"><i class="material-icons" style="font-size:16px;">access_time</i> إضافي: ${rec.ot} د</div>`;
+                    statusIndicators += `
+                    <div class="status-badge status-ot">
+                        <i class="material-icons" style="font-size:16px;">access_time</i> 
+                        إضافي: ${otHours} ساعة
+                        <span style="margin-right:auto; font-size:0.75rem; background:rgba(0,0,0,0.2); padding:2px 6px; border-radius:4px;">
+                            +${formatMoney(otMoney)} ل.س
+                        </span>
+                    </div>`;
                 }
                 if (rec.late === 0 && rec.ot === 0 && rec.status) {
                     statusIndicators += `<div class="status-badge status-ok"><i class="material-icons" style="font-size:16px;">check_circle</i> منتظم</div>`;
@@ -1224,6 +1340,84 @@
             saveState();
             renderWeeklyGrid();
             showToast("تم حفظ سجل اليوم");
+        }
+
+        // --- Salary Calculation Modal Logic ---
+        function showSalaryDetailsModal() {
+            const resultsDiv = document.getElementById('salary-calculation-results');
+            
+            // Basic Rates
+            const baseMonthly = state.salary;
+            const baseWeekly = baseMonthly / 4;
+            const dailyRate = baseMonthly / 30;
+            const hourlyRate = dailyRate / 7; // Assuming 7h work day
+            const minuteRate = hourlyRate / 60;
+
+            // Calculate Totals from Weekly Records
+            let totalLateMinutes = 0;
+            let totalOTMinutes = 0;
+            let workingDaysCount = 0;
+
+            days.forEach(day => {
+                const rec = state.weeklyRecords[day];
+                if (rec && (rec.start || rec.end)) {
+                    workingDaysCount++;
+                    totalLateMinutes += (rec.late || 0);
+                    totalOTMinutes += (rec.ot || 0);
+                }
+            });
+
+            // Financial Calculations
+            const totalLateDeduction = totalLateMinutes * minuteRate;
+            const totalOTHours = (totalOTMinutes / 60).toFixed(2);
+            const totalOTPay = (totalOTHours * hourlyRate * 1.5); // 1.5x Rate
+
+            // Final Pay
+            // Logic: Base Weekly is for 6 days usually, but let's use proportional
+            // Simplified: (DailyRate * WorkingDays) - Deductions + OT
+            const payableDays = workingDaysCount > 0 ? workingDaysCount : 0;
+            const grossPay = dailyRate * payableDays;
+            const netPay = grossPay - totalLateDeduction + totalOTPay;
+
+            // Build HTML
+            let html = `
+                <div class="salary-row">
+                    <span>الراتب الشهري الأساسي</span>
+                    <span>${formatMoney(baseMonthly)} ل.س</span>
+                </div>
+                <div class="salary-row">
+                    <span>معدل اليومي (لـ 30 يوم)</span>
+                    <span>${formatMoney(dailyRate)} ل.س</span>
+                </div>
+                <div class="salary-row">
+                    <span>معدل الساعي</span>
+                    <span>${formatMoney(hourlyRate)} ل.س</span>
+                </div>
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 10px 0;">
+                <div class="salary-row">
+                    <span>أيام العمل الفعلية</span>
+                    <span>${payableDays} يوم</span>
+                </div>
+                <div class="salary-row deduction">
+                    <span>إجمالي التأخير (${totalLateMinutes} دقيقة)</span>
+                    <span>- ${formatMoney(totalLateDeduction)} ل.س</span>
+                </div>
+                <div class="salary-row addition">
+                    <span>إضافي (${totalOTHours} ساعة × 1.5)</span>
+                    <span>+ ${formatMoney(totalOTPay)} ل.س</span>
+                </div>
+                <div class="salary-row total">
+                    <span>صافي المستحق لهذا الأسبوع</span>
+                    <span>${formatMoney(netPay)} ل.س</span>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = html;
+            document.getElementById('salary-details-modal').classList.add('active');
+        }
+
+        function closeSalaryDetailsModal() {
+            document.getElementById('salary-details-modal').classList.remove('active');
         }
 
         // --- New Week Feature ---
@@ -1497,8 +1691,10 @@
         }
 
         function activateApp() {
-            const code = document.getElementById('activation-code-input').value;
-            if (code === HIDDEN_CODE) {
+            const inputCode = document.getElementById('activation-code-input').value;
+            const realCode = decodeHiddenCode(); // Decode the hidden string
+
+            if (inputCode === realCode) {
                 state.isActivated = true;
                 saveState();
                 updateActivationUI();
