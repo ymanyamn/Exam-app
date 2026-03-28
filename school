@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>جدول الحصص - مدرسة بدر الدين الغزال</title>
+  <style>
+    /* الخطوط */
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap');
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    :root {
+      --primary-color: #2c5aa0;
+      --secondary-color: #3498db;
+      --accent-color: #48bb78;
+      --danger-color: #e53e3e;
+      --text-color: #2c3e50;
+      --light-bg: #f8f9fa;
+      --white: #ffffff;
+      --border-color: #cbd5e0;
+      --day-bg: #ffe3ef;
+      --period-bg: #e9f7ec;
+    }
+    
+    body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--light-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+
+    /* رأس الصفحة */
+    .header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, #1e3a8a 100%);
+      color: var(--white);
+      padding: 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .school-name {
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .page-title {
+      font-size: clamp(1rem, 3.5vw, 1.3rem);
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .director-name {
+      font-size: clamp(0.8rem, 3vw, 1rem);
+      opacity: 0.9;
+    }
+
+    /* أزرار التحكم */
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .control-btn {
+      background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+      color: var(--white);
+      border: none;
+      padding: 0.8rem 0.5rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: clamp(0.75rem, 3vw, 0.9rem);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      min-height: 44px;
+    }
+
+    .control-btn.danger {
+      background: linear-gradient(135deg, var(--danger-color) 0%, #c53030 100%);
+    }
+
+    .control-btn:active {
+      transform: scale(0.98);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* حالة الحفظ */
+    .save-status {
+      text-align: center;
+      padding: 0.5rem;
+      font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+      color: var(--accent-color);
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    /* جدول الحصص */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.5rem;
+      background: var(--white);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+      min-width: 800px;
+      table-layout: fixed;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.3rem;
+      text-align: center;
+      word-wrap: break-word;
+      overflow: hidden;
+      line-height: 1.3;
+      height: 50px;
+      vertical-align: middle;
+    }
+
+    thead th {
+      background: linear-gradient(135deg, var(--secondary-color) 0%, #357abd 100%);
+      color: var(--white);
+      font-weight: 700;
+      font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+      padding: 0.6rem 0.3rem;
+      position: sticky;
+      top: 0;
+    }
+
+    .day-cell {
+      background: linear-gradient(135deg, var(--day-bg) 0%, #f3a8d0 100%);
+      font-weight: 700;
+      color: #702459;
+      width: 70px;
+      font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+    }
+
+    .period-cell {
+      background: linear-gradient(135deg, var(--period-bg) 0%, #9ae6b4 100%);
+      font-weight: 700;
+      color: #22543d;
+      width: 55px;
+      font-size: clamp(0.65rem, 2.5vw, 0.8rem);
+    }
+
+    .subject-cell {
+      font-size: clamp(0.65rem, 2.5vw, 0.8rem);
+      max-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    tbody tr:active {
+      background-color: #edf2f7;
+    }
+
+    /* النوافذ المنبثقة */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: var(--white);
+      margin: 10% auto;
+      padding: 1.5rem;
+      border: none;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      position: relative;
+      animation: modalAppear 0.3s ease-out;
+    }
+
+    @keyframes modalAppear {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal-header h4 {
+      margin: 0;
+      color: var(--text-color);
+      font-weight: 700;
+      font-size: clamp(1rem, 4vw, 1.2rem);
+    }
+
+    .close {
+      color: #a0aec0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+      padding: 0.5rem;
+      margin: -0.5rem;
+    }
+
+    .close:active {
+      color: #4a5568;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+      text-align: right;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-color);
+      font-size: clamp(0.8rem, 3vw, 0.9rem);
+    }
+
+    select, input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      background: var(--white);
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(0.8rem, 3vw, 0.9rem);
+      transition: all 0.3s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    select:focus, input:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, var(--accent-color) 0%, #38a169 100%);
+      color: var(--white);
+      border: none;
+      padding: 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+      font-weight: 700;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      transition: all 0.3s ease;
+      min-height: 50px;
+    }
+
+    .submit-btn.danger {
+      background: linear-gradient(135deg, var(--danger-color) 0%, #c53030 100%);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .password-input {
+      direction: ltr;
+      text-align: center;
+      font-family: monospace;
+      letter-spacing: 2px;
+    }
+
+    /* تذييل الصفحة */
+    .footer {
+      margin-top: 1rem;
+      padding: 1rem;
+      color: #718096;
+      font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+      border-top: 1px solid var(--border-color);
+      background: var(--white);
+      text-align: center;
+    }
+
+    /* تحسينات للشاشات الصغيرة جداً */
+    @media (max-width: 480px) {
+      .controls {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+        padding: 0.8rem;
+      }
+      
+      .table-container {
+        padding: 0.3rem;
+      }
+      
+      table {
+        min-width: 700px;
+      }
+      
+      th, td {
+        padding: 0.3rem 0.2rem;
+        height: 45px;
+      }
+      
+      .day-cell {
+        width: 65px;
+      }
+      
+      .period-cell {
+        width: 50px;
+      }
+      
+      .modal-content {
+        margin: 5% auto;
+        padding: 1.2rem;
+        width: 95%;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .header {
+        padding: 0.8rem;
+      }
+      
+      .controls {
+        padding: 0.6rem;
+      }
+      
+      .control-btn {
+        padding: 0.7rem 0.4rem;
+      }
+      
+      .modal-content {
+        padding: 1rem;
+      }
+    }
+
+    /* تحسينات للشاشات الكبيرة */
+    @media (min-width: 1024px) {
+      .table-container {
+        padding: 1rem;
+      }
+      
+      table {
+        min-width: 900px;
+      }
+      
+      th, td {
+        padding: 0.6rem 0.4rem;
+        height: 55px;
+      }
+    }
+
+    /* منع التكبير على iOS */
+    @supports (-webkit-touch-callout: none) {
+      input, select, textarea {
+        font-size: 16px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- رأس الصفحة -->
+  <div class="header">
+    <h1 class="school-name">مدرسة بدر الدين الغزال</h1>
+    <h2 class="page-title">جدول الحصص الأسبوعي</h2>
+    <p class="director-name">مدير المدرسة: أ. عدنان الملا</p>
+  </div>
+
+  <!-- أزرار التحكم -->
+  <div class="controls">
+    <button class="control-btn" onclick="openPasswordModal('add')">إضافة مادة</button>
+    <button class="control-btn" onclick="openPasswordModal('edit')">تعديل مادة</button>
+    <button class="control-btn" onclick="openPasswordModal('delete')">حذف مادة</button>
+    <button class="control-btn danger" onclick="openPasswordModal('clear')">مسح الكل</button>
+  </div>
+
+  <!-- حالة الحفظ -->
+  <div class="save-status" id="saveStatus">💾 تم الحفظ تلقائياً</div>
+
+  <!-- جدول الحصص -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 70px;">اليوم</th>
+          <th style="width: 55px;">الحصة</th>
+          <th>بكلوريا</th>
+          <th>حادي عشر أولى</th>
+          <th>حادي عشر ثانية</th>
+          <th>حادي عشر ثالثة</th>
+          <th>حادي عشر رابعة</th>
+          <th>حادي عشر خامسة</th>
+          <th>حادي عشر سادسة</th>
+          <th>عاشر أولى</th>
+          <th>عاشر ثانية</th>
+          <th>عاشر ثالثة</th>
+          <th>عاشر رابعة</th>
+        </tr>
+      </thead>
+      <tbody id="schedule-body">
+        <!-- سيتم ملء الجدول ديناميكياً -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- نافذة التحقق بكلمة المرور -->
+  <div id="passwordModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 id="passwordModalTitle">التحقق من الهوية</h4>
+        <span class="close" onclick="closePasswordModal()">&times;</span>
+      </div>
+      <div class="form-group">
+        <label for="password">كلمة المرور:</label>
+        <input type="password" id="password" class="password-input" placeholder="أدخل كلمة المرور">
+      </div>
+      <button class="submit-btn" onclick="verifyPassword()">تحقق</button>
+    </div>
+  </div>
+
+  <!-- نافذة إضافة مادة -->
+  <div id="addModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>إضافة مادة جديدة</h4>
+        <span class="close" onclick="closeAddModal()">&times;</span>
+      </div>
+      <div class="form-group">
+        <label for="addDay">اليوم:</label>
+        <select id="addDay">
+          <option value="sunday">الأحد</option>
+          <option value="monday">الإثنين</option>
+          <option value="tuesday">الثلاثاء</option>
+          <option value="wednesday">الأربعاء</option>
+          <option value="thursday">الخميس</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="addPeriod">الحصة:</label>
+        <select id="addPeriod">
+          <option value="1">الأولى</option>
+          <option value="2">الثانية</option>
+          <option value="3">الثالثة</option>
+          <option value="4">الرابعة</option>
+          <option value="5">خامسة</option>
+          <option value="6">سادسة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="addClass">الشعبة:</label>
+        <select id="addClass">
+          <option value="0">بكلوريا</option>
+          <option value="1">حادي عشر أولى</option>
+          <option value="2">حادي عشر ثانية</option>
+          <option value="3">حادي عشر ثالثة</option>
+          <option value="4">حادي عشر رابعة</option>
+          <option value="5">حادي عشر خامسة</option>
+          <option value="6">حادي عشر سادسة</option>
+          <option value="7">عاشر أولى</option>
+          <option value="8">عاشر ثانية</option>
+          <option value="9">عاشر ثالثة</option>
+          <option value="10">عاشر رابعة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="addSubject">اسم المادة:</label>
+        <input type="text" id="addSubject" placeholder="أدخل اسم المادة">
+      </div>
+      <button class="submit-btn" onclick="addSubject()">إضافة</button>
+    </div>
+  </div>
+
+  <!-- نافذة تعديل مادة -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>تعديل المادة</h4>
+        <span class="close" onclick="closeEditModal()">&times;</span>
+      </div>
+      <div class="form-group">
+        <label for="editDay">اليوم:</label>
+        <select id="editDay">
+          <option value="sunday">الأحد</option>
+          <option value="monday">الإثنين</option>
+          <option value="tuesday">الثلاثاء</option>
+          <option value="wednesday">الأربعاء</option>
+          <option value="thursday">الخميس</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editPeriod">الحصة:</label>
+        <select id="editPeriod">
+          <option value="1">الأولى</option>
+          <option value="2">الثانية</option>
+          <option value="3">الثالثة</option>
+          <option value="4">الرابعة</option>
+          <option value="5">خامسة</option>
+          <option value="6">سادسة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editClass">الشعبة:</label>
+        <select id="editClass">
+          <option value="0">بكلوريا</option>
+          <option value="1">حادي عشر أولى</option>
+          <option value="2">حادي عشر ثانية</option>
+          <option value="3">حادي عشر ثالثة</option>
+          <option value="4">حادي عشر رابعة</option>
+          <option value="5">حادي عشر خامسة</option>
+          <option value="6">حادي عشر سادسة</option>
+          <option value="7">عاشر أولى</option>
+          <option value="8">عاشر ثانية</option>
+          <option value="9">عاشر ثالثة</option>
+          <option value="10">عاشر رابعة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editSubject">اسم المادة:</label>
+        <input type="text" id="editSubject" placeholder="أدخل اسم المادة">
+      </div>
+      <button class="submit-btn" onclick="editSubject()">تعديل</button>
+    </div>
+  </div>
+
+  <!-- نافذة حذف مادة -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>حذف المادة</h4>
+        <span class="close" onclick="closeDeleteModal()">&times;</span>
+      </div>
+      <div class="form-group">
+        <label for="deleteDay">اليوم:</label>
+        <select id="deleteDay">
+          <option value="sunday">الأحد</option>
+          <option value="monday">الإثنين</option>
+          <option value="tuesday">الثلاثاء</option>
+          <option value="wednesday">الأربعاء</option>
+          <option value="thursday">الخميس</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="deletePeriod">الحصة:</label>
+        <select id="deletePeriod">
+          <option value="1">الأولى</option>
+          <option value="2">الثانية</option>
+          <option value="3">الثالثة</option>
+          <option value="4">الرابعة</option>
+          <option value="5">خامسة</option>
+          <option value="6">سادسة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="deleteClass">الشعبة:</label>
+        <select id="deleteClass">
+          <option value="0">بكلوريا</option>
+          <option value="1">حادي عشر أولى</option>
+          <option value="2">حادي عشر ثانية</option>
+          <option value="3">حادي عشر ثالثة</option>
+          <option value="4">حادي عشر رابعة</option>
+          <option value="5">حادي عشر خامسة</option>
+          <option value="6">حادي عشر سادسة</option>
+          <option value="7">عاشر أولى</option>
+          <option value="8">عاشر ثانية</option>
+          <option value="9">عاشر ثالثة</option>
+          <option value="10">عاشر رابعة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <p id="deleteSubjectInfo">سيتم حذف المادة المحددة</p>
+      </div>
+      <button class="submit-btn" onclick="deleteSubject()">حذف</button>
+    </div>
+  </div>
+
+  <!-- نافذة مسح الكل -->
+  <div id="clearModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>مسح جميع البيانات</h4>
+        <span class="close" onclick="closeClearModal()">&times;</span>
+      </div>
+      <div class="form-group">
+        <p style="text-align: center; color: var(--danger-color); font-weight: 600;">
+          ⚠️ تحذير: هذا الإجراء لا يمكن التراجع عنه!
+        </p>
+        <p style="text-align: center;">
+          سيتم حذف جميع المواد من الجدول بشكل دائم.
+        </p>
+      </div>
+      <button class="submit-btn danger" onclick="clearAllData()">تأكيد المسح</button>
+    </div>
+  </div>
+
+  <!-- تذييل الصفحة -->
+  <div class="footer">
+    <p>مدرسة بدر الدين الغزال - نظام إدارة جدول الحصص © 2023</p>
+  </div>
+
+  <script>
+    // بيانات الجدول
+    let scheduleData = {
+      sunday: Array(6).fill().map(() => Array(11).fill('')),
+      monday: Array(6).fill().map(() => Array(11).fill('')),
+      tuesday: Array(6).fill().map(() => Array(11).fill('')),
+      wednesday: Array(6).fill().map(() => Array(11).fill('')),
+      thursday: Array(6).fill().map(() => Array(11).fill(''))
+    };
+
+    // كلمة المرور
+    const PASSWORD = "1992";
+    let currentAction = '';
+    let saveTimeout = null;
+
+    // تحميل البيانات المحفوظة
+    function loadSavedData() {
+      const saved = localStorage.getItem('schoolScheduleData');
+      if (saved) {
+        try {
+          scheduleData = JSON.parse(saved);
+          showSaveStatus('تم تحميل البيانات المحفوظة', 'success');
+        } catch (e) {
+          console.error('خطأ في تحميل البيانات:', e);
+          showSaveStatus('خطأ في تحميل البيانات', 'error');
+        }
+      }
+    }
+
+    // حفظ البيانات تلقائياً
+    function saveData() {
+      try {
+        localStorage.setItem('schoolScheduleData', JSON.stringify(scheduleData));
+        showSaveStatus('تم الحفظ تلقائياً', 'success');
+      } catch (e) {
+        console.error('خطأ في حفظ البيانات:', e);
+        showSaveStatus('خطأ في الحفظ', 'error');
+      }
+    }
+
+    // تأخير الحفظ لتجنب التكرار
+    function delayedSave() {
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+      }
+      saveTimeout = setTimeout(saveData, 1000);
+    }
+
+    // عرض حالة الحفظ
+    function showSaveStatus(message, type = 'success') {
+      const statusElement = document.getElementById('saveStatus');
+      statusElement.textContent = type === 'success' ? '💾 ' + message : '❌ ' + message;
+      statusElement.style.color = type === 'success' ? '#48bb78' : '#e53e3e';
+      
+      setTimeout(() => {
+        statusElement.textContent = '💾 تم الحفظ تلقائياً';
+        statusElement.style.color = '#48bb78';
+      }, 3000);
+    }
+
+    // تهيئة الجدول
+    function initSchedule() {
+      const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday'];
+      const dayNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+      const periods = ['الأولى', 'الثانية', 'الثالثة', 'الرابعة', 'خامسة', 'سادسة'];
+      
+      const tbody = document.getElementById('schedule-body');
+      tbody.innerHTML = '';
+      
+      days.forEach((day, dayIndex) => {
+        for (let i = 0; i < 6; i++) {
+          const tr = document.createElement('tr');
+          
+          if (i === 0) {
+            const dayCell = document.createElement('td');
+            dayCell.className = 'day-cell';
+            dayCell.rowSpan = 6;
+            dayCell.textContent = dayNames[dayIndex];
+            tr.appendChild(dayCell);
+          }
+          
+          const periodCell = document.createElement('td');
+          periodCell.className = 'period-cell';
+          periodCell.textContent = periods[i];
+          tr.appendChild(periodCell);
+          
+          for (let j = 0; j < 11; j++) {
+            const subjectCell = document.createElement('td');
+            subjectCell.className = 'subject-cell';
+            subjectCell.textContent = scheduleData[day][i][j] || '-';
+            subjectCell.title = scheduleData[day][i][j];
+            tr.appendChild(subjectCell);
+          }
+          
+          tbody.appendChild(tr);
+        }
+      });
+    }
+
+    // التحقق من كلمة المرور
+    function verifyPassword() {
+      const passwordInput = document.getElementById('password');
+      if (passwordInput.value === PASSWORD) {
+        closePasswordModal();
+        openActionModal();
+      } else {
+        alert('كلمة المرور غير صحيحة!');
+        passwordInput.value = '';
+      }
+    }
+
+    // فتح نافذة كلمة المرور
+    function openPasswordModal(action) {
+      currentAction = action;
+      const modal = document.getElementById('passwordModal');
+      const title = document.getElementById('passwordModalTitle');
+      
+      if (action === 'add') {
+        title.textContent = 'التحقق من الهوية - إضافة مادة';
+      } else if (action === 'edit') {
+        title.textContent = 'التحقق من الهوية - تعديل مادة';
+      } else if (action === 'delete') {
+        title.textContent = 'التحقق من الهوية - حذف مادة';
+      } else if (action === 'clear') {
+        title.textContent = 'التحقق من الهوية - مسح الكل';
+      }
+      
+      modal.style.display = 'block';
+      document.getElementById('password').value = '';
+    }
+
+    // إغلاق نافذة كلمة المرور
+    function closePasswordModal() {
+      document.getElementById('passwordModal').style.display = 'none';
+    }
+
+    // فتح نافذة الإجراء بناءً على الإجراء الحالي
+    function openActionModal() {
+      if (currentAction === 'add') {
+        document.getElementById('addModal').style.display = 'block';
+      } else if (currentAction === 'edit') {
+        document.getElementById('editModal').style.display = 'block';
+      } else if (currentAction === 'delete') {
+        document.getElementById('deleteModal').style.display = 'block';
+      } else if (currentAction === 'clear') {
+        document.getElementById('clearModal').style.display = 'block';
+      }
+    }
+
+    // إضافة مادة
+    function addSubject() {
+      const day = document.getElementById('addDay').value;
+      const period = parseInt(document.getElementById('addPeriod').value) - 1;
+      const classIndex = parseInt(document.getElementById('addClass').value);
+      const subject = document.getElementById('addSubject').value.trim();
+      
+      if (subject === '') {
+        alert('يرجى إدخال اسم المادة!');
+        return;
+      }
+      
+      scheduleData[day][period][classIndex] = subject;
+      initSchedule();
+      delayedSave();
+      closeAddModal();
+      alert('تمت إضافة المادة بنجاح!');
+    }
+
+    // تعديل مادة
+    function editSubject() {
+      const day = document.getElementById('editDay').value;
+      const period = parseInt(document.getElementById('editPeriod').value) - 1;
+      const classIndex = parseInt(document.getElementById('editClass').value);
+      const subject = document.getElementById('editSubject').value.trim();
+      
+      if (subject === '') {
+        alert('يرجى إدخال اسم المادة!');
+        return;
+      }
+      
+      scheduleData[day][period][classIndex] = subject;
+      initSchedule();
+      delayedSave();
+      closeEditModal();
+      alert('تم تعديل المادة بنجاح!');
+    }
+
+    // حذف مادة
+    function deleteSubject() {
+      const day = document.getElementById('deleteDay').value;
+      const period = parseInt(document.getElementById('deletePeriod').value) - 1;
+      const classIndex = parseInt(document.getElementById('deleteClass').value);
+      
+      scheduleData[day][period][classIndex] = '';
+      initSchedule();
+      delayedSave();
+      closeDeleteModal();
+      alert('تم حذف المادة بنجاح!');
+    }
+
+    // مسح جميع البيانات
+    function clearAllData() {
+      // إعادة تهيئة جميع البيانات
+      scheduleData = {
+        sunday: Array(6).fill().map(() => Array(11).fill('')),
+        monday: Array(6).fill().map(() => Array(11).fill('')),
+        tuesday: Array(6).fill().map(() => Array(11).fill('')),
+        wednesday: Array(6).fill().map(() => Array(11).fill('')),
+        thursday: Array(6).fill().map(() => Array(11).fill(''))
+      };
+      
+      initSchedule();
+      saveData();
+      closeClearModal();
+      alert('تم مسح جميع البيانات بنجاح!');
+    }
+
+    // إغلاق النوافذ
+    function closeAddModal() {
+      document.getElementById('addModal').style.display = 'none';
+      document.getElementById('addSubject').value = '';
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+      document.getElementById('editSubject').value = '';
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').style.display = 'none';
+    }
+
+    function closeClearModal() {
+      document.getElementById('clearModal').style.display = 'none';
+    }
+
+    // إغلاق النوافذ عند النقر خارجها
+    window.onclick = function(event) {
+      const modals = document.getElementsByClassName('modal');
+      for (let i = 0; i < modals.length; i++) {
+        if (event.target == modals[i]) {
+          modals[i].style.display = 'none';
+        }
+      }
+    }
+
+    // تهيئة الجدول عند تحميل الصفحة
+    window.onload = function() {
+      loadSavedData();
+      initSchedule();
+    };
+
+    // منع التكبير على الأجهزة المحمولة
+    document.addEventListener('touchstart', function() {}, {passive: true});
+  </script>
+</body>
+</html>
